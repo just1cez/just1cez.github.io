@@ -8,7 +8,7 @@ const posts = (await getCollection("life"))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<PageLayout title="Life - Blog" description="生活分享，硬件折腾与游戏" type="life">
+<PageLayout title="Life - Justice's Blog" description="生活分享，硬件折腾与游戏" type="life">
   <h1 class="text-2xl font-bold mb-8">Life</h1>
   <div class="space-y-3">
     {posts.map((post) => (

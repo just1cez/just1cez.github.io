@@ -5,8 +5,9 @@ const currentPath = Astro.url.pathname;
 
 <header class="border-b border-border bg-bg/80 sticky top-0 z-50 backdrop-blur-sm">
   <nav class="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
-    <a href="/" class="text-lg font-bold tracking-tight hover:text-accent transition-colors">
-      Blog
+    <a href="/" class="flex items-center gap-2 text-lg font-bold tracking-tight hover:text-accent transition-colors">
+      <img src="/images/avatar.jpg" alt="avatar" class="w-8 h-8 rounded-full object-cover" />
+      <span>Justice's Blog</span>
     </a>
     <div class="flex items-center gap-6 text-sm">
       <a href="/" class:list={["hover:text-accent transition-colors", currentPath === "/" && "text-accent font-medium"]}>
