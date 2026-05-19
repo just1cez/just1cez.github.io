@@ -1,0 +1,25 @@
+---
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-border bg-bg/80 sticky top-0 z-50 backdrop-blur-sm">
+  <nav class="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
+    <a href="/" class="text-lg font-bold tracking-tight hover:text-accent transition-colors">
+      Blog
+    </a>
+    <div class="flex items-center gap-6 text-sm">
+      <a href="/" class:list={["hover:text-accent transition-colors", currentPath === "/" && "text-accent font-medium"]}>
+        首页
+      </a>
+      <a href="/tech" class:list={["hover:text-accent transition-colors", currentPath.startsWith("/tech") && "text-accent font-medium"]}>
+        技术
+      </a>
+      <a href="/life" class:list={["hover:text-accent transition-colors", currentPath.startsWith("/life") && "text-accent font-medium"]}>
+        生活
+      </a>
+      <a href="/about" class:list={["hover:text-accent transition-colors", currentPath === "/about" && "text-accent font-medium"]}>
+        关于
+      </a>
+    </div>
+  </nav>
+</header>

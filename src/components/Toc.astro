@@ -1,0 +1,23 @@
+---
+export interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{filtered.length > 0 && (
+  <nav class="rounded border border-border bg-bgSoft p-3 text-xs">
+    <h4 class="mb-2 font-semibold text-fgMuted uppercase tracking-wider text-[10px]">目录</h4>
+    <ul class="space-y-1">
+      {filtered.map((h) => (
+        <li class={h.depth === 3 ? "pl-3" : ""}>
+          <a href={`#${h.slug}`} class="block py-0.5 text-fgMuted hover:text-accent transition-colors truncate">
+            {h.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}

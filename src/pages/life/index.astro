@@ -1,0 +1,25 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("life"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<PageLayout title="Life - Blog" description="生活分享，硬件折腾与游戏" type="life">
+  <h1 class="text-2xl font-bold mb-8">Life</h1>
+  <div class="space-y-3">
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        date={post.data.date}
+        tags={post.data.tags}
+        category={post.data.category}
+        description={post.data.description}
+        slug={post.id}
+      />
+    ))}
+  </div>
+</PageLayout>

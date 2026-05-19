@@ -1,0 +1,18 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout title="About - Blog" description="关于我">
+  <h1 class="text-2xl font-bold mb-6">关于</h1>
+  <div class="prose max-w-none">
+    <p>这是一个基于 Astro + Tailwind CSS 构建的个人博客。</p>
+    <p>技术区记录算法、数学、AI 部署等笔记；生活区分享硬件折腾、游戏心得。</p>
+    <h2>技术栈</h2>
+    <ul>
+      <li><strong>框架</strong>：Astro (SSG)</li>
+      <li><strong>样式</strong>：Tailwind CSS</li>
+      <li><strong>内容</strong>：MDX + Remark Math + Rehype KaTeX</li>
+      <li><strong>部署</strong>：GitHub Pages</li>
+    </ul>
+  </div>
+</PageLayout>

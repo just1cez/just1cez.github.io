@@ -1,0 +1,27 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  type?: "tech" | "life" | "home";
+}
+
+const { title, description = "", type = "home" } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-bg text-fg antialiased">
+    <slot />
+  </body>
+</html>
