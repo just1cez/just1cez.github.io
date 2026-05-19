@@ -16,6 +16,10 @@
     background-color: rgba(59, 130, 246, 0.2);
   }
 
+  .dark ::selection {
+    background-color: rgba(96, 165, 250, 0.3);
+  }
+
   a {
     @apply transition-colors;
   }
@@ -47,4 +51,8 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+
+.dark {
+  color-scheme: dark;
 }

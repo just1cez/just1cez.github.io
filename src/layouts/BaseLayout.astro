@@ -20,8 +20,11 @@ import "../styles/global.css";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    <script is:inline>
+      (function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}})()
+    </script>
   </head>
-  <body class="min-h-screen bg-bg text-fg antialiased">
+  <body class="min-h-screen bg-bg text-fg antialiased transition-colors duration-200">
     <slot />
   </body>
 </html>

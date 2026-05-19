@@ -4,29 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        accent: "#3b82f6",
-        accentDark: "#2563eb",
-        bg: "#ffffff",
-        bgSoft: "#f8fafc",
-        fg: "#1e293b",
-        fgMuted: "#64748b",
-        border: "#e2e8f0",
+        accent: { DEFAULT: "#3b82f6", dark: "#60a5fa" },
+        bg: { DEFAULT: "#ffffff", dark: "#0f172a" },
+        bgSoft: { DEFAULT: "#f8fafc", dark: "#1e293b" },
+        fg: { DEFAULT: "#1e293b", dark: "#e2e8f0" },
+        fgMuted: { DEFAULT: "#64748b", dark: "#94a3b8" },
+        border: { DEFAULT: "#e2e8f0", dark: "#334155" },
       },
-      typography: (theme) => ({
-        DEFAULT: {
-          css: {
-            a: { color: theme("colors.accent"), textDecoration: "underline" },
-            code: {
-              backgroundColor: theme("colors.bgSoft"),
-              padding: "0.15em 0.3em",
-              borderRadius: "0.25em",
-              fontWeight: "400",
-            },
-            "code::before": { content: '""' },
-            "code::after": { content: '""' },
-          },
-        },
-      }),
     },
   },
   plugins: [],

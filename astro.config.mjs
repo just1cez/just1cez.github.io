@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
-const site = process.env.SITE_URL || "https://yourusername.github.io";
+const site = process.env.SITE_URL || "https://just1cez.github.io";
 
 export default defineConfig({
   site,
