@@ -3,6 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-accent: #3b82f6;
+    --color-bg: #ffffff;
+    --color-bg-soft: #f8fafc;
+    --color-fg: #1e293b;
+    --color-fg-muted: #64748b;
+    --color-border: #e2e8f0;
+  }
+
+  .dark {
+    --color-accent: #60a5fa;
+    --color-bg: #0f172a;
+    --color-bg-soft: #1e293b;
+    --color-fg: #e2e8f0;
+    --color-fg-muted: #94a3b8;
+    --color-border: #334155;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -51,8 +69,4 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-}
-
-.dark {
-  color-scheme: dark;
 }

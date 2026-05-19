@@ -16,8 +16,8 @@ const lifePosts = allPosts.filter((p) => p.data.category === "life").slice(0, 5)
 
 <PageLayout title="Blog" description="A personal blog for tech & life.">
   <section class="mb-12">
-    <h2 class="mb-6 text-xl font-bold border-b border-border dark:border-border-dark pb-2">
-      <a href="/tech" class="hover:text-accent dark:hover:text-accent-dark transition-colors">Tech</a>
+    <h2 class="mb-6 text-xl font-bold border-b border-border pb-2">
+      <a href="/tech" class="hover:text-accent transition-colors">Tech</a>
     </h2>
     <div class="space-y-3">
       {techPosts.map((post) => (
@@ -33,8 +33,8 @@ const lifePosts = allPosts.filter((p) => p.data.category === "life").slice(0, 5)
     </div>
   </section>
   <section>
-    <h2 class="mb-6 text-xl font-bold border-b border-border dark:border-border-dark pb-2">
-      <a href="/life" class="hover:text-accent dark:hover:text-accent-dark transition-colors">Life</a>
+    <h2 class="mb-6 text-xl font-bold border-b border-border pb-2">
+      <a href="/life" class="hover:text-accent transition-colors">Life</a>
     </h2>
     <div class="space-y-3">
       {lifePosts.map((post) => (

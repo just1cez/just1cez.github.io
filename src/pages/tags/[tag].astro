@@ -6,7 +6,7 @@ export async function getStaticPaths() {
   const allPosts = (await Promise.all([
     ...await getCollection("tech"),
     ...await getCollection("life"),
-])).filter((post) => !post.data.draft);
+  ])).filter((post) => !post.data.draft);
 
   const tagMap = new Map<string, { title: string; date: Date; category: string; slug: string }[]>();
 
@@ -36,11 +36,11 @@ const { posts } = Astro.props;
   <h1 class="text-2xl font-bold mb-8">Tag: {tag}</h1>
   <ul class="space-y-3">
     {posts.map((post) => (
-      <li class="border-b border-border dark:border-border-dark pb-3">
+      <li class="border-b border-border pb-3">
         <a href={`/${post.category}/${post.slug}`} class="group">
-          <span class="font-medium group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">{post.title}</span>
-          <span class="ml-2 text-xs text-fgMuted dark:text-fgMuted-dark">{post.date.toLocaleDateString("zh-CN")}</span>
-          <span class="ml-2 text-xs rounded bg-accent/10 dark:bg-accent-dark/15 px-1.5 py-0.5 text-accent dark:text-accent-dark">{post.category}</span>
+          <span class="font-medium group-hover:text-accent transition-colors">{post.title}</span>
+          <span class="ml-2 text-xs text-fgMuted">{post.date.toLocaleDateString("zh-CN")}</span>
+          <span class="ml-2 text-xs rounded bg-accent/10 px-1.5 py-0.5 text-accent">{post.category}</span>
         </a>
       </li>
     ))}

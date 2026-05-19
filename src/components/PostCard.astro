@@ -20,23 +20,23 @@ const href = `/${category}/${slug}`;
 const isTech = category === "tech";
 ---
 
-<a href={href} class={`group block rounded-lg border border-border dark:border-border-dark p-5 transition-all hover:border-accent/40 dark:hover:border-accent-dark/40 hover:shadow-sm ${isTech ? "" : "flex gap-4"}`}>
+<a href={href} class={`group block rounded-lg border border-border p-5 transition-all hover:border-accent/40 hover:shadow-sm ${isTech ? "" : "flex gap-4"}`}>
   <div class={isTech ? "" : "flex-1"}>
-    <div class="flex items-center gap-2 text-xs text-fgMuted dark:text-fgMuted-dark mb-2">
+    <div class="flex items-center gap-2 text-xs text-fgMuted mb-2">
       <time datetime={date.toISOString()}>{formattedDate}</time>
-      <span class="rounded px-1.5 py-0.5 bg-accent/10 dark:bg-accent-dark/15 text-accent dark:text-accent-dark text-xs font-medium">{isTech ? "Tech" : "Life"}</span>
+      <span class="rounded px-1.5 py-0.5 bg-accent/10 text-accent text-xs font-medium">{isTech ? "Tech" : "Life"}</span>
     </div>
-    <h3 class={`font-semibold group-hover:text-accent dark:group-hover:text-accent-dark transition-colors ${isTech ? "text-sm" : "text-lg"}`}>
+    <h3 class={`font-semibold group-hover:text-accent transition-colors ${isTech ? "text-sm" : "text-lg"}`}>
       {title}
     </h3>
     {description && (
-      <p class={`mt-1.5 text-fgMuted dark:text-fgMuted-dark ${isTech ? "text-xs line-clamp-2" : "text-sm line-clamp-3"}`}>
+      <p class={`mt-1.5 text-fgMuted ${isTech ? "text-xs line-clamp-2" : "text-sm line-clamp-3"}`}>
         {description}
       </p>
     )}
     <div class="mt-2 flex flex-wrap gap-1.5">
       {tags.map((tag) => (
-        <span class="text-xs text-fgMuted dark:text-fgMuted-dark hover:text-accent dark:hover:text-accent-dark transition-colors">#{tag}</span>
+        <span class="text-xs text-fgMuted hover:text-accent transition-colors">#{tag}</span>
       ))}
     </div>
   </div>
