@@ -15,6 +15,11 @@ const lifePosts = allPosts.filter((p) => p.data.category === "life").slice(0, 5)
 ---
 
 <PageLayout title="Justice's Blog" description="A personal blog for tech & life.">
+  <div class="flex flex-col items-center text-center py-10 border-b border-border mb-10">
+    <img src="/images/avatar.jpg" alt="Justice" class="w-16 h-16 rounded-full object-cover mb-3" />
+    <h1 class="text-2xl font-bold">Justice's Blog</h1>
+    <p class="text-fgMuted mt-1 text-sm">HITSZ CS · 算法 · AI · 硬件折腾</p>
+  </div>
   <section class="mb-12">
     <h2 class="mb-6 text-xl font-bold border-b border-border pb-2">
       <a href="/tech" class="hover:text-accent transition-colors">Tech</a>

@@ -44,6 +44,9 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
       <section class={`clear-right ${isTech ? "" : "leading-relaxed"}`}>
         <slot />
       </section>
+      <div class="mt-8 pt-4 border-t border-border">
+        <a href={`/${category}`} class="text-sm text-accent hover:underline">&larr; 返回{isTech ? "技术" : "生活"}列表</a>
+      </div>
     </article>
   </div>
   <Footer />
