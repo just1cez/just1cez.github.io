@@ -13,6 +13,9 @@ const currentPath = Astro.url.pathname;
       <a href="/" class:list={["hover:text-accent transition-colors", currentPath === "/" && "text-accent font-medium"]}>
         首页
       </a>
+      <a href="/blog" class:list={["hover:text-accent transition-colors", currentPath === "/blog" && "text-accent font-medium"]}>
+        博客
+      </a>
       <a href="/tech" class:list={["hover:text-accent transition-colors", currentPath.startsWith("/tech") && "text-accent font-medium"]}>
         技术
       </a>
@@ -41,6 +44,7 @@ const currentPath = Astro.url.pathname;
     </div>
     <div class="flex flex-col items-center gap-8 mt-16 text-lg">
       <a href="/" class="mobile-link hover:text-accent transition-colors">首页</a>
+      <a href="/blog" class="mobile-link hover:text-accent transition-colors">博客</a>
       <a href="/tech" class="mobile-link hover:text-accent transition-colors">技术</a>
       <a href="/life" class="mobile-link hover:text-accent transition-colors">生活</a>
       <a href="/about" class="mobile-link hover:text-accent transition-colors">关于</a>
