@@ -5,6 +5,10 @@ tags: ["C++", "Algorithm", "竞赛"]
 category: "tech"
 description: "字符串转数字、环形处理、快速幂、坐标变换、vector 去重等竞赛常用代码片段。"
 ---
+## 竞赛编码习惯
+
+- 存储题目数据尽量使用**全局变量**
+- 模拟时关注**状态量**而非过程量
 
 ## 字符串与数字互转
 
@@ -128,7 +132,15 @@ $$\text{base}^{13} = \text{base}^8 \times \text{base}^4 \times \text{base}^1$$
 - $P \bmod 2 = 0$：跳过
 - `base = base²`：向前进位
 
-## 竞赛编码习惯
+##### 约瑟夫环 -> 动态数组管理
+###### $k人围成的环不断报数，报到m的人被淘汰$ 
+```cpp
+vector<int> people(k);
+for (int i = 0; i < k; i++) people[i] = i + 1; // 编号 1~k
+int pos = 0;
+while (people.size() > 1) {
+    pos = (pos + m - 1) % people.size();
+    people.erase(people.begin() + pos);
+}
+```
 
-- 存储题目数据尽量使用**全局变量**
-- 模拟时关注**状态量**而非过程量

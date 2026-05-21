@@ -1,16 +1,24 @@
 ---
 import PostLayout from "../../layouts/PostLayout.astro";
+import PrevNext from "../../components/PrevNext.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("life");
-  return posts.map((post) => ({
+  const posts = (await getCollection("life"))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return posts.map((post, i) => ({
     params: { slug: post.id },
-    props: { post },
+    props: {
+      post,
+      prev: i < posts.length - 1 ? { title: posts[i + 1].data.title, slug: posts[i + 1].id, category: "life" } : null,
+      next: i > 0 ? { title: posts[i - 1].data.title, slug: posts[i - 1].id, category: "life" } : null,
+    },
   }));
 }
 
-const { post } = Astro.props;
+const { post, prev, next } = Astro.props;
 const { Content, headings } = await render(post);
 ---
 
@@ -23,4 +31,5 @@ const { Content, headings } = await render(post);
   headings={headings}
 >
   <Content />
+  <PrevNext prev={prev} next={next} />
 </PostLayout>

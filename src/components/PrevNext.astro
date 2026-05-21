@@ -1,0 +1,29 @@
+---
+export interface Props {
+  prev?: { title: string; slug: string; category: string } | null;
+  next?: { title: string; slug: string; category: string } | null;
+}
+
+const { prev, next } = Astro.props;
+---
+
+{(prev || next) && (
+  <nav class="flex justify-between items-start gap-4 mt-8 pt-6 border-t border-border">
+    {prev ? (
+      <a href={`/${prev.category}/${prev.slug}`} class="flex-1 group">
+        <span class="text-xs text-fgMuted block mb-1">&larr; 上一篇</span>
+        <span class="text-sm font-medium group-hover:text-accent transition-colors">{prev.title}</span>
+      </a>
+    ) : (
+      <div class="flex-1" />
+    )}
+    {next ? (
+      <a href={`/${next.category}/${next.slug}`} class="flex-1 text-right group">
+        <span class="text-xs text-fgMuted block mb-1">下一篇 &rarr;</span>
+        <span class="text-sm font-medium group-hover:text-accent transition-colors">{next.title}</span>
+      </a>
+    ) : (
+      <div class="flex-1" />
+    )}
+  </nav>
+)}
