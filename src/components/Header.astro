@@ -20,9 +20,11 @@ const currentPath = Astro.url.pathname;
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </a>
-        <div class="hidden group-hover:block absolute top-full left-0 mt-1 w-32 rounded-md border border-border bg-bg shadow-lg py-1">
-          <a href="/tech" class="block px-3 py-1.5 text-sm hover:bg-bgSoft hover:text-accent transition-colors">技术笔记</a>
-          <a href="/life" class="block px-3 py-1.5 text-sm hover:bg-bgSoft hover:text-accent transition-colors">生活杂谈</a>
+        <div class="hidden group-hover:block absolute top-full left-0 pt-1 w-32">
+          <div class="rounded-md border border-border bg-bg shadow-lg py-1">
+            <a href="/tech" class="block px-3 py-1.5 text-sm hover:bg-bgSoft hover:text-accent transition-colors">技术笔记</a>
+            <a href="/life" class="block px-3 py-1.5 text-sm hover:bg-bgSoft hover:text-accent transition-colors">生活杂谈</a>
+          </div>
         </div>
       </div>
       <a href="/about" class:list={["hover:text-accent transition-colors", currentPath === "/about" && "text-accent font-medium"]}>
