@@ -98,7 +98,7 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
   .prose-tech img {
     @apply my-3 rounded;
   }
-  .prose-tech code {
+  .prose-tech :not(pre) > code {
     @apply bg-bgSoft rounded px-1 py-0.5 text-sm;
   }
 
@@ -138,11 +138,28 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
   .prose-life th {
     @apply bg-bgSoft font-semibold;
   }
-  .prose-life code {
+  .prose-life :not(pre) > code {
     @apply bg-bgSoft rounded px-1 py-0.5 text-sm;
   }
 
   .katex-display {
     @apply my-4 overflow-x-auto;
+  }
+
+  pre code {
+    counter-reset: line;
+    display: grid;
+  }
+
+  pre code .line::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 2.5em;
+    margin-right: 1em;
+    text-align: right;
+    color: var(--color-fg-muted);
+    opacity: 0.35;
+    user-select: none;
   }
 </style>
