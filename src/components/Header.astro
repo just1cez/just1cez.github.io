@@ -13,15 +13,18 @@ const currentPath = Astro.url.pathname;
       <a href="/" class:list={["hover:text-accent transition-colors", currentPath === "/" && "text-accent font-medium"]}>
         首页
       </a>
-      <a href="/blog" class:list={["hover:text-accent transition-colors", currentPath === "/blog" && "text-accent font-medium"]}>
-        博客
-      </a>
-      <a href="/tech" class:list={["hover:text-accent transition-colors", currentPath.startsWith("/tech") && "text-accent font-medium"]}>
-        技术
-      </a>
-      <a href="/life" class:list={["hover:text-accent transition-colors", currentPath.startsWith("/life") && "text-accent font-medium"]}>
-        生活
-      </a>
+      <div class="relative group">
+        <a href="/blog" class:list={["hover:text-accent transition-colors flex items-center gap-0.5", (currentPath === "/blog" || currentPath.startsWith("/tech") || currentPath.startsWith("/life")) && "text-accent font-medium"]}>
+          博客
+          <svg class="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+        <div class="hidden group-hover:block absolute top-full left-0 mt-1 w-32 rounded-md border border-border bg-bg shadow-lg py-1">
+          <a href="/tech" class="block px-3 py-1.5 text-sm hover:bg-bgSoft hover:text-accent transition-colors">技术笔记</a>
+          <a href="/life" class="block px-3 py-1.5 text-sm hover:bg-bgSoft hover:text-accent transition-colors">生活杂谈</a>
+        </div>
+      </div>
       <a href="/about" class:list={["hover:text-accent transition-colors", currentPath === "/about" && "text-accent font-medium"]}>
         关于
       </a>
@@ -45,8 +48,6 @@ const currentPath = Astro.url.pathname;
     <div class="flex flex-col items-center gap-8 mt-16 text-lg">
       <a href="/" class="mobile-link hover:text-accent transition-colors">首页</a>
       <a href="/blog" class="mobile-link hover:text-accent transition-colors">博客</a>
-      <a href="/tech" class="mobile-link hover:text-accent transition-colors">技术</a>
-      <a href="/life" class="mobile-link hover:text-accent transition-colors">生活</a>
       <a href="/about" class="mobile-link hover:text-accent transition-colors">关于</a>
       <ThemeToggle />
     </div>

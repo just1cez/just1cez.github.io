@@ -5,6 +5,7 @@ tags: ["C++", "Algorithm", "竞赛"]
 category: "tech"
 description: "字符串转数字、环形处理、快速幂、坐标变换、vector 去重等竞赛常用代码片段。"
 ---
+
 ## 竞赛编码习惯
 
 - 存储题目数据尽量使用**全局变量**
@@ -132,15 +133,34 @@ $$\text{base}^{13} = \text{base}^8 \times \text{base}^4 \times \text{base}^1$$
 - $P \bmod 2 = 0$：跳过
 - `base = base²`：向前进位
 
-##### 约瑟夫环 -> 动态数组管理
-###### $k人围成的环不断报数，报到m的人被淘汰$ 
+## 约瑟夫环：动态数组管理
+
+$n$ 人围成环，不断报数，报到 $k$ 的人被淘汰：
+
 ```cpp
-vector<int> people(k);
-for (int i = 0; i < k; i++) people[i] = i + 1; // 编号 1~k
+vector<int> people(n);
+for (int i = 0; i < n; i++) people[i] = i + 1; // 编号 1~n
 int pos = 0;
 while (people.size() > 1) {
-    pos = (pos + m - 1) % people.size();
+    pos = (pos + k - 1) % people.size();
     people.erase(people.begin() + pos);
 }
 ```
 
+## 约瑟夫环：递推
+
+求最后一个人的编号（从 1 开始）。
+
+先计算 0-based 编号：假设 $n-1$ 个人时，最后存活者的编号为 $f(n-1)$，则 $n$ 个人时，第一个淘汰的编号是 $(k-1) \bmod n$，下一轮从 $k \bmod n$ 开始数。
+
+$$f(n) = (f(n-1) + k) \bmod n$$
+
+```cpp
+int n, k;
+cin >> n >> k;
+int ans = 0;
+for (int i = 2; i <= n; i++) {
+    ans = (ans + k) % i;
+}
+cout << ans + 1 << endl; // 转为 1-based
+```
