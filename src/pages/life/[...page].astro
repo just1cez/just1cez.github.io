@@ -1,17 +1,23 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
 import PostCard from "../../components/PostCard.astro";
+import Pagination from "../../components/Pagination.astro";
 import { getCollection } from "astro:content";
 
-const posts = (await getCollection("life"))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+export async function getStaticPaths({ paginate }) {
+  const posts = (await getCollection("life"))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return paginate(posts, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
 ---
 
 <PageLayout title="Life - Justice's Blog" description="生活分享，硬件折腾与游戏" type="life">
   <h1 class="text-2xl font-bold mb-8">Life</h1>
   <div class="space-y-3">
-    {posts.map((post) => (
+    {page.data.map((post) => (
       <PostCard
         title={post.data.title}
         date={post.data.date}
@@ -22,4 +28,5 @@ const posts = (await getCollection("life"))
       />
     ))}
   </div>
+  <Pagination currentPage={page.currentPage} lastPage={page.lastPage} baseUrl="/life" />
 </PageLayout>

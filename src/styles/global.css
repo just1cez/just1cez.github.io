@@ -46,6 +46,22 @@
     @apply overflow-x-auto;
   }
 
+  pre code {
+    counter-reset: line;
+  }
+
+  pre code .line::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 2.5em;
+    margin-right: 1em;
+    text-align: right;
+    color: var(--color-fg-muted);
+    opacity: 0.4;
+    user-select: none;
+  }
+
   code {
     @apply text-sm;
   }
