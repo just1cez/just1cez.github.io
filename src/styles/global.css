@@ -46,6 +46,24 @@
     @apply overflow-x-auto;
   }
 
+  .astro-code {
+    background-color: var(--shiki-dark-bg) !important;
+    color: var(--shiki-dark) !important;
+  }
+
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+  }
+
+  html:not(.dark) .astro-code {
+    background-color: #fff !important;
+    color: #24292e !important;
+  }
+
+  html:not(.dark) .astro-code span {
+    color: var(--shiki-light) !important;
+  }
+
   code {
     @apply text-sm;
   }
