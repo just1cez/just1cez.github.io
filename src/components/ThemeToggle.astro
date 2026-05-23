@@ -2,7 +2,7 @@
 ---
 
 <button
-  id="theme-toggle"
+  data-theme-toggle
   type="button"
   aria-label="Toggle dark mode"
   class="rounded-md p-1.5 text-fgMuted hover:text-fg hover:bg-bgSoft transition-colors"
@@ -17,14 +17,24 @@
 </button>
 
 <script is:inline>
-  document.getElementById('theme-toggle').addEventListener('click',function(){
-    var html=document.documentElement;
-    if(html.classList.contains('dark')){
-      html.classList.remove('dark');
-      localStorage.setItem('theme','light');
-    }else{
-      html.classList.add('dark');
-      localStorage.setItem('theme','dark');
-    }
-  });
+(function(){
+  function init(){
+    document.querySelectorAll('[data-theme-toggle]').forEach(function(btn){
+      if(btn.dataset.bound)return;
+      btn.dataset.bound='1';
+      btn.addEventListener('click',function(){
+        var html=document.documentElement;
+        if(html.classList.contains('dark')){
+          html.classList.remove('dark');
+          localStorage.setItem('theme','light');
+        }else{
+          html.classList.add('dark');
+          localStorage.setItem('theme','dark');
+        }
+      });
+    });
+  }
+  init();
+  document.addEventListener('astro:after-swap',init);
+})();
 </script>
