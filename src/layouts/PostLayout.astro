@@ -38,7 +38,7 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
     <div class={`flex-1 min-w-0 ${isTech ? "max-w-3xl" : "max-w-4xl"}`}>
       <article class={isTech ? "prose prose-sm dark:prose-invert prose-tech" : "prose prose-lg dark:prose-invert prose-life"}>
         <header class={`mb-8 border-b border-border pb-6 ${isTech ? "" : "text-center"}`}>
-          <h1 class={`font-bold ${isTech ? "text-2xl" : "text-3xl"}`}>{title}</h1>
+          <h1 class={`font-bold font-serif-cn ${isTech ? "text-2xl" : "text-3xl"}`}>{title}</h1>
           <div class={`mt-3 flex items-center gap-3 text-sm text-fgMuted ${isTech ? "" : "justify-center"}`}>
             <time datetime={date.toISOString()}>{formattedDate}</time>
             {tags.map((tag) => (
@@ -86,8 +86,8 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
     width: 2.5em;
     margin-right: 1em;
     text-align: right;
-    color: #8b949e;
-    opacity: 0.5;
+    color: #6e7681;
+    opacity: 0.4;
     user-select: none;
     flex-shrink: 0;
   }

@@ -1,36 +1,41 @@
 ---
 ---
-<script is:inline>
-(function(){
-  function addCopyButtons(){
-    document.querySelectorAll('pre').forEach(function(pre){
-      if(pre.parentElement.classList.contains('code-container'))return;
-      var code=pre.querySelector('code');
-      if(!code)return;
-      var wrapper=document.createElement('div');
-      wrapper.className='code-container';
-      pre.parentNode.insertBefore(wrapper,pre);
-      wrapper.appendChild(pre);
-      var btn=document.createElement('button');
-      btn.className='copy-btn';
-      btn.setAttribute('aria-label','Copy code');
-      btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-      btn.addEventListener('click',function(){
-        navigator.clipboard.writeText(code.textContent).then(function(){
-          btn.classList.add('copied');
-          btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
-          setTimeout(function(){
-            btn.classList.remove('copied');
-            btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-          },1500);
-        });
-      });
-      wrapper.appendChild(btn);
-    });
+<script>
+  import '@github/clipboard-copy-element'
+
+  function addCopyButtons() {
+    document.querySelectorAll('pre').forEach((pre) => {
+      if (pre.parentElement.classList.contains('code-container')) return
+      const code = pre.querySelector('code')
+      if (!code) return
+
+      const wrapper = document.createElement('div')
+      wrapper.className = 'code-container'
+      pre.parentNode!.insertBefore(wrapper, pre)
+      wrapper.appendChild(pre)
+
+      const btn = document.createElement('clipboard-copy')
+      btn.value = code.textContent ?? ''
+      btn.className = 'copy-btn'
+      btn.setAttribute('aria-label', 'Copy code')
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>'
+      wrapper.appendChild(btn)
+    })
   }
-  addCopyButtons();
-  document.addEventListener('astro:after-swap',addCopyButtons);
-})();
+
+  document.addEventListener('clipboard-copy', (e) => {
+    const target = e.target as HTMLElement
+    const icon = target as HTMLElement
+    icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+    icon.classList.add('copied')
+    setTimeout(() => {
+      icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>'
+      icon.classList.remove('copied')
+    }, 1500)
+  })
+
+  addCopyButtons()
+  document.addEventListener('astro:after-swap', addCopyButtons)
 </script>
 <style is:global>
   .code-container {
@@ -43,18 +48,21 @@
     padding: 0.35rem;
     border: none;
     border-radius: 0.25rem;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.08);
     color: #8b949e;
     cursor: pointer;
     opacity: 0;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: opacity 0.2s, background 0.2s, color 0.2s;
   }
   .code-container:hover .copy-btn {
     opacity: 1;
   }
   .copy-btn:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.16);
     color: #e1e4e8;
   }
   .copy-btn.copied {

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,6 +12,9 @@
     --color-fg: #1e293b;
     --color-fg-muted: #64748b;
     --color-border: #e2e8f0;
+    --color-shadow: rgba(0,0,0,0.04);
+    --color-inline-code-bg: #f9f2f4;
+    --color-inline-code-text: #c7254e;
   }
 
   .dark {
@@ -19,6 +24,9 @@
     --color-fg: #e2e8f0;
     --color-fg-muted: #94a3b8;
     --color-border: #334155;
+    --color-shadow: rgba(255,255,255,0.04);
+    --color-inline-code-bg: #3b2a35;
+    --color-inline-code-text: #f4758c;
   }
 
   html {
@@ -28,6 +36,10 @@
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-image:
+      linear-gradient(to right, var(--color-shadow) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-shadow) 1px, transparent 1px);
+    background-size: 7px 7px;
   }
 
   ::selection {
@@ -52,6 +64,10 @@
 
   img {
     @apply max-w-full h-auto;
+  }
+
+  .font-serif-cn {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
   }
 }
 
