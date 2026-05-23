@@ -62,11 +62,11 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
 
 <style is:global>
   .prose-tech pre {
-    @apply rounded-md text-xs leading-tight my-4 border border-border;
+    @apply rounded-md text-xs leading-tight my-4;
   }
 
   .prose-life pre {
-    @apply rounded-md my-6 border border-border;
+    @apply rounded-md my-6;
   }
 
   pre code {
@@ -86,10 +86,13 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
     width: 2.5em;
     margin-right: 1em;
     text-align: right;
-    color: #6e7681;
-    opacity: 0.4;
+    color: rgba(248,248,242,0.35);
     user-select: none;
     flex-shrink: 0;
+  }
+
+  html:not(.dark) pre code .line::before {
+    color: rgba(36,41,46,0.3);
   }
 
   .katex-display {

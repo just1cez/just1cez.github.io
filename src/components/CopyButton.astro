@@ -69,6 +69,17 @@
     opacity: 1;
     color: #3fb950;
   }
+  html:not(.dark) .copy-btn {
+    background: rgba(0,0,0,0.06);
+    color: #6a737d;
+  }
+  html:not(.dark) .copy-btn:hover {
+    background: rgba(0,0,0,0.12);
+    color: #24292e;
+  }
+  html:not(.dark) .copy-btn.copied {
+    color: #22863a;
+  }
   @media (hover: none) {
     .copy-btn {
       opacity: 0.5;
