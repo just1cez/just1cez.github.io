@@ -3,25 +3,29 @@
 <script is:inline>
 (function(){
   function addCopyButtons(){
-    document.querySelectorAll('pre code').forEach(function(code){
-      var pre=code.parentElement;
-      if(pre.querySelector('.copy-btn'))return;
-      pre.style.position='relative';
+    document.querySelectorAll('pre').forEach(function(pre){
+      if(pre.parentElement.classList.contains('code-container'))return;
+      var code=pre.querySelector('code');
+      if(!code)return;
+      var wrapper=document.createElement('div');
+      wrapper.className='code-container';
+      pre.parentNode.insertBefore(wrapper,pre);
+      wrapper.appendChild(pre);
       var btn=document.createElement('button');
       btn.className='copy-btn';
       btn.setAttribute('aria-label','Copy code');
-      btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+      btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
       btn.addEventListener('click',function(){
         navigator.clipboard.writeText(code.textContent).then(function(){
           btn.classList.add('copied');
-          btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+          btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
           setTimeout(function(){
             btn.classList.remove('copied');
-            btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-          },2000);
+            btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+          },1500);
         });
       });
-      pre.appendChild(btn);
+      wrapper.appendChild(btn);
     });
   }
   addCopyButtons();
@@ -29,6 +33,9 @@
 })();
 </script>
 <style is:global>
+  .code-container {
+    position: relative;
+  }
   .copy-btn {
     position: absolute;
     top: 0.5rem;
@@ -36,26 +43,27 @@
     padding: 0.35rem;
     border: none;
     border-radius: 0.25rem;
-    background: rgba(128,128,128,0.15);
-    color: rgba(128,128,128,0.7);
+    background: rgba(255,255,255,0.1);
+    color: #8b949e;
     cursor: pointer;
     opacity: 0;
+    z-index: 10;
     transition: opacity 0.2s, background 0.2s, color 0.2s;
   }
-  pre:hover .copy-btn {
+  .code-container:hover .copy-btn {
     opacity: 1;
   }
   .copy-btn:hover {
-    background: rgba(128,128,128,0.25);
-    color: rgba(128,128,128,0.9);
+    background: rgba(255,255,255,0.2);
+    color: #e1e4e8;
   }
   .copy-btn.copied {
     opacity: 1;
-    color: #4ade80;
+    color: #3fb950;
   }
   @media (hover: none) {
     .copy-btn {
-      opacity: 0.6;
+      opacity: 0.5;
     }
   }
 </style>
