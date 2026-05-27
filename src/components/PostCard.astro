@@ -2,17 +2,24 @@
 export interface Props {
   title: string;
   date: Date;
+  updated?: Date;
   tags: string[];
   category: "tech" | "life";
   description?: string;
   slug: string;
+  series?: string;
 }
 
 import { postPath } from "../site.config";
 
-const { title, date, tags, category, description, slug } = Astro.props;
+const { title, date, updated, tags, category, description, slug, series } = Astro.props;
 
 const formattedDate = date.toLocaleDateString("zh-CN", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+const formattedUpdated = updated?.toLocaleDateString("zh-CN", {
   year: "numeric",
   month: "2-digit",
   day: "2-digit",
@@ -26,7 +33,9 @@ const isTech = category === "tech";
   <div class={isTech ? "" : "flex-1"}>
     <div class="flex items-center gap-2 text-xs text-fgMuted mb-2">
       <time datetime={date.toISOString()}>{formattedDate}</time>
+      {formattedUpdated && <span>更新 {formattedUpdated}</span>}
       <span class="rounded px-1.5 py-0.5 bg-accent/10 text-accent text-xs font-medium">{isTech ? "Tech" : "Life"}</span>
+      {series && <span class="rounded px-1.5 py-0.5 bg-bgSoft text-fgMuted text-xs">{series}</span>}
     </div>
     <h3 class={`font-semibold group-hover:text-accent transition-colors ${isTech ? "text-sm" : "text-lg"}`}>
       {title}

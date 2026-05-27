@@ -1,0 +1,35 @@
+---
+import { CATEGORY_META, postPath, tagPath } from "../site.config";
+import type { PostSummary } from "../lib/posts";
+
+export interface Props {
+  posts: PostSummary[];
+}
+
+const { posts } = Astro.props;
+---
+
+{posts.length > 0 && (
+  <section class="not-prose mt-8 border-t border-border pt-6">
+    <h2 class="text-sm font-semibold uppercase tracking-[0.16em] text-fgMuted">相关阅读</h2>
+    <div class="mt-4 grid gap-3 sm:grid-cols-3">
+      {posts.map((post) => (
+        <article class="rounded-md border border-border bg-bg p-4">
+          <div class="mb-2 flex items-center gap-2 text-xs text-fgMuted">
+            <span class="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{CATEGORY_META[post.category].label}</span>
+            {post.series && <span>{post.series}</span>}
+          </div>
+          <a href={postPath(post.category, post.slug)} class="block text-sm font-medium hover:text-accent transition-colors">
+            {post.title}
+          </a>
+          {post.description && <p class="mt-2 text-xs leading-5 text-fgMuted line-clamp-3">{post.description}</p>}
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            {post.tags.slice(0, 3).map((tag) => (
+              <a href={tagPath(tag)} class="text-xs text-fgMuted hover:text-accent transition-colors">#{tag}</a>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}

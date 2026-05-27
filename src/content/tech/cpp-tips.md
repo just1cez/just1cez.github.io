@@ -4,6 +4,8 @@ date: 2026-05-19
 tags: ["C++", "Algorithm", "竞赛"]
 category: "tech"
 description: "字符串转数字、环形处理、快速幂、坐标变换、vector 去重等竞赛常用代码片段。"
+featured: true
+series: "算法竞赛基础"
 ---
 
 ## 竞赛编码习惯

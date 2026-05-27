@@ -10,22 +10,22 @@ const { prev, next } = Astro.props;
 ---
 
 {(prev || next) && (
-  <nav class="flex justify-between items-start gap-4 mt-8 pt-6 border-t border-border">
+  <nav class="not-prose grid gap-3 sm:grid-cols-2 mt-8 pt-6 border-t border-border">
     {prev ? (
-      <a href={postPath(prev.category, prev.slug)} class="flex-1 group">
+      <a href={postPath(prev.category, prev.slug)} class="group rounded-md border border-border p-4 hover:border-accent transition-colors">
         <span class="text-xs text-fgMuted block mb-1">&larr; 上一篇</span>
         <span class="text-sm font-medium group-hover:text-accent transition-colors">{prev.title}</span>
       </a>
     ) : (
-      <div class="flex-1" />
+      <div />
     )}
     {next ? (
-      <a href={postPath(next.category, next.slug)} class="flex-1 text-right group">
+      <a href={postPath(next.category, next.slug)} class="group rounded-md border border-border p-4 text-right hover:border-accent transition-colors">
         <span class="text-xs text-fgMuted block mb-1">下一篇 &rarr;</span>
         <span class="text-sm font-medium group-hover:text-accent transition-colors">{next.title}</span>
       </a>
     ) : (
-      <div class="flex-1" />
+      <div />
     )}
   </nav>
 )}

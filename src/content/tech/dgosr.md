@@ -4,6 +4,8 @@ date: 2026-05-19
 tags: ["图优化", "深度学习", "超分辨率", "论文阅读"]
 category: "tech"
 description: "DGOSR 通过 Kronecker 分解与 ADMM 展开网络，在降低 56 倍参数量的同时实现 SOTA 深度图超分辨率。"
+featured: true
+series: "图像复原论文阅读"
 ---
 
 ## 问题背景

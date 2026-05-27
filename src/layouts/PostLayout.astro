@@ -5,23 +5,31 @@ import Footer from "../components/Footer.astro";
 import Toc from "../components/Toc.astro";
 import BackToTop from "../components/BackToTop.astro";
 import CopyButton from "../components/CopyButton.astro";
+import ReadingProgress from "../components/ReadingProgress.astro";
 import { CATEGORY_META, SITE, categoryPath, tagPath } from "../site.config";
 
 export interface Props {
   title: string;
   date: Date;
+  updated?: Date;
   tags: string[];
   category: "tech" | "life";
   description?: string;
   image?: string;
   canonicalUrl?: string;
+  series?: string;
 }
 
-const { title, date, tags, category, description, image, canonicalUrl } = Astro.props;
+const { title, date, updated, tags, category, description, image, canonicalUrl, series } = Astro.props;
 const isTech = category === "tech";
 
 const headings = Astro.props.headings ?? [];
 const formattedDate = date.toLocaleDateString("zh-CN", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+const formattedUpdated = updated?.toLocaleDateString("zh-CN", {
   year: "numeric",
   month: "2-digit",
   day: "2-digit",
@@ -33,7 +41,7 @@ const articleSchema = canonicalUrl && {
   headline: title,
   description,
   datePublished: date.toISOString(),
-  dateModified: date.toISOString(),
+  dateModified: (updated ?? date).toISOString(),
   url: canonicalUrl,
   image,
   keywords: tags,
@@ -51,6 +59,7 @@ const articleSchema = canonicalUrl && {
 ---
 
 <BaseLayout title={`${title} - ${SITE.title}`} description={description} type={category} image={image} schema={articleSchema || undefined}>
+  <ReadingProgress />
   <Header />
   <div class="mx-auto max-w-5xl px-4 py-8 flex gap-8">
     {isTech && headings.length > 0 && (
@@ -64,8 +73,10 @@ const articleSchema = canonicalUrl && {
       <article class={isTech ? "prose prose-sm dark:prose-invert prose-tech" : "prose prose-lg dark:prose-invert prose-life"}>
         <header class={`mb-8 border-b border-border pb-6 ${isTech ? "" : "text-center"}`}>
           <h1 class={`font-bold font-serif-cn ${isTech ? "text-2xl" : "text-3xl"}`}>{title}</h1>
-          <div class={`mt-3 flex items-center gap-3 text-sm text-fgMuted ${isTech ? "" : "justify-center"}`}>
+          <div class={`mt-3 flex flex-wrap items-center gap-3 text-sm text-fgMuted ${isTech ? "" : "justify-center"}`}>
             <time datetime={date.toISOString()}>{formattedDate}</time>
+            {formattedUpdated && <span>更新 {formattedUpdated}</span>}
+            {series && <span class="rounded bg-accent/10 px-2 py-0.5 text-xs text-accent">{series}</span>}
             {tags.map((tag) => (
               <a href={tagPath(tag)} class="rounded bg-bgSoft px-2 py-0.5 text-xs hover:text-accent transition-colors">{tag}</a>
             ))}
@@ -83,6 +94,23 @@ const articleSchema = canonicalUrl && {
   <Footer />
   <BackToTop />
   <CopyButton />
+  <script is:inline>
+  (function(){
+    function enhanceHeadings(){
+      document.querySelectorAll('article h2[id], article h3[id]').forEach(function(heading){
+        if(heading.querySelector('.heading-anchor'))return;
+        var anchor=document.createElement('a');
+        anchor.className='heading-anchor';
+        anchor.href='#'+heading.id;
+        anchor.setAttribute('aria-label','复制标题链接');
+        anchor.textContent='#';
+        heading.appendChild(anchor);
+      });
+    }
+    enhanceHeadings();
+    document.addEventListener('astro:after-swap',enhanceHeadings);
+  })();
+  </script>
 </BaseLayout>
 
 <style is:global>
@@ -140,5 +168,29 @@ const articleSchema = canonicalUrl && {
 
   .katex-display {
     @apply my-4 overflow-x-auto;
+  }
+
+  .prose h2,
+  .prose h3 {
+    scroll-margin-top: 5rem;
+  }
+
+  .heading-anchor {
+    margin-left: 0.35rem;
+    color: var(--color-fg-muted);
+    opacity: 0;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s, opacity 0.2s;
+  }
+
+  h2:hover .heading-anchor,
+  h3:hover .heading-anchor,
+  .heading-anchor:focus {
+    opacity: 1;
+  }
+
+  .heading-anchor:hover {
+    color: var(--color-accent);
   }
 </style>

@@ -6,10 +6,13 @@ import { getAllPosts } from "../lib/posts";
 const posts = await getAllPosts();
 const groupedPosts = posts.reduce((groups, post) => {
   const year = post.data.date.getFullYear();
-  if (!groups.has(year)) groups.set(year, []);
-  groups.get(year)!.push(post);
+  const month = post.data.date.getMonth() + 1;
+  if (!groups.has(year)) groups.set(year, new Map<number, typeof posts>());
+  const yearGroup = groups.get(year)!;
+  if (!yearGroup.has(month)) yearGroup.set(month, []);
+  yearGroup.get(month)!.push(post);
   return groups;
-}, new Map<number, typeof posts>());
+}, new Map<number, Map<number, typeof posts>>());
 ---
 
 <PageLayout title="Archive - Justice's Blog" description="按年份浏览所有文章。">
@@ -19,29 +22,37 @@ const groupedPosts = posts.reduce((groups, post) => {
   </header>
 
   <div class="space-y-10">
-    {Array.from(groupedPosts.entries()).map(([year, yearPosts]) => (
+    {Array.from(groupedPosts.entries()).map(([year, months]) => (
       <section>
-        <h2 class="mb-4 text-xl font-semibold">{year}</h2>
-        <ol class="space-y-4">
-          {yearPosts.map((post) => (
-            <li class="border-b border-border pb-4 last:border-0">
-              <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-                <a href={postPath(post.data.category, post.id)} class="font-medium hover:text-accent transition-colors">
-                  {post.data.title}
-                </a>
-                <time datetime={post.data.date.toISOString()} class="shrink-0 text-xs text-fgMuted">
-                  {post.data.date.toLocaleDateString("zh-CN")}
-                </time>
-              </div>
-              <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-fgMuted">
-                <span class="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{CATEGORY_META[post.data.category].label}</span>
-                {post.data.tags.map((tag) => (
-                  <a href={tagPath(tag)} class="hover:text-accent transition-colors">#{tag}</a>
+        <h2 class="mb-5 text-xl font-semibold">{year}</h2>
+        <div class="space-y-6">
+          {Array.from(months.entries()).map(([month, monthPosts]) => (
+            <section class="grid gap-4 sm:grid-cols-[4rem_1fr]">
+              <h3 class="text-sm font-medium text-fgMuted">{month.toString().padStart(2, "0")} 月</h3>
+              <ol class="space-y-4">
+                {monthPosts.map((post) => (
+                  <li class="border-b border-border pb-4 last:border-0">
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                      <a href={postPath(post.data.category, post.id)} class="font-medium hover:text-accent transition-colors">
+                        {post.data.title}
+                      </a>
+                      <time datetime={post.data.date.toISOString()} class="shrink-0 text-xs text-fgMuted">
+                        {post.data.date.toLocaleDateString("zh-CN")}
+                      </time>
+                    </div>
+                    <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-fgMuted">
+                      <span class="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{CATEGORY_META[post.data.category].label}</span>
+                      {post.data.series && <span class="rounded bg-bgSoft px-1.5 py-0.5">{post.data.series}</span>}
+                      {post.data.tags.map((tag) => (
+                        <a href={tagPath(tag)} class="hover:text-accent transition-colors">#{tag}</a>
+                      ))}
+                    </div>
+                  </li>
                 ))}
-              </div>
-            </li>
+              </ol>
+            </section>
           ))}
-        </ol>
+        </div>
       </section>
     ))}
   </div>

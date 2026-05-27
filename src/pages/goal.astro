@@ -1,0 +1,58 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout title="Goal - Justice's Blog" description="Justice 的阶段目标、学习路线和博客进化方向。">
+  <header class="mb-8 border-b border-border pb-5">
+    <p class="text-xs font-medium uppercase tracking-[0.18em] text-accent">Goal</p>
+    <h1 class="mt-2 text-2xl font-bold font-serif-cn">把博客养成技术型知识花园</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-fgMuted">
+      这里记录我希望长期积累的能力、内容形态和工程习惯。它不是打卡清单，而是用来校准方向的公开路线图。
+    </p>
+  </header>
+
+  <div class="space-y-10">
+    <section>
+      <h2 class="mb-3 text-xl font-semibold">当前阶段</h2>
+      <p class="leading-7 text-fgMuted">
+        我现在以 HITSZ CS 学生的身份建立计算机基础，重点关注算法、深度学习、图像复原、工程实践和硬件折腾。
+        这个站会保存学习过程里的笔记、论文阅读、项目复盘和生活观察。
+      </p>
+    </section>
+
+    <section>
+      <h2 class="mb-3 text-xl font-semibold">长期方向</h2>
+      <ul class="space-y-2 text-fgMuted">
+        <li>建立扎实的算法与 C++ 基础，形成可复用的解题和复盘体系。</li>
+        <li>持续阅读图像复原、深度学习和可解释优化网络相关论文。</li>
+        <li>把工程项目做成可运行、可展示、可维护的作品。</li>
+        <li>让写作成为学习的一部分，而不是学完之后的装饰。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="mb-3 text-xl font-semibold">博客形态</h2>
+      <div class="grid gap-3 sm:grid-cols-2">
+        {[
+          ["首页", "让人 10 秒内知道我是谁、正在关注什么、哪几篇文章最值得读。"],
+          ["文章页", "适合长文阅读，有目录、进度、锚点、代码复制、相关文章和清晰的文末导航。"],
+          ["搜索与发现", "像小型知识库一样支持正文搜索、标签筛选、归档和主题分布。"],
+          ["维护方式", "新建 Markdown 即可写作，draft 本地预览，部署和 SEO 自动完成。"],
+        ].map(([title, body]) => (
+          <article class="rounded-md border border-border bg-bgSoft p-4">
+            <h3 class="font-medium">{title}</h3>
+            <p class="mt-2 text-sm leading-6 text-fgMuted">{body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-3 text-xl font-semibold">反目标</h2>
+      <p class="leading-7 text-fgMuted">
+        不追求营销页式的视觉冲击，不为了更新而更新，不把计划写得过满。
+        更重要的是持续积累、定期修正、把每一篇文章写成以后还能回头使用的材料。
+      </p>
+    </section>
+  </div>
+</PageLayout>

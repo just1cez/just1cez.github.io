@@ -10,6 +10,9 @@ const tech = defineCollection({
     category: z.literal("tech"),
     description: z.string().optional(),
     cover: z.string().optional(),
+    updated: z.coerce.date().optional(),
+    featured: z.boolean().default(false),
+    series: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -23,6 +26,9 @@ const life = defineCollection({
     category: z.literal("life"),
     description: z.string().optional(),
     cover: z.string().optional(),
+    updated: z.coerce.date().optional(),
+    featured: z.boolean().default(false),
+    series: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

@@ -4,6 +4,8 @@ date: 2026-05-19
 tags: ["图像去噪", "深度学习", "拉普拉斯先验", "论文阅读"]
 category: "tech"
 description: "LGCNet 发现闪光/非闪光图像的梯度差服从拉普拉斯分布，将跨模态一致性从像素域提升到梯度域，并通过 ADMM 展开实现可解释的去噪网络。"
+featured: true
+series: "图像复原论文阅读"
 ---
 
 > 📄 [原文：Laplacian Gradient Consistency Prior for Flash Guided Non-Flash Image Denoising](/Laplacian%20Gradient%20Consistency%20Prior%20for%20Flash%20Gui.pdf)

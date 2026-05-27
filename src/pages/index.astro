@@ -2,57 +2,87 @@
 import PageLayout from "../layouts/PageLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { CATEGORY_META, SITE, categoryPath, postPath, tagPath, withBase } from "../site.config";
-import { getAllPosts, getAllTags } from "../lib/posts";
+import { getAllPosts, getFeaturedPosts, getFocusTags } from "../lib/posts";
 
 const allPosts = await getAllPosts();
 
-const techPosts = allPosts.filter((p) => p.data.category === "tech").slice(0, 5);
-const lifePosts = allPosts.filter((p) => p.data.category === "life").slice(0, 5);
-const tags = getAllTags(allPosts).slice(0, 12);
+const latestPosts = allPosts.slice(0, 6);
+const featuredPosts = getFeaturedPosts(allPosts, 5);
+const focusTags = getFocusTags(allPosts, ["Algorithm", "深度学习", "图像去噪", "超分辨率", "论文阅读", "C++", "PC硬件"], 12);
 const latestPost = allPosts[0];
+const techCount = allPosts.filter((p) => p.data.category === "tech").length;
+const lifeCount = allPosts.filter((p) => p.data.category === "life").length;
+const focusItems = ["算法", "深度学习", "图像复原", "工程实践", "硬件折腾"];
 ---
 
 <PageLayout title={SITE.title} description={SITE.description}>
-  <section class="mb-10 border-b border-border pb-8">
-    <div class="flex items-start gap-4">
-      <img src={withBase(SITE.avatar)} alt="Justice" class="h-16 w-16 shrink-0 rounded-full object-cover" />
-      <div class="min-w-0">
-        <h1 class="text-2xl font-bold font-serif-cn">{SITE.author}</h1>
-        <p class="mt-1 text-sm text-fgMuted">HITSZ 大一 · Computer Science</p>
-        <p class="mt-3 max-w-2xl text-sm leading-6 text-fgMuted">
-          这里记录我正在学的东西和折腾的玩意儿：技术区写算法、编程和论文阅读，生活区放硬件、游戏和日常观察。
-        </p>
+  <section class="mb-12 border-b border-border pb-8">
+    <div class="grid gap-8 lg:grid-cols-[1.4fr_0.9fr] lg:items-start">
+      <div>
+        <div class="flex items-start gap-4">
+          <img src={withBase(SITE.avatar)} alt="Justice" class="h-16 w-16 shrink-0 rounded-full object-cover ring-1 ring-border" />
+          <div class="min-w-0">
+            <p class="text-xs font-medium uppercase tracking-[0.18em] text-accent">Justice / HITSZ CS</p>
+            <h1 class="mt-1 text-2xl font-bold font-serif-cn">技术笔记与折腾档案</h1>
+            <p class="mt-3 max-w-2xl text-sm leading-6 text-fgMuted">
+              一个持续生长的个人知识花园：记录算法训练、深度学习论文、图像复原思路、工程实践，以及一些硬件和生活里的好奇心。
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-md border border-border bg-bgSoft p-4">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-[0.16em] text-fgMuted">Now Studying</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {focusItems.map((item) => (
+                  <span class="rounded bg-bg px-2.5 py-1 text-xs text-fg">{item}</span>
+                ))}
+              </div>
+            </div>
+            <div class="flex gap-2 text-xs">
+              <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">GitHub</a>
+              <a href={withBase("/rss.xml")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">RSS</a>
+              <a href={withBase("/about")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">About</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+        <a href={withBase("/archive")} class="rounded-md border border-border bg-bg p-4 hover:border-accent hover:text-accent transition-colors">
+          <span class="block text-2xl font-semibold">{allPosts.length}</span>
+          <span class="mt-1 block text-xs text-fgMuted">全部文章</span>
+        </a>
+        <a href={categoryPath("tech")} class="rounded-md border border-border bg-bg p-4 hover:border-accent hover:text-accent transition-colors">
+          <span class="block text-2xl font-semibold">{techCount}</span>
+          <span class="mt-1 block text-xs text-fgMuted">{CATEGORY_META.tech.title}</span>
+        </a>
+        <a href={categoryPath("life")} class="rounded-md border border-border bg-bg p-4 hover:border-accent hover:text-accent transition-colors">
+          <span class="block text-2xl font-semibold">{lifeCount}</span>
+          <span class="mt-1 block text-xs text-fgMuted">{CATEGORY_META.life.title}</span>
+        </a>
       </div>
     </div>
 
-    <div class="mt-6 grid gap-3 sm:grid-cols-3">
-      <a href={withBase("/archive")} class="rounded border border-border p-4 hover:border-accent hover:text-accent transition-colors">
-        <span class="block text-2xl font-semibold">{allPosts.length}</span>
-        <span class="mt-1 block text-xs text-fgMuted">全部文章</span>
-      </a>
-      <a href={categoryPath("tech")} class="rounded border border-border p-4 hover:border-accent hover:text-accent transition-colors">
-        <span class="block text-2xl font-semibold">{allPosts.filter((p) => p.data.category === "tech").length}</span>
-        <span class="mt-1 block text-xs text-fgMuted">{CATEGORY_META.tech.title}</span>
-      </a>
-      <a href={categoryPath("life")} class="rounded border border-border p-4 hover:border-accent hover:text-accent transition-colors">
-        <span class="block text-2xl font-semibold">{allPosts.filter((p) => p.data.category === "life").length}</span>
-        <span class="mt-1 block text-xs text-fgMuted">{CATEGORY_META.life.title}</span>
-      </a>
-    </div>
-
     {latestPost && (
-      <div class="mt-6 rounded border border-border bg-bgSoft p-4">
-        <p class="text-xs uppercase tracking-wider text-fgMuted">Latest</p>
-        <a href={postPath(latestPost.data.category, latestPost.id)} class="mt-1 block font-medium hover:text-accent transition-colors">
-          {latestPost.data.title}
-        </a>
+      <div class="mt-6 rounded-md border border-border bg-bgSoft p-4">
+        <p class="text-xs uppercase tracking-[0.16em] text-fgMuted">Latest Update</p>
+        <div class="mt-2 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+          <a href={postPath(latestPost.data.category, latestPost.id)} class="font-medium hover:text-accent transition-colors">
+            {latestPost.data.title}
+          </a>
+          <time datetime={latestPost.data.date.toISOString()} class="shrink-0 text-xs text-fgMuted">
+            {latestPost.data.date.toLocaleDateString("zh-CN")}
+          </time>
+        </div>
         {latestPost.data.description && <p class="mt-1 text-sm text-fgMuted line-clamp-2">{latestPost.data.description}</p>}
       </div>
     )}
 
     <div class="mt-6 flex flex-wrap gap-2">
-      {tags.map(({ tag, count }) => (
-        <a href={tagPath(tag)} class="rounded bg-accent/10 px-2.5 py-1 text-xs text-accent font-medium hover:bg-accent hover:text-white transition-colors">
+      {focusTags.map(({ tag, count }) => (
+        <a href={tagPath(tag)} class:list={["rounded px-2.5 py-1 text-xs font-medium transition-colors", count > 0 ? "bg-accent/10 text-accent hover:bg-accent hover:text-white" : "bg-bgSoft text-fgMuted"]}>
           #{tag} <span class="opacity-70">{count}</span>
         </a>
       ))}
@@ -60,40 +90,44 @@ const latestPost = allPosts[0];
   </section>
 
   <section class="mb-12">
-    <h2 class="mb-6 text-xl font-bold border-b border-border pb-2">
-      <a href={categoryPath("tech")} class="hover:text-accent transition-colors">Tech</a>
+    <h2 class="mb-5 flex items-baseline justify-between border-b border-border pb-2">
+      <span class="text-xl font-bold">精选文章</span>
+      <span class="text-xs text-fgMuted">先读这些，最快知道这个站在写什么</span>
     </h2>
-    <div class="space-y-3">
-      {techPosts.map((post) => (
+    <div class="grid gap-3">
+      {featuredPosts.map((post) => (
         <PostCard
           title={post.data.title}
           date={post.data.date}
+          updated={post.data.updated}
           tags={post.data.tags}
           category={post.data.category}
           description={post.data.description}
           slug={post.id}
+          series={post.data.series}
         />
       ))}
     </div>
-    <a href={categoryPath("tech")} class="mt-3 inline-block text-sm text-accent hover:underline">查看更多 Tech &rarr;</a>
   </section>
 
   <section>
-    <h2 class="mb-6 text-xl font-bold border-b border-border pb-2">
-      <a href={categoryPath("life")} class="hover:text-accent transition-colors">Life</a>
+    <h2 class="mb-5 flex items-baseline justify-between border-b border-border pb-2">
+      <span class="text-xl font-bold">最近更新</span>
+      <a href={withBase("/archive")} class="text-sm text-accent hover:underline">完整归档 &rarr;</a>
     </h2>
     <div class="space-y-3">
-      {lifePosts.map((post) => (
+      {latestPosts.map((post) => (
         <PostCard
           title={post.data.title}
           date={post.data.date}
+          updated={post.data.updated}
           tags={post.data.tags}
           category={post.data.category}
           description={post.data.description}
           slug={post.id}
+          series={post.data.series}
         />
       ))}
     </div>
-    <a href={categoryPath("life")} class="mt-3 inline-block text-sm text-accent hover:underline">查看更多 Life &rarr;</a>
   </section>
 </PageLayout>

@@ -20,14 +20,32 @@ import { withBase } from "../site.config";
     />
   </div>
 
+  <div class="mb-6 grid gap-3 sm:grid-cols-[12rem_1fr]">
+    <label class="flex flex-col gap-1 text-xs text-fgMuted">
+      分类
+      <select id="category-filter" class="rounded-md border border-border bg-bg px-3 py-2 text-sm text-fg outline-none focus:border-accent">
+        <option value="">全部分类</option>
+        <option value="tech">技术笔记</option>
+        <option value="life">生活杂谈</option>
+      </select>
+    </label>
+    <div>
+      <p class="mb-1 text-xs text-fgMuted">标签</p>
+      <div id="tag-filters" class="flex flex-wrap gap-2"></div>
+    </div>
+  </div>
+
   <p id="search-status" class="mb-4 text-sm text-fgMuted">加载中...</p>
   <ul id="search-results" class="space-y-4"></ul>
 
   <script define:vars={{ searchIndexUrl: withBase("/search.json") }}>
     const input = document.getElementById("search-input");
+    const categoryFilter = document.getElementById("category-filter");
+    const tagFilters = document.getElementById("tag-filters");
     const status = document.getElementById("search-status");
     const results = document.getElementById("search-results");
     let posts = [];
+    let activeTag = "";
 
     function escapeHtml(value) {
       return value.replace(/[&<>"']/g, (char) => ({
@@ -43,18 +61,49 @@ import { withBase } from "../site.config";
       const haystack = [
         post.title,
         post.description,
+        post.body,
         post.category,
+        post.series,
         ...(post.tags || []),
       ].join(" ").toLowerCase();
 
       return terms.every((term) => haystack.includes(term));
     }
 
+    function highlight(value, terms) {
+      let html = escapeHtml(value || "");
+      terms.filter(Boolean).slice(0, 6).forEach((term) => {
+        const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        if (!escaped) return;
+        html = html.replace(new RegExp(`(${escaped})`, "gi"), '<mark class="rounded bg-accent/20 px-0.5 text-fg">$1</mark>');
+      });
+      return html;
+    }
+
+    function renderTagFilters() {
+      const counts = new Map();
+      posts.forEach((post) => {
+        (post.tags || []).forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1));
+      });
+      tagFilters.innerHTML = Array.from(counts.entries())
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "zh-CN"))
+        .map(([tag, count]) => `
+          <button
+            type="button"
+            data-tag="${escapeHtml(tag)}"
+            class="rounded border px-2.5 py-1 text-xs transition-colors ${tag === activeTag ? "border-accent bg-accent text-white" : "border-border hover:border-accent hover:text-accent"}"
+          >
+            #${escapeHtml(tag)} <span class="opacity-70">${count}</span>
+          </button>
+        `).join("");
+    }
+
     function render(items, query) {
       results.innerHTML = "";
+      const terms = query.split(/\s+/).filter(Boolean);
 
       if (!query) {
-        status.textContent = `共 ${posts.length} 篇文章。`;
+        status.textContent = `共 ${items.length} 篇文章。`;
       } else {
         status.textContent = `找到 ${items.length} 篇文章。`;
       }
@@ -67,19 +116,21 @@ import { withBase } from "../site.config";
       results.innerHTML = items.map((post) => {
         const date = new Date(post.date).toLocaleDateString("zh-CN");
         const tags = (post.tags || []).map((tag) => `<span class="text-xs text-fgMuted">#${escapeHtml(tag)}</span>`).join("");
-        const description = post.description
-          ? `<p class="mt-1 text-sm text-fgMuted line-clamp-2">${escapeHtml(post.description)}</p>`
+        const summary = post.description || post.body;
+        const description = summary
+          ? `<p class="mt-1 text-sm text-fgMuted line-clamp-2">${highlight(summary, terms)}</p>`
           : "";
 
         return `
           <li class="border-b border-border pb-4">
             <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-              <a href="${post.url}" class="font-medium hover:text-accent transition-colors">${escapeHtml(post.title)}</a>
+              <a href="${post.url}" class="font-medium hover:text-accent transition-colors">${highlight(post.title, terms)}</a>
               <time datetime="${post.date}" class="shrink-0 text-xs text-fgMuted">${date}</time>
             </div>
             ${description}
             <div class="mt-2 flex flex-wrap gap-2">
               <span class="rounded bg-accent/10 px-1.5 py-0.5 text-xs text-accent">${escapeHtml(post.category)}</span>
+              ${post.series ? `<span class="rounded bg-bgSoft px-1.5 py-0.5 text-xs text-fgMuted">${escapeHtml(post.series)}</span>` : ""}
               ${tags}
             </div>
           </li>
@@ -90,16 +141,31 @@ import { withBase } from "../site.config";
     function update() {
       const query = input.value.trim().toLowerCase();
       const terms = query.split(/\s+/).filter(Boolean);
-      const matches = terms.length ? posts.filter((post) => postMatches(post, terms)) : posts;
+      const category = categoryFilter.value;
+      const matches = posts.filter((post) => {
+        if (category && post.category !== category) return false;
+        if (activeTag && !(post.tags || []).includes(activeTag)) return false;
+        return terms.length ? postMatches(post, terms) : true;
+      });
       render(matches, query);
+      renderTagFilters();
     }
 
     fetch(searchIndexUrl)
       .then((response) => response.json())
       .then((data) => {
         posts = data;
+        renderTagFilters();
         render(posts, "");
         input.addEventListener("input", update);
+        categoryFilter.addEventListener("change", update);
+        tagFilters.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-tag]");
+          if (!button) return;
+          const tag = button.getAttribute("data-tag");
+          activeTag = activeTag === tag ? "" : tag;
+          update();
+        });
         input.focus();
       })
       .catch(() => {

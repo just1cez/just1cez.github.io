@@ -1,10 +1,15 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
-import { tagPath } from "../../site.config";
+import { CATEGORY_META, tagPath } from "../../site.config";
 import { getAllPosts, getAllTags } from "../../lib/posts";
 
 const posts = await getAllPosts();
 const tags = getAllTags(posts);
+const maxCount = Math.max(...tags.map((item) => item.count), 1);
+const categoryCounts = posts.reduce((counts, post) => {
+  counts[post.data.category] = (counts[post.data.category] ?? 0) + 1;
+  return counts;
+}, {} as Record<"tech" | "life", number>);
 ---
 
 <PageLayout title="Tags - Justice's Blog" description="按标签浏览文章。">
@@ -13,11 +18,22 @@ const tags = getAllTags(posts);
     <p class="mt-2 text-sm text-fgMuted">用标签快速找到相关主题。</p>
   </header>
 
+  <section class="mb-8 grid gap-3 sm:grid-cols-2">
+    {Object.entries(CATEGORY_META).map(([key, meta]) => (
+      <div class="rounded-md border border-border bg-bgSoft p-4">
+        <p class="text-xs uppercase tracking-[0.16em] text-fgMuted">{meta.label}</p>
+        <p class="mt-1 text-2xl font-semibold">{categoryCounts[key as "tech" | "life"] ?? 0}</p>
+        <p class="mt-1 text-sm text-fgMuted">{meta.description}</p>
+      </div>
+    ))}
+  </section>
+
   <div class="flex flex-wrap gap-2">
     {tags.map(({ tag, count }) => (
       <a
         href={tagPath(tag)}
-        class="inline-flex items-center gap-1 rounded border border-border px-3 py-1.5 text-sm hover:border-accent hover:text-accent transition-colors"
+        class="inline-flex items-center gap-1 rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors"
+        style={`font-size:${0.78 + (count / maxCount) * 0.28}rem`}
       >
         <span>#{tag}</span>
         <span class="text-xs text-fgMuted">{count}</span>

@@ -14,6 +14,14 @@
       pre.parentNode!.insertBefore(wrapper, pre)
       wrapper.appendChild(pre)
 
+      const language = pre.getAttribute('data-language')
+      if (language) {
+        const label = document.createElement('span')
+        label.className = 'code-lang'
+        label.textContent = language
+        wrapper.appendChild(label)
+      }
+
       const btn = document.createElement('clipboard-copy')
       btn.value = code.textContent ?? ''
       btn.className = 'copy-btn'
@@ -58,6 +66,23 @@
     justify-content: center;
     transition: opacity 0.2s, background 0.2s, color 0.2s;
   }
+  .code-lang {
+    position: absolute;
+    top: 0.45rem;
+    left: 0.65rem;
+    z-index: 10;
+    border-radius: 0.25rem;
+    background: rgba(255,255,255,0.08);
+    padding: 0.15rem 0.4rem;
+    color: #8b949e;
+    font-size: 0.65rem;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+  .code-container pre {
+    padding-top: 2rem;
+  }
   .code-container:hover .copy-btn {
     opacity: 1;
   }
@@ -79,6 +104,10 @@
   }
   html:not(.dark) .copy-btn.copied {
     color: #22863a;
+  }
+  html:not(.dark) .code-lang {
+    background: rgba(0,0,0,0.06);
+    color: #6a737d;
   }
   @media (hover: none) {
     .copy-btn {
