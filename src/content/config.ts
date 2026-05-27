@@ -9,6 +9,7 @@ const tech = defineCollection({
     tags: z.array(z.string()).default([]),
     category: z.literal("tech"),
     description: z.string().optional(),
+    cover: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

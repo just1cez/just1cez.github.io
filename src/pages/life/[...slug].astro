@@ -1,12 +1,12 @@
 ---
 import PostLayout from "../../layouts/PostLayout.astro";
 import PrevNext from "../../components/PrevNext.astro";
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
+import { getPostsByCategory } from "../../lib/posts";
+import { postPath } from "../../site.config";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("life"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const posts = await getPostsByCategory("life");
 
   return posts.map((post, i) => ({
     params: { slug: post.id },
@@ -20,6 +20,7 @@ export async function getStaticPaths() {
 
 const { post, prev, next } = Astro.props;
 const { Content, headings } = await render(post);
+const canonicalUrl = new URL(postPath(post.data.category, post.id), Astro.site).toString();
 ---
 
 <PostLayout
@@ -28,6 +29,8 @@ const { Content, headings } = await render(post);
   tags={post.data.tags}
   category={post.data.category}
   description={post.data.description}
+  image={post.data.cover}
+  canonicalUrl={canonicalUrl}
   headings={headings}
 >
   <Content />

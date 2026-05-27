@@ -1,0 +1,109 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { withBase } from "../site.config";
+---
+
+<PageLayout title="Search - Justice's Blog" description="搜索博客文章。">
+  <header class="mb-8 border-b border-border pb-5">
+    <h1 class="text-2xl font-bold">Search</h1>
+    <p class="mt-2 text-sm text-fgMuted">按标题、描述、分类或标签搜索文章。</p>
+  </header>
+
+  <div class="mb-6">
+    <label for="search-input" class="sr-only">搜索文章</label>
+    <input
+      id="search-input"
+      type="search"
+      autocomplete="off"
+      placeholder="输入关键词..."
+      class="w-full rounded-md border border-border bg-bg px-4 py-2.5 text-sm outline-none transition-colors placeholder:text-fgMuted focus:border-accent"
+    />
+  </div>
+
+  <p id="search-status" class="mb-4 text-sm text-fgMuted">加载中...</p>
+  <ul id="search-results" class="space-y-4"></ul>
+</PageLayout>
+
+<script define:vars={{ searchIndexUrl: withBase("/search.json") }}>
+  const input = document.getElementById("search-input");
+  const status = document.getElementById("search-status");
+  const results = document.getElementById("search-results");
+  let posts = [];
+
+  function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[char]);
+  }
+
+  function postMatches(post, terms) {
+    const haystack = [
+      post.title,
+      post.description,
+      post.category,
+      ...(post.tags || []),
+    ].join(" ").toLowerCase();
+
+    return terms.every((term) => haystack.includes(term));
+  }
+
+  function render(items, query) {
+    results.innerHTML = "";
+
+    if (!query) {
+      status.textContent = `共 ${posts.length} 篇文章。`;
+    } else {
+      status.textContent = `找到 ${items.length} 篇文章。`;
+    }
+
+    if (!items.length) {
+      results.innerHTML = '<li class="text-sm text-fgMuted">没有找到匹配的文章。</li>';
+      return;
+    }
+
+    results.innerHTML = items.map((post) => {
+      const date = new Date(post.date).toLocaleDateString("zh-CN");
+      const tags = (post.tags || []).map((tag) => `<span class="text-xs text-fgMuted">#${escapeHtml(tag)}</span>`).join("");
+      const description = post.description
+        ? `<p class="mt-1 text-sm text-fgMuted line-clamp-2">${escapeHtml(post.description)}</p>`
+        : "";
+
+      return `
+        <li class="border-b border-border pb-4">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+            <a href="${post.url}" class="font-medium hover:text-accent transition-colors">${escapeHtml(post.title)}</a>
+            <time datetime="${post.date}" class="shrink-0 text-xs text-fgMuted">${date}</time>
+          </div>
+          ${description}
+          <div class="mt-2 flex flex-wrap gap-2">
+            <span class="rounded bg-accent/10 px-1.5 py-0.5 text-xs text-accent">${escapeHtml(post.category)}</span>
+            ${tags}
+          </div>
+        </li>
+      `;
+    }).join("");
+  }
+
+  function update() {
+    const query = input.value.trim().toLowerCase();
+    const terms = query.split(/\s+/).filter(Boolean);
+    const matches = terms.length ? posts.filter((post) => postMatches(post, terms)) : posts;
+    render(matches, query);
+  }
+
+  fetch(searchIndexUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      posts = data;
+      render(posts, "");
+      input.addEventListener("input", update);
+      input.focus();
+    })
+    .catch(() => {
+      status.textContent = "搜索索引加载失败。";
+    });
+</script>

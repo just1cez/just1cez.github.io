@@ -8,6 +8,8 @@ export interface Props {
   slug: string;
 }
 
+import { postPath } from "../site.config";
+
 const { title, date, tags, category, description, slug } = Astro.props;
 
 const formattedDate = date.toLocaleDateString("zh-CN", {
@@ -16,7 +18,7 @@ const formattedDate = date.toLocaleDateString("zh-CN", {
   day: "2-digit",
 });
 
-const href = `/${category}/${slug}`;
+const href = postPath(category, slug);
 const isTech = category === "tech";
 ---
 
@@ -36,7 +38,7 @@ const isTech = category === "tech";
     )}
     <div class="mt-2 flex flex-wrap gap-1.5">
       {tags.map((tag) => (
-        <span class="text-xs text-fgMuted hover:text-accent transition-colors">#{tag}</span>
+        <span class="text-xs text-fgMuted">#{tag}</span>
       ))}
     </div>
   </div>

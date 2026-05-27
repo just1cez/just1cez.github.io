@@ -2,20 +2,22 @@
 import PageLayout from "../../layouts/PageLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 import Pagination from "../../components/Pagination.astro";
-import { getCollection } from "astro:content";
+import { CATEGORY_META, categoryPath } from "../../site.config";
+import { getPostsByCategory } from "../../lib/posts";
 
 export async function getStaticPaths({ paginate }) {
-  const posts = (await getCollection("tech"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const posts = await getPostsByCategory("tech");
   return paginate(posts, { pageSize: 10 });
 }
 
 const { page } = Astro.props;
 ---
 
-<PageLayout title="Tech - Justice's Blog" description="技术笔记与算法实战" type="tech">
-  <h1 class="text-2xl font-bold mb-8">Tech</h1>
+<PageLayout title="Tech - Justice's Blog" description={CATEGORY_META.tech.description} type="tech">
+  <header class="mb-8 border-b border-border pb-5">
+    <h1 class="text-2xl font-bold">{CATEGORY_META.tech.title}</h1>
+    <p class="mt-2 text-sm text-fgMuted">{CATEGORY_META.tech.description}</p>
+  </header>
   <div class="space-y-3">
     {page.data.map((post) => (
       <PostCard
@@ -28,5 +30,5 @@ const { page } = Astro.props;
       />
     ))}
   </div>
-  <Pagination currentPage={page.currentPage} lastPage={page.lastPage} baseUrl="/tech" />
+  <Pagination currentPage={page.currentPage} lastPage={page.lastPage} baseUrl={categoryPath("tech")} />
 </PageLayout>

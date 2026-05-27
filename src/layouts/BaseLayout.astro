@@ -4,36 +4,54 @@ export interface Props {
   description?: string;
   type?: "tech" | "life" | "home";
   image?: string;
+  schema?: Record<string, unknown>;
 }
 
-const { title, description = "", type = "home", image = "/images/avatar.jpg" } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(image, Astro.site).toString();
+import { SITE, withBase } from "../site.config";
 import "../styles/global.css";
+
+const { title, description = SITE.description, type = "home", image = SITE.avatar, schema } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(withBase(image), Astro.site).toString();
+const defaultSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE.title,
+  description: SITE.description,
+  url: new URL(withBase("/"), Astro.site).toString(),
+  author: {
+    "@type": "Person",
+    name: SITE.author,
+    url: SITE.github,
+  },
+};
+const jsonLd = JSON.stringify(schema ?? defaultSchema);
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={SITE.locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" type="application/rss+xml" title="Justice's Blog" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href={withBase("/rss.xml")} />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <title>{title}</title>
     <meta property="og:type" content={type === "home" ? "website" : "article"} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL.toString()} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:site_name" content="Justice's Blog" />
+    <meta property="og:site_name" content={SITE.title} />
     <meta property="og:locale" content="zh_CN" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="generator" content={Astro.generator} />
+    <script type="application/ld+json" set:html={jsonLd} />
     <script is:inline>
       (function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}})()
     </script>

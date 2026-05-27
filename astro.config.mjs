@@ -6,9 +6,11 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
 const site = process.env.SITE_URL || "https://just1cez.github.io";
+const base = process.env.BASE_PATH || "/";
 
 export default defineConfig({
   site,
+  base,
   output: "static",
   trailingSlash: "never",
   markdown: {

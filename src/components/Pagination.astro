@@ -6,12 +6,17 @@ export interface Props {
 }
 
 const { currentPage, lastPage, baseUrl } = Astro.props;
+
+function pageHref(page: number) {
+  if (page === 1) return baseUrl;
+  return `${baseUrl.replace(/\/$/, "")}/${page}`;
+}
 ---
 
 {lastPage > 1 && (
   <nav class="flex items-center justify-center gap-4 mt-8 text-sm">
     {currentPage > 1 ? (
-      <a href={currentPage === 2 ? baseUrl : `${baseUrl}/${currentPage - 1}`}
+      <a href={pageHref(currentPage - 1)}
          class="px-3 py-1.5 rounded border border-border hover:border-accent hover:text-accent transition-colors">
         &larr; 上一页
       </a>
@@ -20,7 +25,7 @@ const { currentPage, lastPage, baseUrl } = Astro.props;
     )}
     <span class="text-fgMuted">{currentPage} / {lastPage}</span>
     {currentPage < lastPage ? (
-      <a href={`${baseUrl}/${currentPage + 1}`}
+      <a href={pageHref(currentPage + 1)}
          class="px-3 py-1.5 rounded border border-border hover:border-accent hover:text-accent transition-colors">
         下一页 &rarr;
       </a>

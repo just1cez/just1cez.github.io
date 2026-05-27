@@ -1,0 +1,27 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import { tagPath } from "../../site.config";
+import { getAllPosts, getAllTags } from "../../lib/posts";
+
+const posts = await getAllPosts();
+const tags = getAllTags(posts);
+---
+
+<PageLayout title="Tags - Justice's Blog" description="按标签浏览文章。">
+  <header class="mb-8 border-b border-border pb-5">
+    <h1 class="text-2xl font-bold">Tags</h1>
+    <p class="mt-2 text-sm text-fgMuted">用标签快速找到相关主题。</p>
+  </header>
+
+  <div class="flex flex-wrap gap-2">
+    {tags.map(({ tag, count }) => (
+      <a
+        href={tagPath(tag)}
+        class="inline-flex items-center gap-1 rounded border border-border px-3 py-1.5 text-sm hover:border-accent hover:text-accent transition-colors"
+      >
+        <span>#{tag}</span>
+        <span class="text-xs text-fgMuted">{count}</span>
+      </a>
+    ))}
+  </div>
+</PageLayout>

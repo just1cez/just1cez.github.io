@@ -1,11 +1,12 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
+import { SITE, categoryPath, withBase } from "../site.config";
 ---
 
 <PageLayout title="About - Justice's Blog" description="关于我">
   <div class="flex flex-col items-center text-center mb-10">
-    <img src="/images/avatar.jpg" alt="Justice" class="w-20 h-20 rounded-full object-cover mb-4" />
-    <h1 class="text-2xl font-bold">Justice</h1>
+    <img src={withBase(SITE.avatar)} alt="Justice" class="w-20 h-20 rounded-full object-cover mb-4" />
+    <h1 class="text-2xl font-bold">{SITE.author}</h1>
     <p class="text-fgMuted mt-1">HITSZ 大一 · Computer Science</p>
     <div class="flex flex-wrap justify-center gap-2 mt-4">
       <span class="rounded bg-accent/10 px-2.5 py-1 text-xs text-accent font-medium">C++学习中</span>
@@ -14,7 +15,7 @@ import PageLayout from "../layouts/PageLayout.astro";
       <span class="rounded bg-accent/10 px-2.5 py-1 text-xs text-accent font-medium">AI</span>
       <span class="rounded bg-accent/10 px-2.5 py-1 text-xs text-accent font-medium">硬件折腾</span>
     </div>
-    <a href="https://github.com/just1cez" target="_blank" rel="noopener noreferrer"
+    <a href={SITE.github} target="_blank" rel="noopener noreferrer"
        class="inline-flex items-center gap-1.5 mt-4 text-sm text-fgMuted hover:text-accent transition-colors">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       GitHub
@@ -24,5 +25,10 @@ import PageLayout from "../layouts/PageLayout.astro";
     <p class="text-fgMuted mb-4">
       这里记录我正在学的东西和折腾的玩意儿。技术区是学习笔记，生活区是闲聊。
     </p>
+    <div class="flex flex-wrap gap-3 text-sm">
+      <a href={categoryPath("tech")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">技术笔记</a>
+      <a href={categoryPath("life")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">生活杂谈</a>
+      <a href={withBase("/archive")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">文章归档</a>
+    </div>
   </div>
 </PageLayout>

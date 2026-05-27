@@ -1,47 +1,64 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
-import { getCollection } from "astro:content";
+import { CATEGORY_META, postPath, tagPath, tagSlug } from "../../site.config";
+import { getAllPosts } from "../../lib/posts";
 
 export async function getStaticPaths() {
-  const allPosts = (await Promise.all([
-    ...await getCollection("tech"),
-    ...await getCollection("life"),
-  ])).filter((post) => !post.data.draft);
+  const allPosts = await getAllPosts();
 
-  const tagMap = new Map<string, { title: string; date: Date; category: string; slug: string }[]>();
+  const tagMap = new Map<string, { tag: string; posts: { title: string; date: Date; category: "tech" | "life"; slug: string; description?: string; tags: string[] }[] }>();
 
   for (const post of allPosts) {
     for (const tag of post.data.tags) {
-      if (!tagMap.has(tag)) tagMap.set(tag, []);
-      tagMap.get(tag)!.push({
+      const slug = tagSlug(tag);
+      if (!tagMap.has(slug)) tagMap.set(slug, { tag, posts: [] });
+      tagMap.get(slug)!.posts.push({
         title: post.data.title,
         date: post.data.date,
         category: post.data.category,
         slug: post.id,
+        description: post.data.description,
+        tags: post.data.tags,
       });
     }
   }
 
-  return Array.from(tagMap.entries()).map(([tag, posts]) => ({
-    params: { tag },
-    props: { posts: posts.sort((a, b) => b.date.valueOf() - a.date.valueOf()) },
+  return Array.from(tagMap.entries()).map(([slug, data]) => ({
+    params: { tag: slug },
+    props: {
+      tag: data.tag,
+      posts: data.posts.sort((a, b) => b.date.valueOf() - a.date.valueOf()),
+    },
   }));
 }
 
-const { tag } = Astro.params;
-const { posts } = Astro.props;
+const { tag, posts } = Astro.props;
 ---
 
-<PageLayout title={`Tag: ${tag} - Justice's Blog`}>
-  <h1 class="text-2xl font-bold mb-8">Tag: {tag}</h1>
-  <ul class="space-y-3">
+<PageLayout title={`Tag: ${tag} - Justice's Blog`} description={`浏览标签 ${tag} 下的文章。`}>
+  <header class="mb-8 border-b border-border pb-5">
+    <h1 class="text-2xl font-bold">Tag: {tag}</h1>
+    <p class="mt-2 text-sm text-fgMuted">共 {posts.length} 篇文章。</p>
+  </header>
+
+  <ul class="space-y-4">
     {posts.map((post) => (
-      <li class="border-b border-border pb-3">
-        <a href={`/${post.category}/${post.slug}`} class="group">
-          <span class="font-medium group-hover:text-accent transition-colors">{post.title}</span>
-          <span class="ml-2 text-xs text-fgMuted">{post.date.toLocaleDateString("zh-CN")}</span>
-          <span class="ml-2 text-xs rounded bg-accent/10 px-1.5 py-0.5 text-accent">{post.category}</span>
-        </a>
+      <li class="border-b border-border pb-4">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+          <a href={postPath(post.category, post.slug)} class="font-medium hover:text-accent transition-colors">
+            {post.title}
+          </a>
+          <time datetime={post.date.toISOString()} class="shrink-0 text-xs text-fgMuted">
+            {post.date.toLocaleDateString("zh-CN")}
+          </time>
+        </div>
+        {post.description && <p class="mt-1 text-sm text-fgMuted line-clamp-2">{post.description}</p>}
+        <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-fgMuted">
+          <span class="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{CATEGORY_META[post.category].label}</span>
+          {post.tags.map((item) => (
+            <a href={tagPath(item)} class:list={["hover:text-accent transition-colors", item === tag && "text-accent"]}>#{item}</a>
+          ))}
+        </div>
       </li>
     ))}
   </ul>
