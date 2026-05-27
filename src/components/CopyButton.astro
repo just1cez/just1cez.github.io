@@ -15,10 +15,11 @@
       wrapper.appendChild(pre)
 
       const language = pre.getAttribute('data-language')
-      if (language) {
+      const filename = pre.getAttribute('data-filename')
+      if (language || filename) {
         const label = document.createElement('span')
-        label.className = 'code-lang'
-        label.textContent = language
+        label.className = 'code-meta'
+        label.textContent = filename ? `${filename}${language ? ` · ${language}` : ''}` : language
         wrapper.appendChild(label)
       }
 
@@ -66,7 +67,7 @@
     justify-content: center;
     transition: opacity 0.2s, background 0.2s, color 0.2s;
   }
-  .code-lang {
+  .code-meta {
     position: absolute;
     top: 0.45rem;
     left: 0.65rem;
@@ -77,7 +78,6 @@
     color: #8b949e;
     font-size: 0.65rem;
     line-height: 1;
-    text-transform: uppercase;
     letter-spacing: 0;
   }
   .code-container pre {
@@ -105,7 +105,7 @@
   html:not(.dark) .copy-btn.copied {
     color: #22863a;
   }
-  html:not(.dark) .code-lang {
+  html:not(.dark) .code-meta {
     background: rgba(0,0,0,0.06);
     color: #6a737d;
   }

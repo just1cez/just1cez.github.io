@@ -8,6 +8,18 @@ featured: true
 series: "图像复原论文阅读"
 ---
 
+import { Callout, PaperCard } from "../../components/mdx";
+
+<PaperCard
+  title="Deep Graph Optimization for Depth Super-Resolution"
+  venue="论文阅读"
+  task="深度图超分辨率"
+/>
+
+<Callout type="note" title="一句话抓住">
+DGOSR 把大规模图优化拆成 Kronecker 形式，再把 ADMM 求解展开成网络，用更少参数保留图优化的可解释结构。
+</Callout>
+
 ## 问题背景
 
 深度图（Depth Map）天然具有 **大范围平滑区域 + 清晰物体边缘** 的特性，非常适合用图信号建模：像素为顶点，像素间关系为边。
