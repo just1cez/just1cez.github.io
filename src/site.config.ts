@@ -22,6 +22,27 @@ export const CATEGORY_META = {
 
 export type BlogCategory = keyof typeof CATEGORY_META;
 
+export const POST_STAGE_META = {
+  intro: {
+    label: "入门笔记",
+    description: "正在打基础时整理的学习记录。",
+  },
+  paper: {
+    label: "论文初读",
+    description: "第一轮论文阅读和理解记录。",
+  },
+  tinkering: {
+    label: "折腾记录",
+    description: "硬件、工具或项目实践过程。",
+  },
+  reference: {
+    label: "速查模板",
+    description: "以后可以直接回头查的清单或模板。",
+  },
+} as const;
+
+export type PostStage = keyof typeof POST_STAGE_META;
+
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 const EXTERNAL_URL = /^(?:[a-z][a-z\d+.-]*:|\/\/)/i;
 

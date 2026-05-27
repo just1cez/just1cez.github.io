@@ -1,6 +1,6 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import { CATEGORY_META, postPath, tagPath } from "../site.config";
+import { CATEGORY_META, POST_STAGE_META, postPath, tagPath } from "../site.config";
 import { getAllPosts } from "../lib/posts";
 
 const posts = await getAllPosts();
@@ -42,6 +42,7 @@ const groupedPosts = posts.reduce((groups, post) => {
                     </div>
                     <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-fgMuted">
                       <span class="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{CATEGORY_META[post.data.category].label}</span>
+                      <span class="rounded bg-bgSoft px-1.5 py-0.5">{POST_STAGE_META[post.data.stage].label}</span>
                       {post.data.series && <span class="rounded bg-bgSoft px-1.5 py-0.5">{post.data.series}</span>}
                       {post.data.tags.map((tag) => (
                         <a href={tagPath(tag)} class="hover:text-accent transition-colors">#{tag}</a>

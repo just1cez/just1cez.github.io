@@ -64,6 +64,8 @@ import { withBase } from "../site.config";
         post.body,
         post.category,
         post.series,
+        post.stage,
+        post.stageLabel,
         ...(post.tags || []),
       ].join(" ").toLowerCase();
 
@@ -136,6 +138,7 @@ import { withBase } from "../site.config";
       results.innerHTML = items.map((post) => {
         const date = new Date(post.date).toLocaleDateString("zh-CN");
         const tags = (post.tags || []).map((tag) => `<span class="text-xs text-fgMuted">#${escapeHtml(tag)}</span>`).join("");
+        const stage = post.stageLabel ? `<span class="rounded bg-bgSoft px-1.5 py-0.5 text-xs text-fgMuted">${escapeHtml(post.stageLabel)}</span>` : "";
         const summary = makeSnippet(post, terms);
         const description = summary
           ? `<p class="mt-1 text-sm text-fgMuted line-clamp-2">${highlight(summary, terms)}</p>`
@@ -153,6 +156,7 @@ import { withBase } from "../site.config";
             ${description}
             <div class="mt-2 flex flex-wrap gap-2">
               <span class="rounded bg-accent/10 px-1.5 py-0.5 text-xs text-accent">${escapeHtml(post.category)}</span>
+              ${stage}
               ${draft}
               ${post.series ? `<span class="rounded bg-bgSoft px-1.5 py-0.5 text-xs text-fgMuted">${escapeHtml(post.series)}</span>` : ""}
               ${tags}

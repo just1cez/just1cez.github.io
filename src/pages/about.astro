@@ -9,6 +9,11 @@ const profileGroups = [
 ] as const;
 const recommendedPosts = [
   {
+    title: "从这里开始：这个博客会写什么",
+    href: postPath("tech", "start-here"),
+    note: "一篇给第一次来的读者看的入口，说明这个站现在和以后会记录什么。",
+  },
+  {
     title: "C++ 竞赛常用技巧速查",
     href: postPath("tech", "cpp-tips"),
     note: "常用模板和编码习惯，适合作为算法学习的工具箱。",
@@ -32,9 +37,9 @@ const recommendedPosts = [
 
 const readingRoutes = [
   ["技术笔记", categoryPath("tech"), "算法入门、AI 探索、课程笔记和工程练习。"],
+  ["项目档案", withBase("/projects"), "硬件折腾、小项目和以后想开始的实验。"],
   ["标签索引", withBase("/tags"), "按主题回看长期关注点。"],
   ["文章归档", withBase("/archive"), "按时间线查看全部更新。"],
-  ["站内搜索", withBase("/search"), "需要找旧内容时最快。"],
 ] as const;
 ---
 
@@ -47,7 +52,7 @@ const readingRoutes = [
       <img src={withBase(SITE.avatar)} alt="Justice" class="h-20 w-20 rounded-full object-cover ring-1 ring-border" />
       <div>
         <p class="text-xs font-medium uppercase tracking-[0.18em] text-accent">About / Start Here</p>
-        <h1 class="mt-2 text-2xl font-bold font-serif-cn">{SITE.author}</h1>
+        <h1 class="mt-2 text-2xl font-bold font-serif-cn">从这里开始</h1>
         <p class="mt-1 text-sm text-fgMuted">HITSZ CS · 正在打基础，也在探索 AI 和工程</p>
       </div>
     </div>
@@ -61,7 +66,7 @@ const readingRoutes = [
           <p class="text-xs font-medium uppercase tracking-[0.16em] text-accentWarm">{label}</p>
           <div class="mt-2 flex flex-wrap gap-2">
             {items.map((item) => (
-              <span class="rounded bg-bg px-2.5 py-1 text-xs text-fg">
+              <span class="whitespace-nowrap rounded bg-bg px-2.5 py-1 text-xs text-fg">
                 {item}
               </span>
             ))}
@@ -73,9 +78,9 @@ const readingRoutes = [
 
   <div class="space-y-10">
     <section>
-      <div class="mb-4 flex items-baseline justify-between border-b border-border pb-2">
+      <div class="mb-4 flex flex-col gap-1 border-b border-border pb-2 sm:flex-row sm:items-baseline sm:justify-between">
         <h2 class="text-xl font-semibold">先读这些</h2>
-        <span class="text-xs text-fgMuted">最快知道这个站在写什么</span>
+        <span class="text-xs text-fgMuted">第一次来可以按这个顺序扫一圈</span>
       </div>
       <div class="grid gap-3">
         {recommendedPosts.map((post) => (
@@ -92,6 +97,7 @@ const readingRoutes = [
       <p class="leading-7 text-fgMuted">
         短期会先把大一课程、算法入门和编程基础学扎实，同时保持对 AI 的好奇心。
         Machine Learning、AI Infra、Python 和 Rust 现在还属于想开始学的方向，生活区则保留游戏、PC 硬件和装机折腾。
+        所以这里的文章会保留阶段感：有些是速查模板，有些只是论文初读或折腾现场，不会假装每篇都是成熟总结。
       </p>
     </section>
 

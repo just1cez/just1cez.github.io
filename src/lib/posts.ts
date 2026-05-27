@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import type { BlogCategory } from "../site.config";
+import type { BlogCategory, PostStage } from "../site.config";
 
 export type BlogPost = Awaited<ReturnType<typeof getAllPosts>>[number];
 export type PostSummary = {
@@ -11,6 +11,7 @@ export type PostSummary = {
   description?: string;
   tags: string[];
   series?: string;
+  stage: PostStage;
   draft: boolean;
 };
 
@@ -59,6 +60,7 @@ export function toPostSummary(post: BlogPost): PostSummary {
     description: post.data.description,
     tags: post.data.tags,
     series: post.data.series,
+    stage: post.data.stage,
     draft: post.data.draft,
   };
 }

@@ -1,6 +1,8 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
+const postStage = z.enum(["intro", "paper", "tinkering", "reference"]);
+
 const tech = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/tech" }),
   schema: z.object({
@@ -13,6 +15,7 @@ const tech = defineCollection({
     updated: z.coerce.date().optional(),
     featured: z.boolean().default(false),
     series: z.string().optional(),
+    stage: postStage,
     draft: z.boolean().default(false),
   }),
 });
@@ -29,6 +32,7 @@ const life = defineCollection({
     updated: z.coerce.date().optional(),
     featured: z.boolean().default(false),
     series: z.string().optional(),
+    stage: postStage,
     draft: z.boolean().default(false),
   }),
 });

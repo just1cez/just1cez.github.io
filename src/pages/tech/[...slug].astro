@@ -35,6 +35,7 @@ const canonicalUrl = new URL(postPath(post.data.category, post.id), Astro.site).
   image={post.data.cover}
   canonicalUrl={canonicalUrl}
   series={post.data.series}
+  stage={post.data.stage}
   headings={headings}
 >
   <Content />

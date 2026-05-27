@@ -7,8 +7,9 @@ const root = process.cwd();
 const contentRoot = path.join(root, "src", "content");
 const publicRoot = path.join(root, "public");
 const postExts = new Set([".md", ".mdx"]);
-const requiredFields = ["title", "date", "tags", "category", "description"];
+const requiredFields = ["title", "date", "tags", "category", "description", "stage"];
 const allowedCategories = new Set(["tech", "life"]);
+const allowedStages = new Set(["intro", "paper", "tinkering", "reference"]);
 const externalTarget = /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i;
 const ignoredSchemes = /^(?:mailto:|tel:|javascript:)/i;
 
@@ -149,6 +150,14 @@ function checkFrontmatter(file, data) {
 
   if (typeof data.description !== "string" || data.description.trim().length < 10) {
     report(errors, file, "description must be at least 10 characters");
+  }
+
+  if (typeof data.description === "string" && data.description.trim().length > 120) {
+    report(warnings, file, "description is longer than 120 characters; keep summaries concise for cards and RSS");
+  }
+
+  if (!allowedStages.has(data.stage)) {
+    report(errors, file, `stage must be one of: ${Array.from(allowedStages).join(", ")}`);
   }
 
   for (const field of ["draft", "featured"]) {
