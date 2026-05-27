@@ -34,6 +34,7 @@ npm run build
 
 ```bash
 npm run new:post -- tech my-algorithm-note
+npm run new:post -- algorithm luogu-pxxxx
 npm run new:post -- paper my-paper-reading
 npm run new:post -- life my-pc-build
 ```
@@ -41,6 +42,7 @@ npm run new:post -- life my-pc-build
 脚本会从 `templates/` 复制模板到对应目录：
 
 - `tech` -> `src/content/tech/*.mdx`
+- `algorithm` -> `src/content/tech/*.mdx`
 - `paper` -> `src/content/tech/*.mdx`
 - `life` -> `src/content/life/*.md`
 
