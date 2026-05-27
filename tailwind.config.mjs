@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         accent: "var(--color-accent)",
+        accentWarm: "var(--color-accent-warm)",
         bg: "var(--color-bg)",
         bgSoft: "var(--color-bg-soft)",
         fg: "var(--color-fg)",

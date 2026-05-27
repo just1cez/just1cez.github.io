@@ -17,6 +17,7 @@ const { posts } = Astro.props;
         <article class="rounded-md border border-border bg-bg p-4">
           <div class="mb-2 flex items-center gap-2 text-xs text-fgMuted">
             <span class="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{CATEGORY_META[post.category].label}</span>
+            {post.draft && <span class="rounded bg-amber-500/10 px-1.5 py-0.5 text-amber-600 dark:text-amber-300">Draft</span>}
             {post.series && <span>{post.series}</span>}
           </div>
           <a href={postPath(post.category, post.slug)} class="block text-sm font-medium hover:text-accent transition-colors">

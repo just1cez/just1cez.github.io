@@ -11,19 +11,22 @@ export type PostSummary = {
   description?: string;
   tags: string[];
   series?: string;
+  draft: boolean;
 };
+
+const includeDrafts = import.meta.env.DEV;
 
 export async function getAllPosts() {
   const [techPosts, lifePosts] = await Promise.all([
-    getCollection("tech", ({ data }) => !data.draft),
-    getCollection("life", ({ data }) => !data.draft),
+    getCollection("tech", ({ data }) => includeDrafts || !data.draft),
+    getCollection("life", ({ data }) => includeDrafts || !data.draft),
   ]);
 
   return [...techPosts, ...lifePosts].sort(sortByDateDesc);
 }
 
 export async function getPostsByCategory(category: BlogCategory) {
-  const posts = await getCollection(category, ({ data }) => !data.draft);
+  const posts = await getCollection(category, ({ data }) => includeDrafts || !data.draft);
   return posts.sort(sortByDateDesc);
 }
 
@@ -56,6 +59,7 @@ export function toPostSummary(post: BlogPost): PostSummary {
     description: post.data.description,
     tags: post.data.tags,
     series: post.data.series,
+    draft: post.data.draft,
   };
 }
 
@@ -100,10 +104,13 @@ export function getFocusTags(posts: BlogPost[], preferred: string[], limit = 10)
 export function stripMarkdown(markdown: string) {
   return markdown
     .replace(/^---[\s\S]*?---/, "")
+    .replace(/^import\s+.+?;$/gm, " ")
+    .replace(/<\/?[A-Z][\w.]*(?:\s[^>]*)?>/g, " ")
     .replace(/```[\s\S]*?```/g, " ")
     .replace(/`([^`]+)`/g, "$1")
     .replace(/!\[[^\]]*\]\([^)]+\)/g, " ")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[{}()[\],;]+/g, " ")
     .replace(/[#>*_\-~|$]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();

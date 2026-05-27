@@ -80,6 +80,26 @@ import { withBase } from "../site.config";
       return html;
     }
 
+    function makeSnippet(post, terms) {
+      const fallback = post.description || post.body || "";
+      if (!terms.length || !post.body) return fallback.slice(0, 180);
+
+      const body = post.body;
+      const lowerBody = body.toLowerCase();
+      const matchIndex = terms
+        .map((term) => lowerBody.indexOf(term))
+        .filter((index) => index >= 0)
+        .sort((a, b) => a - b)[0];
+
+      if (matchIndex === undefined) return fallback.slice(0, 180);
+
+      const start = Math.max(0, matchIndex - 70);
+      const end = Math.min(body.length, matchIndex + 130);
+      const prefix = start > 0 ? "..." : "";
+      const suffix = end < body.length ? "..." : "";
+      return `${prefix}${body.slice(start, end).trim()}${suffix}`;
+    }
+
     function renderTagFilters() {
       const counts = new Map();
       posts.forEach((post) => {
@@ -116,9 +136,12 @@ import { withBase } from "../site.config";
       results.innerHTML = items.map((post) => {
         const date = new Date(post.date).toLocaleDateString("zh-CN");
         const tags = (post.tags || []).map((tag) => `<span class="text-xs text-fgMuted">#${escapeHtml(tag)}</span>`).join("");
-        const summary = post.description || post.body;
+        const summary = makeSnippet(post, terms);
         const description = summary
           ? `<p class="mt-1 text-sm text-fgMuted line-clamp-2">${highlight(summary, terms)}</p>`
+          : "";
+        const draft = post.draft
+          ? '<span class="rounded bg-amber-500/10 px-1.5 py-0.5 text-xs text-amber-600 dark:text-amber-300">Draft</span>'
           : "";
 
         return `
@@ -130,6 +153,7 @@ import { withBase } from "../site.config";
             ${description}
             <div class="mt-2 flex flex-wrap gap-2">
               <span class="rounded bg-accent/10 px-1.5 py-0.5 text-xs text-accent">${escapeHtml(post.category)}</span>
+              ${draft}
               ${post.series ? `<span class="rounded bg-bgSoft px-1.5 py-0.5 text-xs text-fgMuted">${escapeHtml(post.series)}</span>` : ""}
               ${tags}
             </div>

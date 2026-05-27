@@ -15,6 +15,7 @@ export async function GET() {
         category: post.data.category,
         tags: post.data.tags,
         series: post.data.series ?? "",
+        draft: post.data.draft,
         date: post.data.date.toISOString(),
         updated: post.data.updated?.toISOString() ?? "",
         url: postPath(post.data.category, post.id),
