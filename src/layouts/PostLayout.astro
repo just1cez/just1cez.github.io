@@ -62,7 +62,7 @@ const articleSchema = canonicalUrl && {
   <ReadingProgress />
   <Header />
   <div class="mx-auto max-w-5xl px-4 py-8 flex gap-8">
-    {isTech && headings.length > 0 && (
+    {headings.length > 0 && (
       <aside class="hidden lg:block w-52 shrink-0">
         <div class="sticky top-20">
           <Toc headings={headings} />
@@ -96,6 +96,21 @@ const articleSchema = canonicalUrl && {
   <CopyButton />
   <script is:inline>
   (function(){
+    function copyText(value){
+      if(navigator.clipboard&&window.isSecureContext){
+        return navigator.clipboard.writeText(value);
+      }
+      var textarea=document.createElement('textarea');
+      textarea.value=value;
+      textarea.setAttribute('readonly','');
+      textarea.style.position='fixed';
+      textarea.style.left='-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try{document.execCommand('copy');}finally{document.body.removeChild(textarea);}
+      return Promise.resolve();
+    }
+
     function enhanceHeadings(){
       document.querySelectorAll('article h2[id], article h3[id]').forEach(function(heading){
         if(heading.querySelector('.heading-anchor'))return;
@@ -104,6 +119,16 @@ const articleSchema = canonicalUrl && {
         anchor.href='#'+heading.id;
         anchor.setAttribute('aria-label','复制标题链接');
         anchor.textContent='#';
+        anchor.addEventListener('click',function(event){
+          event.preventDefault();
+          var url=new URL(window.location.href);
+          url.hash=heading.id;
+          copyText(url.toString()).then(function(){
+            anchor.classList.add('copied');
+            setTimeout(function(){anchor.classList.remove('copied');},1200);
+          });
+          history.replaceState(null,'',url);
+        });
         heading.appendChild(anchor);
       });
     }
@@ -192,5 +217,10 @@ const articleSchema = canonicalUrl && {
 
   .heading-anchor:hover {
     color: var(--color-accent);
+  }
+
+  .heading-anchor.copied {
+    opacity: 1;
+    color: var(--color-accent-warm);
   }
 </style>
