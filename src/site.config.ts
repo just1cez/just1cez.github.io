@@ -1,7 +1,7 @@
 export const SITE = {
   title: "Justice's Blog",
   author: "Justice",
-  description: "算法学习、论文阅读、图像复原与工程实践记录。",
+  description: "算法入门、AI 探索、大一课程与硬件折腾记录。",
   locale: "zh-CN",
   github: "https://github.com/just1cez",
   avatar: "/images/avatar.jpg",
@@ -11,7 +11,7 @@ export const CATEGORY_META = {
   tech: {
     label: "Tech",
     title: "技术笔记",
-    description: "C++、算法、深度学习、图像复原论文和工程实践记录。",
+    description: "算法入门、AI 探索、课程笔记、论文初读和工程练习记录。",
   },
   life: {
     label: "Life",

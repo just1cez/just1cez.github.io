@@ -12,7 +12,11 @@ const focusTags = getFocusTags(allPosts, ["Algorithm", "深度学习", "图像�
 const latestPost = allPosts[0];
 const techCount = allPosts.filter((p) => p.data.category === "tech").length;
 const lifeCount = allPosts.filter((p) => p.data.category === "life").length;
-const focusItems = ["算法", "深度学习", "图像复原", "工程实践", "硬件折腾"];
+const profileGroups = [
+  ["正在学习", ["算法入门", "AI 入门探索", "大一课程"]],
+  ["平时爱好", ["游戏", "PC 硬件", "装机折腾"]],
+  ["想开始学", ["Machine Learning", "AI Infra", "Python", "Rust"]],
+] as const;
 ---
 
 <PageLayout title={SITE.title} description={SITE.description}>
@@ -23,7 +27,7 @@ const focusItems = ["算法", "深度学习", "图像复原", "工程实践", "�
           <img src={withBase(SITE.avatar)} alt="Justice" class="h-16 w-16 shrink-0 rounded-full object-cover ring-1 ring-border" />
           <div class="min-w-0">
             <p class="text-xs font-medium uppercase tracking-[0.18em] text-accent">Justice / HITSZ CS</p>
-            <h1 class="mt-1 text-2xl font-bold font-serif-cn">算法、论文与工程实践笔记</h1>
+            <h1 class="mt-1 text-2xl font-bold font-serif-cn">计算机基础、AI 探索与折腾笔记</h1>
             <p class="mt-3 max-w-2xl text-sm leading-6 text-fgMuted">
               “我们只能看见前方很短的一段路，但能看见那里有许多事要做。” -- Alan Turing
             </p>
@@ -31,16 +35,20 @@ const focusItems = ["算法", "深度学习", "图像复原", "工程实践", "�
         </div>
 
         <div class="mt-6 rounded-md border border-border bg-bgSoft p-4">
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p class="text-xs font-medium uppercase tracking-[0.16em] text-accentWarm">Now Studying</p>
-              <div class="mt-2 flex flex-wrap gap-2">
-                {focusItems.map((item) => (
-                  <span class="rounded bg-bg px-2.5 py-1 text-xs text-fg">{item}</span>
-                ))}
-              </div>
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div class="grid gap-3 sm:grid-cols-3 lg:flex-1">
+              {profileGroups.map(([label, items]) => (
+                <div>
+                  <p class="text-xs font-medium uppercase tracking-[0.16em] text-accentWarm">{label}</p>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    {items.map((item) => (
+                      <span class="rounded bg-bg px-2.5 py-1 text-xs text-fg">{item}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div class="flex gap-2 text-xs">
+            <div class="flex gap-2 text-xs lg:shrink-0">
               <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">GitHub</a>
               <a href={withBase("/rss.xml")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">RSS</a>
               <a href={withBase("/about")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">About</a>

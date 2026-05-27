@@ -2,7 +2,11 @@
 import PageLayout from "../layouts/PageLayout.astro";
 import { SITE, categoryPath, postPath, withBase } from "../site.config";
 
-const focusItems = ["算法", "C++", "深度学习", "图像复原", "工程实践", "硬件折腾"];
+const profileGroups = [
+  ["正在学习", ["算法入门", "AI 入门探索", "大一课程"]],
+  ["平时爱好", ["游戏", "PC 硬件", "装机折腾"]],
+  ["想开始学", ["Machine Learning", "AI Infra", "Python", "Rust"]],
+] as const;
 const recommendedPosts = [
   {
     title: "C++ 竞赛常用技巧速查",
@@ -27,7 +31,7 @@ const recommendedPosts = [
 ];
 
 const readingRoutes = [
-  ["技术笔记", categoryPath("tech"), "算法、论文阅读和工程实践。"],
+  ["技术笔记", categoryPath("tech"), "算法入门、AI 探索、课程笔记和工程练习。"],
   ["标签索引", withBase("/tags"), "按主题回看长期关注点。"],
   ["文章归档", withBase("/archive"), "按时间线查看全部更新。"],
   ["站内搜索", withBase("/search"), "需要找旧内容时最快。"],
@@ -44,18 +48,25 @@ const readingRoutes = [
       <div>
         <p class="text-xs font-medium uppercase tracking-[0.18em] text-accent">About / Start Here</p>
         <h1 class="mt-2 text-2xl font-bold font-serif-cn">{SITE.author}</h1>
-        <p class="mt-1 text-sm text-fgMuted">HITSZ CS · 算法、论文与工程实践学习中</p>
+        <p class="mt-1 text-sm text-fgMuted">HITSZ CS · 正在打基础，也在探索 AI 和工程</p>
       </div>
     </div>
     <p class="mt-5 max-w-3xl leading-7 text-fgMuted">
-      这个站用来保存我正在建立的计算机基础、论文阅读笔记、工程折腾和一些生活记录。
+      这个站用来保存我正在建立的计算机基础、算法入门记录、AI 探索、大一课程笔记和一些硬件折腾。
       我希望它最后像一个能反复回头查的知识花园：文章不只是写完就放下，而是随着学习继续修订、补充和互相连接。
     </p>
-    <div class="mt-5 flex flex-wrap gap-2">
-      {focusItems.map((item) => (
-        <span class="rounded bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent">
-          #{item}
-        </span>
+    <div class="mt-5 grid gap-3 sm:grid-cols-3">
+      {profileGroups.map(([label, items]) => (
+        <div class="rounded-md border border-border bg-bgSoft p-3">
+          <p class="text-xs font-medium uppercase tracking-[0.16em] text-accentWarm">{label}</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            {items.map((item) => (
+              <span class="rounded bg-bg px-2.5 py-1 text-xs text-fg">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   </header>
@@ -77,10 +88,10 @@ const readingRoutes = [
     </section>
 
     <section>
-      <h2 class="mb-3 text-xl font-semibold">正在关注</h2>
+      <h2 class="mb-3 text-xl font-semibold">正在打基础</h2>
       <p class="leading-7 text-fgMuted">
-        短期会继续补算法竞赛基础、C++ 常用模板、深度学习和图像复原方向的论文阅读。
-        工程侧会把能跑起来的项目、部署经验和踩坑过程整理成复盘；生活区则保留一些硬件、工具和日常观察。
+        短期会先把大一课程、算法入门和编程基础学扎实，同时保持对 AI 的好奇心。
+        Machine Learning、AI Infra、Python 和 Rust 现在还属于想开始学的方向，生活区则保留游戏、PC 硬件和装机折腾。
       </p>
     </section>
 
