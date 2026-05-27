@@ -1,7 +1,7 @@
 export const SITE = {
   title: "Justice's Blog",
   author: "Justice",
-  description: "技术笔记、算法学习、论文阅读与生活折腾。",
+  description: "算法学习、论文阅读、图像复原与工程实践记录。",
   locale: "zh-CN",
   github: "https://github.com/just1cez",
   avatar: "/images/avatar.jpg",
@@ -11,12 +11,12 @@ export const CATEGORY_META = {
   tech: {
     label: "Tech",
     title: "技术笔记",
-    description: "算法、编程、论文阅读和工程实践记录。",
+    description: "C++、算法、深度学习、图像复原论文和工程实践记录。",
   },
   life: {
     label: "Life",
     title: "生活杂谈",
-    description: "硬件折腾、日常观察和学习之外的碎片。",
+    description: "硬件折腾、日常观察和学习之外的轻量记录。",
   },
 } as const;
 
