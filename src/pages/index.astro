@@ -49,11 +49,11 @@ const profileGroups = [
                 </div>
               ))}
             </div>
-            <div class="flex flex-wrap gap-2 text-xs lg:w-40 lg:shrink-0 lg:justify-end">
+            <div class="flex flex-wrap gap-2 text-xs sm:flex-nowrap lg:w-[18rem] lg:shrink-0 lg:justify-end">
+              <a href={withBase("/projects")} class="whitespace-nowrap rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">Projects</a>
               <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">GitHub</a>
               <a href={withBase("/rss.xml")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">RSS</a>
               <a href={withBase("/about")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">About</a>
-              <a href={withBase("/projects")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">Projects</a>
             </div>
           </div>
         </div>

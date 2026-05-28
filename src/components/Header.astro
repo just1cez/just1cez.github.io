@@ -7,7 +7,6 @@ const isHome = currentPath === "/";
 const isBlog = currentPath.startsWith("/tech") || currentPath.startsWith("/life");
 const isAbout = currentPath === "/about";
 const isSearch = currentPath === "/search";
-const isGoal = currentPath === "/goal";
 const isProjects = currentPath === "/projects";
 ---
 
@@ -54,9 +53,6 @@ const isProjects = currentPath === "/projects";
       <a href={withBase("/projects")} class:list={["hover:text-accent transition-colors", isProjects && "text-accent font-medium"]}>
         Projects
       </a>
-      <a href={withBase("/goal")} class:list={["hover:text-accent transition-colors", isGoal && "text-accent font-medium"]}>
-        Goal
-      </a>
       <a href={withBase("/about")} class:list={["hover:text-accent transition-colors", isAbout && "text-accent font-medium"]}>
         关于
       </a>
@@ -85,7 +81,6 @@ const isProjects = currentPath === "/projects";
       <a href={withBase("/tags")} class:list={["mobile-link hover:text-accent transition-colors", currentPath.startsWith("/tags") && "text-accent font-medium"]}>标签</a>
       <a href={withBase("/search")} class:list={["mobile-link hover:text-accent transition-colors", isSearch && "text-accent font-medium"]}>搜索</a>
       <a href={withBase("/projects")} class:list={["mobile-link hover:text-accent transition-colors", isProjects && "text-accent font-medium"]}>Projects</a>
-      <a href={withBase("/goal")} class:list={["mobile-link hover:text-accent transition-colors", isGoal && "text-accent font-medium"]}>Goal</a>
       <a href={withBase("/about")} class:list={["mobile-link hover:text-accent transition-colors", isAbout && "text-accent font-medium"]}>关于</a>
       <ThemeToggle />
     </div>

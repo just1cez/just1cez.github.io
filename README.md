@@ -1,12 +1,14 @@
 # Justice's Blog
 
-基于 Astro + Tailwind CSS 的个人技术博客 / 知识花园，定位是算法、深度学习、图像复原、工程实践和硬件折腾的长期记录站。
+基于 Astro + Tailwind CSS 的个人技术博客 / 知识花园，定位是算法入门、AI 探索、大一课程和硬件折腾的长期记录站。
 
 ## 功能
 
-- 首页个人入口：`Justice / HITSZ CS`、正在关注、精选文章、最近更新、技术方向标签、GitHub / RSS / About
+- 首页个人入口：`Justice / HITSZ CS`、三组个人状态、精选文章、最近更新、技术方向标签、Projects / GitHub / RSS / About
 - Tech / Life 两个内容分区，支持标签页、文章归档、站内搜索、RSS、sitemap、robots.txt
+- Projects 页面承载项目档案、硬件折腾、进行中和想开始做的小实验
 - 文章页支持目录、阅读进度条、标题锚点、代码块文件名、语言标记、复制按钮、数学公式、上一篇 / 下一篇、相关阅读
+- 文章 frontmatter 支持 `stage` 标记内容阶段：`intro`、`paper`、`tinkering`、`reference`
 - MDX 写作组件：论文信息卡、算法题结构卡、提示块
 - 明暗主题切换、移动端导航、Open Graph 与结构化数据
 - GitHub Actions 自动构建并部署到 GitHub Pages
@@ -59,6 +61,7 @@ description: "一句话说明这篇文章解决什么问题。"
 cover: "/images/example.jpg"
 featured: false
 series: "系列名称"
+stage: "intro"
 draft: true
 ---
 ```
@@ -66,7 +69,17 @@ draft: true
 - `draft: true`：本地可见，线上不可见
 - `featured: true`：优先进入首页精选文章
 - `series`：用于文章页、搜索、相关文章的主题关联
+- `stage`：文章阶段，取值为 `intro`（入门笔记）、`paper`（论文初读）、`tinkering`（折腾记录）、`reference`（速查模板）
 - `cover`：用于 Open Graph 图片；文件放在 `public/` 下时用 `/images/name.jpg` 这类路径
+
+## 路线图
+
+导航里不单独放 Goal 页面，当前路线图直接写在这里：
+
+- 先把大一课程、算法入门和编程基础学扎实。
+- 持续记录 AI 入门探索，之后逐步开始 Machine Learning、AI Infra、Python 和 Rust。
+- 把硬件折腾、小项目、Bot 和本地服务实验沉淀到 Projects 页面。
+- 文章保持阶段感：速查模板可以直接回头用，论文初读和折腾记录则保留当时的理解边界。
 
 ## MDX 组件
 

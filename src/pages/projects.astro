@@ -1,6 +1,6 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import { postPath, withBase } from "../site.config";
+import { postPath } from "../site.config";
 
 const projectGroups = [
   {
@@ -21,7 +21,6 @@ const projectGroups = [
       {
         title: "博客知识库",
         status: "持续维护",
-        href: withBase("/goal"),
         description: "把课程、算法、AI 探索和折腾过程整理成以后能回头查的材料。",
         tags: ["Astro", "写作工作流", "知识花园"],
       },
