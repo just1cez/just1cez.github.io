@@ -11,7 +11,7 @@ export const CATEGORY_META = {
   tech: {
     label: "Tech",
     title: "技术笔记",
-    description: "算法入门、AI 探索、课程笔记、论文初读和工程练习记录。",
+    description: "算法入门、C++、AI 探索、课程笔记和工程练习记录。很多文章会保留学习现场，不急着写成定论。",
   },
   life: {
     label: "Life",

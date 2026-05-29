@@ -8,7 +8,7 @@ const allPosts = await getAllPosts();
 
 const latestPosts = allPosts.slice(0, 6);
 const featuredPosts = getFeaturedPosts(allPosts, 5);
-const focusTags = getFocusTags(allPosts, ["Algorithm", "深度学习", "图像去噪", "超分辨率", "论文阅读", "C++", "PC硬件"], 12);
+const focusTags = getFocusTags(allPosts, ["Algorithm", "C++", "AI探索", "学习记录", "PC硬件"], 5);
 const latestPost = allPosts[0];
 const techCount = allPosts.filter((p) => p.data.category === "tech").length;
 const lifeCount = allPosts.filter((p) => p.data.category === "life").length;
