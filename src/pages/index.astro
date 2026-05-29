@@ -36,12 +36,12 @@ const profileGroups = [
         </div>
 
         <div class="mt-6 rounded-md border border-border bg-bgSoft p-4">
-          <div class="space-y-5">
-            <div class="space-y-4">
+          <div class="space-y-4">
+            <div class="space-y-2.5">
               {profileGroups.map(([label, items]) => (
-                <div>
-                  <p class="whitespace-nowrap text-xs font-medium uppercase tracking-[0.16em] text-accentWarm">{label}</p>
-                  <div class="mt-2 flex flex-wrap gap-2">
+                <div class="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:gap-3">
+                  <p class="w-16 shrink-0 whitespace-nowrap text-xs font-medium uppercase tracking-[0.12em] text-accentWarm">{label}</p>
+                  <div class="flex flex-wrap gap-1.5">
                     {items.map((item) => (
                       <span class="whitespace-nowrap rounded bg-bg px-2.5 py-1 text-xs text-fg">{item}</span>
                     ))}
