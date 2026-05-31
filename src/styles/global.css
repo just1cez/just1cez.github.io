@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,29 +6,29 @@
 
 @layer base {
   :root {
-    --color-accent: #3b82f6;
-    --color-accent-warm: #b45309;
-    --color-bg: #ffffff;
-    --color-bg-soft: #f8fafc;
-    --color-fg: #1e293b;
-    --color-fg-muted: #64748b;
-    --color-border: #e2e8f0;
-    --color-shadow: rgba(0,0,0,0.04);
-    --color-inline-code-bg: #f9f2f4;
-    --color-inline-code-text: #c7254e;
+    --color-accent: #7A55D0;
+    --color-accent-warm: #5E9FD4;
+    --color-bg: #F6F4FB;
+    --color-bg-soft: #ECE8F6;
+    --color-fg: #2B2540;
+    --color-fg-muted: #6F6796;
+    --color-border: #DCD4EF;
+    --color-shadow: rgba(45,35,80,0.05);
+    --color-inline-code-bg: #ECE6F8;
+    --color-inline-code-text: #6B4BB8;
   }
 
   .dark {
-    --color-accent: #60a5fa;
-    --color-accent-warm: #fbbf24;
-    --color-bg: #0f172a;
-    --color-bg-soft: #1e293b;
-    --color-fg: #e2e8f0;
-    --color-fg-muted: #94a3b8;
-    --color-border: #334155;
-    --color-shadow: rgba(255,255,255,0.04);
-    --color-inline-code-bg: #3b2a35;
-    --color-inline-code-text: #f4758c;
+    --color-accent: #B9A0F2;
+    --color-accent-warm: #8FCDEA;
+    --color-bg: #131020;
+    --color-bg-soft: #1B1730;
+    --color-fg: #E8E3F4;
+    --color-fg-muted: #968BB8;
+    --color-border: #2D2650;
+    --color-shadow: rgba(185,160,242,0.05);
+    --color-inline-code-bg: #2A2348;
+    --color-inline-code-text: #C9B6F2;
   }
 
   html {
@@ -38,10 +38,42 @@
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.7;
     background-image:
       linear-gradient(to right, var(--color-shadow) 1px, transparent 1px),
       linear-gradient(to bottom, var(--color-shadow) 1px, transparent 1px);
     background-size: 7px 7px;
+  }
+
+  /* Moonlight: deep-purple radial glow layered behind the grid in dark mode */
+  .dark body {
+    background-color: #0d0a21;
+    background-image:
+      radial-gradient(circle at 18% -10%, rgba(122, 85, 208, 0.16), transparent 45%),
+      radial-gradient(circle at 88% 8%, rgba(94, 159, 212, 0.12), transparent 42%),
+      linear-gradient(to right, var(--color-shadow) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-shadow) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 7px 7px, 7px 7px;
+    background-attachment: fixed, fixed, scroll, scroll;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
   }
 
   ::selection {
@@ -87,4 +119,96 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  /* Frosted-glass surface: subtle in light, crystalline in dark (Emilia moonlight) */
+  .glass {
+    background-color: color-mix(in srgb, var(--color-bg-soft) 55%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .dark .glass {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* Self-drawing frost line: amethyst -> ice-blue gradient sweeping in */
+.frost-line {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--color-border) 30%, transparent);
+}
+
+.frost-line::after {
+  content: "";
+  position: absolute;
+  inset: 0 100% 0 0;
+  background: linear-gradient(
+    to right,
+    var(--color-accent),
+    var(--color-accent-warm),
+    transparent
+  );
+  animation: frost-draw 0.6s ease-out forwards;
+}
+
+@keyframes frost-draw {
+  to { inset: 0 0 0 0; }
+}
+
+/* Generic fade/slide-up entrance for static (non-island) sections */
+.frost-fade-up {
+  opacity: 0;
+  animation: frost-fade-up 0.5s ease-out forwards;
+}
+
+@keyframes frost-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-line::after,
+  .frost-fade-up { animation: none; }
+  .frost-fade-up { opacity: 1; transform: none; }
+}
+
+.frost-speck {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 9999px;
+  background: var(--speck-color, var(--color-accent));
+  box-shadow: 0 0 6px var(--speck-color, var(--color-accent));
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity;
+  animation: frost-rise 1.4s ease-out forwards;
+}
+
+@keyframes frost-rise {
+  0% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) rotate(var(--rot)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+        calc(-50% + var(--dx)),
+        calc(-50% + var(--dy))
+      )
+      rotate(var(--rot)) scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-speck { display: none; }
 }

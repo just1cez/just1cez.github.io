@@ -6,14 +6,32 @@ export default {
       colors: {
         accent: "var(--color-accent)",
         accentWarm: "var(--color-accent-warm)",
+        accent2: "var(--color-accent-warm)",
         bg: "var(--color-bg)",
         bgSoft: "var(--color-bg-soft)",
         fg: "var(--color-fg)",
         fgMuted: "var(--color-fg-muted)",
         border: "var(--color-border)",
+        // frost-* aliases so ported B components map onto the same tokens
+        "frost-bg": "var(--color-bg)",
+        "frost-surface": "var(--color-bg-soft)",
+        "frost-text": "var(--color-fg)",
+        "frost-muted": "var(--color-fg-muted)",
+        "frost-accent": "var(--color-accent)",
+        "frost-accent2": "var(--color-accent-warm)",
+        "frost-border": "var(--color-border)",
       },
       fontFamily: {
         serif: ['"Noto Serif SC"', '"Source Han Serif SC"', "STSong", "serif"],
+        sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
+      },
+      fontSize: {
+        "3.5xl": ["2rem", { lineHeight: "2.4rem" }],
+      },
+      animation: {
+        "spin-slow": "spin 30s linear infinite",
+        "bounce-slow": "bounce 3s ease-in-out infinite",
       },
       typography: {
         DEFAULT: {

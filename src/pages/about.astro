@@ -1,12 +1,9 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import { SITE, categoryPath, postPath, withBase } from "../site.config";
+import FrostLine from "../components/FrostLine.astro";
+import { SITE, PROFILE_GROUPS, categoryPath, postPath, withBase } from "../site.config";
 
-const profileGroups = [
-  ["正在学习", ["算法入门", "AI 入门探索", "大一课程"]],
-  ["平时爱好", ["游戏", "PC 硬件", "装机折腾"]],
-  ["想开始学", ["Machine Learning", "AI Infra", "Python", "Rust"]],
-] as const;
+const profileGroups = PROFILE_GROUPS;
 const recommendedPosts = [
   {
     title: "从这里开始：这个博客会写什么",
@@ -37,7 +34,7 @@ const recommendedPosts = [
 
 const readingRoutes = [
   ["技术笔记", categoryPath("tech"), "算法入门、AI 探索、课程笔记和工程练习。"],
-  ["项目档案", withBase("/projects"), "硬件折腾、小项目和以后想开始的实验。"],
+  ["系列合集", withBase("/series"), "按主题聚合的文章,看每个系列正在长成什么样。"],
   ["标签索引", withBase("/tags"), "按主题回看长期关注点。"],
   ["文章归档", withBase("/archive"), "按时间线查看全部更新。"],
 ] as const;
@@ -47,13 +44,13 @@ const readingRoutes = [
   title="About / Start Here - Justice's Blog"
   description="关于 Justice，以及这个博客的推荐阅读入口。"
 >
-  <header class="mb-10 border-b border-border pb-7">
+  <header class="mb-10 pb-7">
     <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
-      <img src={withBase(SITE.avatar)} alt="Justice" class="h-20 w-20 rounded-full object-cover ring-1 ring-border" />
+      <img src={withBase(SITE.avatar)} alt="Justice" class="h-20 w-20 rounded-full object-cover ring-2 ring-border" />
       <div>
-        <p class="text-xs font-medium uppercase tracking-[0.18em] text-accent">About / Start Here</p>
-        <h1 class="mt-2 text-2xl font-bold font-serif-cn">从这里开始</h1>
-        <p class="mt-1 text-sm text-fgMuted">HITSZ CS · 正在打基础，也在探索 AI 和工程</p>
+        <p class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent">About / Start Here</p>
+        <h1 class="mt-2 font-serif text-2xl font-bold sm:text-3.5xl">从这里开始</h1>
+        <p class="mt-1 text-sm text-fgMuted">{SITE.subtitle} · 正在打基础，也在探索 AI 和工程</p>
       </div>
     </div>
     <p class="mt-5 max-w-3xl leading-7 text-fgMuted">
@@ -61,7 +58,7 @@ const readingRoutes = [
       第一次来可以先把这里当作入口页：看我现在在学什么、已经写了哪些笔记、哪些折腾会继续补完。
     </p>
     <div class="mt-5 grid gap-3 sm:grid-cols-3">
-      {profileGroups.map(([label, items]) => (
+      {profileGroups.map(({ label, items }) => (
         <div class="rounded-md border border-border bg-bgSoft p-3">
           <p class="text-xs font-medium uppercase tracking-[0.16em] text-accentWarm">{label}</p>
           <div class="mt-2 flex flex-wrap gap-2">
@@ -74,6 +71,7 @@ const readingRoutes = [
         </div>
       ))}
     </div>
+    <FrostLine class="mt-7" />
   </header>
 
   <div class="space-y-10">

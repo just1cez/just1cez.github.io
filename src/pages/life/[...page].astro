@@ -1,9 +1,11 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
-import PostCard from "../../components/PostCard.astro";
+import FrostLine from "../../components/FrostLine.astro";
 import Pagination from "../../components/Pagination.astro";
+import ArticleList from "../../components/react/ArticleList.tsx";
 import { CATEGORY_META, categoryPath } from "../../site.config";
 import { getPostsByCategory } from "../../lib/posts";
+import { toPostItem } from "../../lib/toPostItem";
 
 export async function getStaticPaths({ paginate }) {
   const posts = await getPostsByCategory("life");
@@ -11,27 +13,21 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const { page } = Astro.props;
+const items = page.data.map(toPostItem);
 ---
 
 <PageLayout title="Life - Justice's Blog" description={CATEGORY_META.life.description} type="life">
-  <header class="mb-8 border-b border-border pb-5">
-    <h1 class="text-2xl font-bold">{CATEGORY_META.life.title}</h1>
-    <p class="mt-2 text-sm text-fgMuted">{CATEGORY_META.life.description}</p>
-  </header>
-  <div class="space-y-3">
-    {page.data.map((post) => (
-      <PostCard
-        title={post.data.title}
-        date={post.data.date}
-        tags={post.data.tags}
-        category={post.data.category}
-        description={post.data.description}
-        slug={post.id}
-        series={post.data.series}
-        stage={post.data.stage}
-        draft={post.data.draft}
-      />
-    ))}
+  <div class="space-y-8">
+    <header class="space-y-2">
+      <span class="block font-mono text-xs uppercase tracking-widest text-accent">Rest &amp; Reflection / 平衡日常</span>
+      <h1 class="flex items-center gap-2 font-serif text-2xl font-bold text-fg sm:text-3.5xl">
+        <svg class="h-6 w-6 text-accentWarm" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.24 5.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" /></svg>
+        <span>{CATEGORY_META.life.title}</span>
+      </h1>
+      <p class="font-serif text-xs italic text-fgMuted">{CATEGORY_META.life.description}</p>
+      <FrostLine />
+    </header>
+    <ArticleList client:visible posts={items} layout="grid" />
+    <Pagination currentPage={page.currentPage} lastPage={page.lastPage} baseUrl={categoryPath("life")} />
   </div>
-  <Pagination currentPage={page.currentPage} lastPage={page.lastPage} baseUrl={categoryPath("life")} />
 </PageLayout>

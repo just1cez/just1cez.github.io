@@ -1,0 +1,84 @@
+---
+import { SITE, QUOTE, PROFILE_GROUPS, categoryPath, postPath, withBase } from "../site.config";
+import { getAllPosts } from "../lib/posts";
+
+const allPosts = await getAllPosts();
+const techCount = allPosts.filter((p) => p.data.category === "tech").length;
+const lifeCount = allPosts.filter((p) => p.data.category === "life").length;
+const recentUpdates = allPosts.slice(0, 4);
+---
+
+<aside class="w-full lg:sticky lg:top-20 lg:self-start space-y-7 text-sm">
+  <!-- Identity -->
+  <div class="space-y-3.5">
+    <a href={withBase("/")} class="inline-block">
+      <img src={withBase(SITE.avatar)} alt={SITE.author} class="h-14 w-14 rounded-full object-cover ring-2 ring-border transition hover:ring-accent" />
+    </a>
+    <div class="space-y-1">
+      <div class="font-mono text-[10px] uppercase tracking-widest text-fgMuted">Author</div>
+      <h2 class="font-serif text-base font-bold tracking-tight text-fg">{SITE.author}</h2>
+      <p class="font-mono text-[10px] uppercase tracking-wider text-accent">{SITE.subtitle}</p>
+    </div>
+  </div>
+
+  <!-- Turing quote -->
+  <figure class="space-y-1.5">
+    <blockquote class="font-mono text-[11px] italic leading-relaxed text-fgMuted">“{QUOTE.en}”</blockquote>
+    <figcaption class="font-serif text-[11px] leading-relaxed text-fgMuted/95">{QUOTE.zh} — {QUOTE.author}</figcaption>
+  </figure>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-3 gap-2 border-y border-border py-4 text-center">
+    <a href={withBase("/archive")} class="group">
+      <div class="text-lg font-bold text-accent">{allPosts.length}</div>
+      <div class="font-mono text-[10px] uppercase text-fgMuted">All</div>
+    </a>
+    <a href={categoryPath("tech")} class="group">
+      <div class="text-lg font-bold text-accent">{techCount}</div>
+      <div class="font-mono text-[10px] uppercase text-fgMuted">Tech</div>
+    </a>
+    <a href={categoryPath("life")} class="group">
+      <div class="text-lg font-bold text-accent">{lifeCount}</div>
+      <div class="font-mono text-[10px] uppercase text-fgMuted">Life</div>
+    </a>
+  </div>
+
+  <!-- Learning status -->
+  <div class="space-y-3">
+    {PROFILE_GROUPS.map((group) => (
+      <div>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-accentWarm">{group.label}</p>
+        <div class="mt-1.5 flex flex-wrap gap-1.5">
+          {group.items.map((item) => (
+            <span class="rounded-sm border border-border bg-bgSoft px-2 py-0.5 text-[10px] text-fg transition-colors hover:border-accent">{item}</span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Latest updates -->
+  <div class="space-y-3 border-t border-border pt-4">
+    <h3 class="flex items-center gap-1.5 border-b border-border/40 pb-1 font-mono text-[10px] uppercase tracking-wider text-fgMuted">
+      <svg class="h-3 w-3 text-accentWarm" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M20 8a8 8 0 0 0-14-3M4 16a8 8 0 0 0 14 3" /></svg>
+      <span>修订流水 / Updates</span>
+    </h3>
+    <div class="space-y-2.5">
+      {recentUpdates.map((post) => (
+        <a href={postPath(post.data.category, post.id)} class="block border-l border-border/50 pl-2 text-[11px] leading-relaxed text-fgMuted transition-colors hover:text-accent">
+          <div class="font-mono text-[9px] opacity-75">{post.data.date.toLocaleDateString("zh-CN")}</div>
+          <p class="line-clamp-2 font-serif text-fg/90">{post.data.title}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Social -->
+  <div class="flex items-center gap-3 border-t border-border pt-4 font-mono text-xs text-fgMuted">
+    <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">GitHub</a>
+    <span class="opacity-20">/</span>
+    <a href={withBase("/rss.xml")} class="hover:text-accent transition-colors">RSS</a>
+    <span class="opacity-20">/</span>
+    <a href={withBase("/about")} class="hover:text-accent transition-colors">About</a>
+  </div>
+</aside>
