@@ -3,3 +3,7 @@ dist/
 .astro/
 .DS_Store
 .obsidian/
+
+# Local design-reference sources (not part of the site)
+emilia.github.io/
+justice-的个人技术博客/

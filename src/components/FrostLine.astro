@@ -1,0 +1,9 @@
+---
+// Self-drawing amethyst -> ice-blue frost line. Pure CSS, respects reduced-motion.
+export interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`frost-line ${className}`} aria-hidden="true"></div>
