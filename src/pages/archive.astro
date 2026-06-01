@@ -43,13 +43,13 @@ const groupedPosts = posts.reduce((groups, post) => {
                   {monthPosts.map((post) => (
                     <a href={postPath(post.data.category, post.id)} class="group flex flex-col justify-between gap-2 rounded border border-border/40 bg-bgSoft/15 p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-bgSoft/40 sm:flex-row sm:items-center">
                       <div class="space-y-1">
-                        <div class="flex flex-wrap items-center gap-2 font-mono text-[9px] text-fgMuted">
+                        <div class="flex flex-wrap items-center gap-2 font-mono text-[11px] text-fgMuted">
                           <span>{post.data.date.toLocaleDateString("zh-CN")}</span>
                           <span class="rounded border border-border/60 bg-bgSoft px-1.5 py-0.5">{POST_STAGE_META[post.data.stage].label}</span>
                         </div>
                         <h4 class="font-serif text-[14px] font-bold leading-snug text-fg transition-colors group-hover:text-accent">{post.data.title}</h4>
                       </div>
-                      <span class="shrink-0 self-end font-mono text-[9px] uppercase tracking-wide text-fgMuted opacity-80 sm:self-center">{CATEGORY_META[post.data.category].label}</span>
+                      <span class="shrink-0 self-end font-mono text-[11px] uppercase tracking-wide text-fgMuted opacity-80 sm:self-center">{CATEGORY_META[post.data.category].label}</span>
                     </a>
                   ))}
                 </div>
