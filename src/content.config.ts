@@ -1,7 +1,7 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
-const postStage = z.enum(["intro", "paper", "done", "evergreen", "pitfall", "snippet"]);
+const postStage = z.enum(["study", "paper", "done", "evergreen", "pitfall", "snippet"]);
 
 const tech = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/tech" }),
