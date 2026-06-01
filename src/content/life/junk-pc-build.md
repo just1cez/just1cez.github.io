@@ -6,7 +6,7 @@ category: "life"
 description: "250 元小黄鱼捡漏，从零拼出一台能点亮的主机。"
 featured: true
 series: "硬件折腾"
-stage: "tinkering"
+stage: "done"
 ---
 
 ## 需求分析
