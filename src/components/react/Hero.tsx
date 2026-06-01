@@ -3,7 +3,6 @@ import { motion } from "motion/react";
 
 const LINES = [
   "正在打基础，也在探索 AI 和工程。",
-  "记录学习现场，不急着写成定论。",
   "算法、课程笔记、论文初读与硬件折腾。",
   "这是我此刻的理解，它可能是错的。",
 ];
@@ -49,12 +48,17 @@ export default function Hero() {
       <div className="relative space-y-3">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-accent">
           <svg className="h-3 w-3 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5L7 19M19 17L5 7" /></svg>
-          Justice · 修业记录
+          Justice · HITSZ CS
         </span>
 
-        <h1 className="font-serif text-3xl font-bold tracking-tight text-fg sm:text-3.5xl">
-          行旅未半，记录为径。
-        </h1>
+        <div>
+          <h1 className="font-serif text-3xl font-bold tracking-tight text-fg sm:text-3.5xl">
+            欢迎来到我的博客
+          </h1>
+          <p className="mt-1 font-mono text-sm uppercase tracking-wide text-fgMuted">
+            Welcome to my blog
+          </p>
+        </div>
 
         <div className="flex h-7 items-center font-mono text-sm text-accent">
           <span>{text}</span>
