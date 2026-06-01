@@ -87,7 +87,7 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
             ))}
           </div>
           {query && (
-            <button onClick={() => setQuery("")} className="font-mono text-[11px] text-accent underline">清空 [x]</button>
+            <button onClick={() => setQuery("")} className="font-mono text-[12px] text-accent underline">清空 [x]</button>
           )}
         </div>
 
@@ -98,7 +98,7 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
               <button
                 key={tag}
                 onClick={() => setQuery(tag)}
-                className={`rounded border px-2.5 py-0.5 text-[11px] transition-all ${query === tag ? "border-accent/40 bg-accent/15 font-semibold text-accent" : "border-border bg-bg text-fgMuted hover:border-accent hover:text-accent"}`}
+                className={`rounded border px-2.5 py-0.5 text-[12px] transition-all ${query === tag ? "border-accent/40 bg-accent/15 font-semibold text-accent" : "border-border bg-bg text-fgMuted hover:border-accent hover:text-accent"}`}
               >
                 {tag}
               </button>
@@ -118,7 +118,7 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
             {results.map((p) => (
               <a key={p.url} href={p.url} className="group flex items-start justify-between gap-4 rounded-md border border-border/70 bg-bgSoft/40 p-4 transition-all hover:border-accent dark:bg-bgSoft/20">
                 <div className="min-w-0 flex-1 space-y-1.5">
-                  <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] text-fgMuted">
+                  <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-fgMuted">
                     <span>{new Date(p.date).toLocaleDateString("zh-CN")}</span>
                     {p.stageLabel && <span className="rounded border border-border bg-bgSoft px-1.5 py-0.5">{p.stageLabel}</span>}
                     <span className="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{p.category}</span>

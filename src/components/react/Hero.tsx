@@ -47,7 +47,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-accentWarm/10 blur-3xl" />
 
       <div className="relative space-y-3">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-accent">
           <svg className="h-3 w-3 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5L7 19M19 17L5 7" /></svg>
           Justice · 修业记录
         </span>

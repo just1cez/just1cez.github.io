@@ -24,16 +24,16 @@ export function ArticleCardR({ post }: { post: PostItem }) {
     >
       <div className="min-w-0 flex-1 space-y-2.5">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-[10px] text-accent">
+          <span className="rounded border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-[11px] text-accent">
             {post.stageLabel}
           </span>
           {post.series && (
-            <span className="rounded-sm border border-border bg-bgSoft px-2 py-0.5 font-mono text-[10px] text-fgMuted">
+            <span className="rounded-sm border border-border bg-bgSoft px-2 py-0.5 font-mono text-[11px] text-fgMuted">
               {post.series}
             </span>
           )}
           {post.featured && (
-            <span className="rounded bg-accent/15 px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider text-accent">
+            <span className="rounded bg-accent/15 px-1.5 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-accent">
               Selected ✧
             </span>
           )}
@@ -47,7 +47,7 @@ export function ArticleCardR({ post }: { post: PostItem }) {
           <p className="line-clamp-2 text-[13px] leading-relaxed text-fgMuted">{post.description}</p>
         )}
 
-        <div className="flex flex-wrap items-center gap-3 pt-1 font-mono text-[11px] text-fgMuted">
+        <div className="flex flex-wrap items-center gap-3 pt-1 font-mono text-[12px] text-fgMuted">
           <span className="flex items-center gap-1">
             <Calendar className="h-3.5 w-3.5 opacity-60" />
             {post.date}
