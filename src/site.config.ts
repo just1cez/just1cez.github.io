@@ -36,7 +36,7 @@ export const CATEGORY_META = {
 export type BlogCategory = keyof typeof CATEGORY_META;
 
 export const POST_STAGE_META = {
-  intro: {
+  study: {
     label: "课程学习笔记",
     description: "正在打基础时整理的学习记录。",
   },
