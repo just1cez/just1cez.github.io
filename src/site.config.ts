@@ -37,20 +37,28 @@ export type BlogCategory = keyof typeof CATEGORY_META;
 
 export const POST_STAGE_META = {
   intro: {
-    label: "入门笔记",
+    label: "课程学习笔记",
     description: "正在打基础时整理的学习记录。",
   },
   paper: {
-    label: "论文初读",
+    label: "论文学习",
     description: "第一轮论文阅读和理解记录。",
   },
-  tinkering: {
-    label: "折腾记录",
-    description: "硬件、工具或项目实践过程。",
+  done: {
+    label: "已完结",
+    description: "已经理解透彻、可以放心参考的成稿。",
   },
-  reference: {
-    label: "速查模板",
-    description: "以后可以直接回头查的清单或模板。",
+  evergreen: {
+    label: "长期维护",
+    description: "会持续更新补充的常青笔记。",
+  },
+  pitfall: {
+    label: "踩坑记录",
+    description: "报错排查和避坑经验。",
+  },
+  snippet: {
+    label: "随手记",
+    description: "零碎想法和不成体系的短笔记。",
   },
 } as const;
 
