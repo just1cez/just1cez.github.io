@@ -8,7 +8,7 @@ const lifeCount = allPosts.filter((p) => p.data.category === "life").length;
 const recentUpdates = allPosts.slice(0, 4);
 ---
 
-<aside class="w-full lg:sticky lg:top-20 lg:self-start space-y-7 text-sm">
+<aside class="w-full space-y-7 text-sm">
   <!-- Identity -->
   <div class="space-y-3.5">
     <a href={withBase("/")} class="inline-block">
@@ -29,7 +29,7 @@ const recentUpdates = allPosts.slice(0, 4);
 
   <!-- Stats -->
   <div class="grid grid-cols-3 gap-2 border-y border-border py-4 text-center">
-    <a href={withBase("/archive")} class="group">
+    <a href={withBase("/series")} class="group">
       <div class="text-lg font-bold text-accent">{allPosts.length}</div>
       <div class="font-mono text-[11px] uppercase text-fgMuted">All</div>
     </a>
