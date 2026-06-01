@@ -44,7 +44,7 @@ const focusTags = getFocusTags(allPosts, ["Algorithm", "C++", "AI探索", "学�
           <svg class="h-4 w-4 text-accentWarm" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v18l7-4 7 4V3z" /></svg>
           <span class="font-serif text-lg font-bold text-fg">最近文章 / Chronological</span>
         </span>
-        <a href={withBase("/archive")} class="font-mono text-[12px] text-accent hover:underline">完整归档 →</a>
+        <a href={withBase("/series")} class="font-mono text-[12px] text-accent hover:underline">按系列浏览 →</a>
       </h2>
       <ArticleList client:visible posts={latestPosts} layout="stack" />
     </section>
