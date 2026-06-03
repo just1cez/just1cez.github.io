@@ -1,120 +1,114 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 import FrostLine from "../components/FrostLine.astro";
-import { SITE, PROFILE_GROUPS, categoryPath, postPath, withBase } from "../site.config";
+import { SITE, categoryPath, postPath, withBase } from "../site.config";
 
-const profileGroups = PROFILE_GROUPS;
-const recommendedPosts = [
-  {
-    title: "从这里开始：这个博客会写什么",
-    href: postPath("tech", "start-here"),
-    note: "一篇给第一次来的读者看的入口，说明这个站现在和以后会记录什么。",
-  },
-  {
-    title: "C++ 竞赛常用技巧速查",
-    href: postPath("tech", "cpp-tips"),
-    note: "常用模板和编码习惯，先作为算法入门阶段的工具箱。",
-  },
-  {
-    title: "DGOSR 读书笔记",
-    href: postPath("tech", "dgosr"),
-    note: "一篇早期论文初读，保留当时理解图优化和 ADMM 展开的过程。",
-  },
-  {
-    title: "LGCNet 解读",
-    href: postPath("tech", "lgcnet"),
-    note: "一篇图像复原方向的学习现场，用来记录第一轮阅读时抓到的关键点。",
-  },
-  {
-    title: "250 元垃圾装机",
-    href: postPath("life", "junk-pc-build"),
-    note: "一台二手主机从配件到点亮的完整折腾记录。",
-  },
-];
+const profileItems = [
+  ["当前身份", "HITSZ CS / CS 学习中", "大一阶段，先把课程、编程和计算机基础慢慢打牢。"],
+  ["正在学习", "算法入门 / C++ / AI 入门探索", "把能复用的模板、踩过的坑和阶段性理解整理成笔记。"],
+  ["关注方向", "Machine Learning / AI Infra", "现在还在起步，会把接下来真正学到的东西持续补进来。"],
+  ["实践兴趣", "PC 硬件 / 装机折腾 / 小项目", "喜欢能动手验证的东西，也会记录折腾过程里的具体细节。"],
+] as const;
 
-const readingRoutes = [
-  ["技术笔记", categoryPath("tech"), "算法入门、AI 探索、课程笔记和工程练习。"],
-  ["系列合集", withBase("/series"), "按主题聚合的文章,看每个系列正在长成什么样。"],
-  ["标签索引", withBase("/tags"), "按主题回看长期关注点。"],
+const focusGroups = [
+  ["基础", ["算法入门", "C++", "大一课程"]],
+  ["AI", ["AI 入门探索", "Machine Learning", "AI Infra"]],
+  ["工程", ["Python", "Rust", "小项目"]],
+  ["生活", ["游戏", "PC 硬件", "装机折腾"]],
+] as const;
+
+const readingLinks = [
+  ["从这里开始", postPath("tech", "start-here"), "这个博客会写什么，以及现阶段为什么这样记录。"],
+  ["技术笔记", categoryPath("tech"), "算法、C++、AI 探索、课程笔记和工程练习。"],
+  ["生活杂谈", categoryPath("life"), "硬件折腾、日常观察和学习之外的轻量记录。"],
 ] as const;
 ---
 
 <PageLayout
-  title="About / Start Here - Justice's Blog"
-  description="关于 Justice，以及这个博客的推荐阅读入口。"
+  title="About - Justice's Blog"
+  description="关于 Justice 的学习方向、关注主题和博客记录。"
 >
   <header class="mb-10 pb-7">
-    <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
-      <img src={withBase(SITE.avatar)} alt="Justice" class="h-20 w-20 rounded-full object-cover ring-2 ring-border" />
-      <div>
-        <p class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent">About / Start Here</p>
-        <h1 class="mt-2 font-serif text-2xl font-bold sm:text-3.5xl">从这里开始</h1>
-        <p class="mt-1 text-sm text-fgMuted">{SITE.subtitle} · 正在打基础，也在探索 AI 和工程</p>
+    <div class="grid gap-6 md:grid-cols-[minmax(0,1.25fr)_minmax(260px,0.75fr)] md:items-end">
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
+        <img src={withBase(SITE.avatar)} alt="Justice" class="h-20 w-20 rounded-full object-cover ring-2 ring-border" />
+        <div>
+          <p class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent">About</p>
+          <h1 class="mt-2 font-serif text-2xl font-bold sm:text-3.5xl">Justice</h1>
+          <p class="mt-1 text-sm text-fgMuted">{SITE.subtitle} · 正在打基础，也在探索 AI 和工程</p>
+        </div>
+      </div>
+
+      <div class="rounded-md border border-border bg-bgSoft p-4">
+        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accentWarm">Profile</p>
+        <p class="mt-2 text-sm leading-6 text-fgMuted">
+          大一 CS 学生。这个站用来保存学习记录、项目笔记和一些硬件折腾，也保留理解还在变化时的真实过程。
+        </p>
       </div>
     </div>
-    <p class="mt-5 max-w-3xl leading-7 text-fgMuted">
-      这个站用来保存我正在建立的计算机基础、算法入门记录、AI 探索、大一课程笔记和一些硬件折腾。
-      第一次来可以先把这里当作入口页：看我现在在学什么、已经写了哪些笔记、哪些折腾会继续补完。
+
+    <p class="mt-6 max-w-3xl leading-7 text-fgMuted">
+      现在主要在补计算机基础、算法入门和编程能力，同时保持对 AI、工程实践和硬件折腾的兴趣。
+      这里的内容不会假装每篇都是成熟结论，更像是一份持续更新的学习档案。
     </p>
-    <div class="mt-5 grid gap-3 sm:grid-cols-3">
-      {profileGroups.map(({ label, items }) => (
-        <div class="rounded-md border border-border bg-bgSoft p-3">
-          <p class="text-xs font-medium uppercase tracking-[0.16em] text-accentWarm">{label}</p>
-          <div class="mt-2 flex flex-wrap gap-2">
-            {items.map((item) => (
-              <span class="whitespace-nowrap rounded bg-bg px-2.5 py-1 text-xs text-fg">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+
     <FrostLine class="mt-7" />
   </header>
 
   <div class="space-y-10">
     <section>
-      <div class="mb-4 flex flex-col gap-1 border-b border-border pb-2 sm:flex-row sm:items-baseline sm:justify-between">
-        <h2 class="text-xl font-semibold">先读这些</h2>
-        <span class="text-xs text-fgMuted">第一次来可以按这个顺序扫一圈</span>
-      </div>
-      <div class="grid gap-3">
-        {recommendedPosts.map((post) => (
-          <a href={post.href} class="block rounded-md border border-border bg-bg p-4 hover:border-accent transition-colors">
-            <h3 class="font-medium hover:text-accent">{post.title}</h3>
-            <p class="mt-2 text-sm leading-6 text-fgMuted">{post.note}</p>
-          </a>
+      <h2 class="mb-4 border-b border-border pb-2 text-xl font-semibold">个人概况</h2>
+      <div class="grid gap-3 sm:grid-cols-2">
+        {profileItems.map(([label, value, note]) => (
+          <article class="rounded-md border border-border bg-bg p-4">
+            <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accentWarm">{label}</p>
+            <h3 class="mt-2 font-serif text-base font-semibold text-fg">{value}</h3>
+            <p class="mt-2 text-sm leading-6 text-fgMuted">{note}</p>
+          </article>
         ))}
       </div>
     </section>
 
     <section>
-      <h2 class="mb-3 text-xl font-semibold">正在打基础</h2>
-      <p class="leading-7 text-fgMuted">
-        短期会先把大一课程、算法入门和编程基础学扎实，同时保持对 AI 的好奇心。
-        Machine Learning、AI Infra、Python 和 Rust 现在还属于想开始学的方向，生活区则保留游戏、PC 硬件和装机折腾。
-        所以这里的文章会保留阶段感：有些是速查模板，有些只是论文初读或折腾现场，不会假装每篇都是成熟总结。
+      <div class="mb-4 flex flex-col gap-1 border-b border-border pb-2 sm:flex-row sm:items-baseline sm:justify-between">
+        <h2 class="text-xl font-semibold">正在投入的方向</h2>
+        <span class="text-xs text-fgMuted">会随着学习进度继续调整</span>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {focusGroups.map(([label, items]) => (
+          <div class="rounded-md border border-border bg-bgSoft p-3">
+            <p class="text-xs font-medium uppercase tracking-[0.16em] text-accent">{label}</p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              {items.map((item) => (
+                <span class="whitespace-nowrap rounded bg-bg px-2.5 py-1 text-xs text-fg">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-3 text-xl font-semibold">这个博客记录什么</h2>
+      <p class="max-w-3xl leading-7 text-fgMuted">
+        技术区会放算法、C++、AI 探索、课程笔记和工程练习；生活区会保留硬件、装机和一些轻量记录。
+        有些文章是能回头查的速查模板，有些只是论文初读或折腾现场，页面里会尽量标清它们的阶段。
       </p>
     </section>
 
     <section>
-      <h2 class="mb-3 text-xl font-semibold">怎么阅读</h2>
-      <div class="grid gap-3 sm:grid-cols-2">
-        {readingRoutes.map(([label, href, note]) => (
-          <a href={href} class="rounded-md border border-border bg-bgSoft p-4 hover:border-accent hover:text-accent transition-colors">
+      <div class="mb-4 flex flex-col gap-1 border-b border-border pb-2 sm:flex-row sm:items-baseline sm:justify-between">
+        <h2 class="text-xl font-semibold">继续阅读</h2>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-3">
+        {readingLinks.map(([label, href, note]) => (
+          <a href={href} class="rounded-md border border-border bg-bg p-4 transition-colors hover:border-accent hover:text-accent">
             <span class="font-medium">{label}</span>
             <span class="mt-1 block text-sm leading-6 text-fgMuted">{note}</span>
           </a>
         ))}
-      </div>
-    </section>
-
-    <section class="border-t border-border pt-6">
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">GitHub</a>
-        <a href={withBase("/rss.xml")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">RSS</a>
-        <a href={categoryPath("life")} class="rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors">生活杂谈</a>
       </div>
     </section>
   </div>

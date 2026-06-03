@@ -3,37 +3,320 @@
 <button
   data-theme-toggle
   type="button"
-  aria-label="Toggle dark mode"
-  class="rounded-md p-1.5 text-fgMuted hover:text-fg hover:bg-bgSoft transition-colors"
+  aria-label="切换主题"
+  aria-pressed="false"
+  class="theme-toggle"
 >
-  <svg class="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-    <circle cx="12" cy="12" r="5" />
-    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round" />
-  </svg>
-  <svg class="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>
+  <span class="theme-toggle-track" aria-hidden="true">
+    <span class="theme-toggle-sky"></span>
+    <span class="theme-toggle-stars"></span>
+    <span class="theme-toggle-clouds"></span>
+    <span class="theme-toggle-halo"></span>
+    <span class="theme-toggle-orb">
+      <span class="theme-toggle-sun"></span>
+      <span class="theme-toggle-moon">
+        <span class="crater crater-1"></span>
+        <span class="crater crater-2"></span>
+        <span class="crater crater-3"></span>
+      </span>
+    </span>
+  </span>
+  <span class="sr-only">切换主题</span>
 </button>
+
+<style>
+  .theme-toggle {
+    --toggle-width: 78px;
+    --toggle-height: 32px;
+    --toggle-orb: 26px;
+    --toggle-pad: 3px;
+    display: inline-flex;
+    width: var(--toggle-width);
+    height: var(--toggle-height);
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .theme-toggle-track {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+    border-radius: inherit;
+    background: var(--color-bg-soft);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.24),
+      0 6px 16px color-mix(in srgb, var(--color-accent) 18%, transparent);
+    isolation: isolate;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .theme-toggle-sky,
+  .theme-toggle-stars,
+  .theme-toggle-clouds,
+  .theme-toggle-halo {
+    position: absolute;
+    inset: 0;
+  }
+
+  .theme-toggle-sky {
+    background: linear-gradient(180deg, #86d5ff 0%, #5fa8e8 60%, #9dcff2 100%);
+    transition: background 0.75s cubic-bezier(0.26, 0.97, 0.2, 1.08);
+    z-index: 0;
+  }
+
+  .theme-toggle-stars {
+    background-image:
+      radial-gradient(circle at 18% 34%, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 34% 62%, rgba(255, 255, 255, 0.85) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 53% 28%, rgba(255, 255, 255, 0.9) 0 1.2px, transparent 1.7px),
+      radial-gradient(circle at 70% 58%, rgba(185, 160, 242, 0.9) 0 1px, transparent 1.6px);
+    opacity: 0;
+    transform: translateY(-40%);
+    transition: opacity 0.35s ease, transform 0.75s cubic-bezier(0.26, 0.97, 0.2, 1.08);
+    z-index: 1;
+  }
+
+  .theme-toggle-clouds {
+    background:
+      radial-gradient(circle at 77% 76%, rgba(255, 255, 255, 0.96) 0 8px, transparent 8.5px),
+      radial-gradient(circle at 62% 80%, rgba(255, 255, 255, 0.92) 0 7px, transparent 7.5px),
+      radial-gradient(circle at 47% 82%, rgba(231, 244, 255, 0.96) 0 6px, transparent 6.5px),
+      radial-gradient(circle at 92% 88%, rgba(218, 235, 250, 0.9) 0 10px, transparent 10.5px);
+    opacity: 0.94;
+    transform: translateY(0);
+    transition: opacity 0.35s ease, transform 0.75s cubic-bezier(0.49, 1.57, 0.04, 0.83);
+    z-index: 1;
+  }
+
+  .theme-toggle-halo::before,
+  .theme-toggle-halo::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    transform: translate(-50%, -50%);
+    transition: left 0.75s cubic-bezier(0.26, 0.97, 0.2, 1.08), background 0.3s ease;
+    z-index: 1;
+  }
+
+  .theme-toggle-halo::before {
+    width: 40px;
+    height: 40px;
+  }
+
+  .theme-toggle-halo::after {
+    width: 52px;
+    height: 52px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .theme-toggle-orb {
+    position: absolute;
+    top: 50%;
+    left: var(--toggle-pad);
+    z-index: 2;
+    width: var(--toggle-orb);
+    height: var(--toggle-orb);
+    overflow: hidden;
+    border-radius: 999px;
+    box-shadow:
+      0 4px 10px rgba(23, 16, 48, 0.32),
+      inset 0.25em 0.25em 0.35em rgba(255, 255, 255, 0.7),
+      inset -0.28em -0.28em 0.75em rgba(38, 20, 78, 0.28);
+    transform: translateY(-50%);
+    transition: transform 0.85s cubic-bezier(0.26, 0.97, 0.2, 1.08);
+  }
+
+  .theme-toggle-sun,
+  .theme-toggle-moon {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .theme-toggle-sun {
+    background:
+      radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.78), transparent 24%),
+      linear-gradient(135deg, #ffe38a, #f0b947 60%, #df8d39);
+    opacity: 1;
+    transition: opacity 0.35s ease;
+  }
+
+  .theme-toggle-moon {
+    background:
+      radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.8), transparent 22%),
+      linear-gradient(135deg, #ece9f9, #c6c1dc 62%, #8d86b0);
+    transform: translateX(105%);
+    transition: transform 0.55s ease;
+  }
+
+  .crater {
+    position: absolute;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-accent) 45%, #77718f);
+    opacity: 0.62;
+  }
+
+  .crater-1 {
+    top: 6px;
+    left: 12px;
+    width: 5px;
+    height: 5px;
+  }
+
+  .crater-2 {
+    top: 14px;
+    left: 6px;
+    width: 7px;
+    height: 7px;
+  }
+
+  .crater-3 {
+    top: 17px;
+    left: 18px;
+    width: 4px;
+    height: 4px;
+  }
+
+  .theme-toggle:hover .theme-toggle-track {
+    border-color: color-mix(in srgb, var(--color-accent-warm) 72%, var(--color-border));
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+      0 8px 18px color-mix(in srgb, var(--color-accent-warm) 24%, transparent);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--color-accent-warm);
+    outline-offset: 3px;
+  }
+
+  .theme-toggle.is-night .theme-toggle-sky,
+  :global(.dark) .theme-toggle .theme-toggle-sky {
+    background: linear-gradient(180deg, #15142b 0%, #21183c 64%, #2d2650 100%);
+  }
+
+  .theme-toggle.is-night .theme-toggle-stars,
+  :global(.dark) .theme-toggle .theme-toggle-stars {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .theme-toggle.is-night .theme-toggle-clouds,
+  :global(.dark) .theme-toggle .theme-toggle-clouds {
+    opacity: 0.1;
+    transform: translateY(100%);
+  }
+
+  .theme-toggle.is-night .theme-toggle-halo::before,
+  .theme-toggle.is-night .theme-toggle-halo::after,
+  :global(.dark) .theme-toggle .theme-toggle-halo::before,
+  :global(.dark) .theme-toggle .theme-toggle-halo::after {
+    left: calc(var(--toggle-width) - 16px);
+    background: color-mix(in srgb, var(--color-accent) 24%, transparent);
+  }
+
+  .theme-toggle.is-night .theme-toggle-orb,
+  :global(.dark) .theme-toggle .theme-toggle-orb {
+    transform: translate(
+      calc(var(--toggle-width) - var(--toggle-orb) - var(--toggle-pad) * 2),
+      -50%
+    );
+  }
+
+  .theme-toggle.is-night .theme-toggle-sun,
+  :global(.dark) .theme-toggle .theme-toggle-sun {
+    opacity: 0;
+  }
+
+  .theme-toggle.is-night .theme-toggle-moon,
+  :global(.dark) .theme-toggle .theme-toggle-moon {
+    transform: translateX(0);
+  }
+
+  .theme-toggle.is-night:hover .theme-toggle-stars,
+  :global(.dark) .theme-toggle:hover .theme-toggle-stars {
+    animation: frost-twinkle 1.4s ease-in-out infinite alternate;
+  }
+
+  @keyframes frost-twinkle {
+    from { opacity: 0.72; }
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle-track,
+    .theme-toggle-sky,
+    .theme-toggle-stars,
+    .theme-toggle-clouds,
+    .theme-toggle-halo::before,
+    .theme-toggle-halo::after,
+    .theme-toggle-orb,
+    .theme-toggle-sun,
+    .theme-toggle-moon {
+      transition: none;
+    }
+
+    .theme-toggle.is-night:hover .theme-toggle-stars,
+    :global(.dark) .theme-toggle:hover .theme-toggle-stars {
+      animation: none;
+    }
+  }
+</style>
 
 <script is:inline>
 (function(){
-  function init(){
+  var afterSwapKey='__justiceThemeToggleAfterSwapBound';
+
+  function isDark(){
+    return document.documentElement.classList.contains('dark');
+  }
+
+  function saveTheme(theme){
+    try {
+      localStorage.setItem('theme', theme);
+    } catch (_) {}
+  }
+
+  function syncThemeToggles(){
+    var night=isDark();
+    document.querySelectorAll('[data-theme-toggle]').forEach(function(btn){
+      btn.classList.toggle('is-night', night);
+      btn.setAttribute('aria-pressed', night ? 'true' : 'false');
+      btn.setAttribute('aria-label', night ? '切换为浅色模式' : '切换为深色模式');
+    });
+  }
+
+  function bindThemeToggles(){
     document.querySelectorAll('[data-theme-toggle]').forEach(function(btn){
       if(btn.dataset.bound)return;
       btn.dataset.bound='1';
       btn.addEventListener('click',function(){
         var html=document.documentElement;
-        if(html.classList.contains('dark')){
-          html.classList.remove('dark');
-          localStorage.setItem('theme','light');
-        }else{
-          html.classList.add('dark');
-          localStorage.setItem('theme','dark');
-        }
+        var nextTheme=html.classList.contains('dark') ? 'light' : 'dark';
+        html.classList.toggle('dark', nextTheme === 'dark');
+        saveTheme(nextTheme);
+        syncThemeToggles();
       });
     });
+    syncThemeToggles();
   }
-  init();
-  document.addEventListener('astro:after-swap',init);
+
+  bindThemeToggles();
+
+  if(!window[afterSwapKey]){
+    window[afterSwapKey]=true;
+    document.addEventListener('astro:after-swap', bindThemeToggles);
+  }
 })();
 </script>

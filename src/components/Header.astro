@@ -30,10 +30,26 @@ const icons = {
 <header class="sticky top-0 z-40 w-full border-b border-border bg-bg/75 backdrop-blur-md transition-colors duration-300">
   <nav class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
     <a href={withBase("/")} title="返回首页" class="group flex items-center gap-3 select-none">
-      <span class="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-md border border-border bg-bgSoft transition-all duration-300 group-hover:border-accent">
-        <svg class="h-5 w-5 text-accent animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2v20M17 5L7 19M19 17L5 7" />
-          <circle cx="12" cy="12" r="3" class="fill-bgSoft stroke-accent" />
+      <span class="relative flex h-9 w-8 shrink-0 items-center justify-center" aria-hidden="true">
+        <svg class="h-8 w-8 overflow-visible" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="transition-transform duration-300 group-hover:-translate-y-0.5">
+            <path d="M7.2 24.6C10.8 27 20.5 27.2 24.9 24" stroke="color-mix(in srgb, var(--color-accent) 62%, white)" stroke-width="1.45" stroke-linecap="round" opacity="0.42" />
+
+            <g transform="rotate(-16 16 16)">
+              <path d="M15.9 3.5C19.5 6.4 20.4 10.8 16.7 14.3C13.3 12.5 12.5 7.3 15.9 3.5Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
+              <path d="M28.4 15.7C25.5 19.3 21.1 20.2 17.6 16.6C19.4 13.1 24.6 12.3 28.4 15.7Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
+              <path d="M16.1 28.5C12.5 25.6 11.6 21.2 15.3 17.7C18.7 19.5 19.5 24.7 16.1 28.5Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
+              <path d="M3.6 16.3C6.5 12.7 10.9 11.8 14.4 15.4C12.6 18.9 7.4 19.7 3.6 16.3Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
+
+              <path d="M16 6.9C17.5 10.2 17.7 12.6 16.7 14.3" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
+              <path d="M25.1 16C21.8 17.5 19.4 17.7 17.6 16.6" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
+              <path d="M16 25.1C14.5 21.8 14.3 19.4 15.3 17.7" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
+              <path d="M6.9 16C10.2 14.5 12.6 14.3 14.4 15.4" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
+
+              <path d="M16 12.1L19.6 16L16 19.9L12.4 16Z" fill="color-mix(in srgb, var(--color-bg) 58%, white)" stroke="color-mix(in srgb, var(--color-accent) 60%, white)" stroke-width="1.05" stroke-linejoin="round" />
+              <path d="M16 13.8L17.7 16L16 18.2L14.3 16Z" fill="color-mix(in srgb, var(--color-accent-warm) 46%, white)" stroke="color-mix(in srgb, var(--color-accent) 72%, white)" stroke-width="0.65" stroke-linejoin="round" />
+            </g>
+          </g>
         </svg>
       </span>
       <span class="flex flex-col">
