@@ -7,7 +7,7 @@ category: "life"
 description: "一句话说明这次观察或折腾。"
 featured: false
 series: "生活记录"
-stage: "tinkering"
+stage: "done"
 draft: true
 ---
 

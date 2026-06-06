@@ -9,7 +9,7 @@ const publicRoot = path.join(root, "public");
 const postExts = new Set([".md", ".mdx"]);
 const requiredFields = ["title", "date", "tags", "category", "description", "stage"];
 const allowedCategories = new Set(["tech", "life"]);
-const allowedStages = new Set(["intro", "paper", "tinkering", "reference"]);
+const allowedStages = new Set(["study", "paper", "done", "evergreen", "pitfall", "snippet"]);
 const externalTarget = /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i;
 const ignoredSchemes = /^(?:mailto:|tel:|javascript:)/i;
 
