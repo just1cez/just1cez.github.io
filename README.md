@@ -8,7 +8,7 @@
 - Tech / Life 两个内容分区，支持标签页、文章归档、站内搜索、RSS、sitemap、robots.txt
 - Projects 页面承载项目档案、硬件折腾、进行中和想开始做的小实验
 - 文章页支持目录、阅读进度条、标题锚点、代码块文件名、语言标记、复制按钮、数学公式、上一篇 / 下一篇、相关阅读
-- 文章 frontmatter 支持 `stage` 标记内容阶段：`intro`、`paper`、`tinkering`、`reference`
+- 文章 frontmatter 支持 `stage` 标记内容阶段：`study`、`paper`、`done`、`evergreen`、`pitfall`、`snippet`
 - MDX 写作组件：论文信息卡、算法题结构卡、提示块
 - 明暗主题切换、移动端导航、Open Graph 与结构化数据
 - GitHub Actions 自动构建并部署到 GitHub Pages
@@ -61,7 +61,7 @@ description: "一句话说明这篇文章解决什么问题。"
 cover: "/images/example.jpg"
 featured: false
 series: "系列名称"
-stage: "intro"
+stage: "study"
 draft: true
 ---
 ```
@@ -69,7 +69,7 @@ draft: true
 - `draft: true`：本地可见，线上不可见
 - `featured: true`：优先进入首页精选文章
 - `series`：用于文章页、搜索、相关文章的主题关联
-- `stage`：文章阶段，取值为 `intro`（入门笔记）、`paper`（论文初读）、`tinkering`（折腾记录）、`reference`（速查模板）
+- `stage`：文章阶段，取值为 `study`（学习记录）、`paper`（论文初读）、`done`（完成记录）、`evergreen`（常青速查）、`pitfall`（踩坑记录）、`snippet`（片段模板）
 - `cover`：用于 Open Graph 图片；文件放在 `public/` 下时用 `/images/name.jpg` 这类路径
 
 ## 路线图

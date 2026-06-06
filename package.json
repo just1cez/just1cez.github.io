@@ -10,6 +10,9 @@
     "check:posts": "node scripts/check-posts.mjs",
     "new:post": "node scripts/new-post.mjs"
   },
+  "engines": {
+    "node": ">=24"
+  },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",
     "@astrojs/react": "^5.0.6",
