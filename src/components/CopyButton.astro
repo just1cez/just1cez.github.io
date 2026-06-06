@@ -26,7 +26,8 @@
       const btn = document.createElement('clipboard-copy')
       btn.value = code.textContent ?? ''
       btn.className = 'copy-btn'
-      btn.setAttribute('aria-label', 'Copy code')
+      btn.setAttribute('aria-label', '复制代码')
+      btn.setAttribute('title', '复制代码')
       btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>'
       wrapper.appendChild(btn)
     })
@@ -54,7 +55,9 @@
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    padding: 0.35rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
     border: none;
     border-radius: 0.25rem;
     background: rgba(255,255,255,0.08);
@@ -89,6 +92,11 @@
   .copy-btn:hover {
     background: rgba(255,255,255,0.16);
     color: #e1e4e8;
+  }
+  .copy-btn:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--color-accent-warm);
+    outline-offset: 2px;
   }
   .copy-btn.copied {
     opacity: 1;

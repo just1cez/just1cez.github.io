@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
+import { SITE } from "../../site.config";
 
 const LINES = [
   "正在打基础，也在探索 AI 和工程。",
@@ -7,17 +8,22 @@ const LINES = [
   "这是我此刻的理解，它可能是错的。",
 ];
 
-const prefersReduced =
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 export default function Hero() {
+  const [mounted, setMounted] = useState(false);
+  const [prefersReduced, setPrefersReduced] = useState(false);
   const [lineIndex, setLineIndex] = useState(0);
-  const [text, setText] = useState(prefersReduced ? LINES[0] : "");
+  const [text, setText] = useState(LINES[0]);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (prefersReduced) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setPrefersReduced(reduced);
+    setMounted(true);
+    if (!reduced) setText("");
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || prefersReduced) return;
     const full = LINES[lineIndex];
     let timer: ReturnType<typeof setTimeout>;
 
@@ -37,8 +43,8 @@ export default function Hero() {
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={mounted ? { opacity: 0, y: 16 } : false}
+      animate={mounted ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="glass relative overflow-hidden rounded-2xl p-6 sm:p-8"
     >
@@ -48,7 +54,7 @@ export default function Hero() {
       <div className="relative space-y-3">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-accent">
           <svg className="h-3 w-3 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5L7 19M19 17L5 7" /></svg>
-          Justice · HITSZ CS
+          {SITE.author} · {SITE.subtitle}
         </span>
 
         <div>

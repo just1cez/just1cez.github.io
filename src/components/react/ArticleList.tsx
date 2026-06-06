@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { ArticleCardR, type PostItem } from "./ArticleCardR";
 
@@ -24,11 +24,17 @@ interface Props {
 }
 
 export default function ArticleList({ posts, layout = "stack" }: Props) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <motion.div
       variants={container}
-      initial="hidden"
-      animate="show"
+      initial={mounted ? "hidden" : false}
+      animate={mounted ? "show" : undefined}
       className={layout === "grid" ? "grid grid-cols-1 gap-6 md:grid-cols-2" : "space-y-2"}
     >
       {posts.map((post) => (
