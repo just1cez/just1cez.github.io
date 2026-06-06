@@ -5,7 +5,7 @@ export const SITE = {
   locale: "zh-CN",
   github: "https://github.com/just1cez",
   avatar: "/images/avatar.jpg",
-  subtitle: "HITSZ CS · 修业中",
+  subtitle: "HITSZ CS · Lab Notes",
 } as const;
 
 export const QUOTE = {
@@ -101,7 +101,17 @@ export function postPath(category: BlogCategory | string, slug: string) {
 }
 
 export function tagSlug(tag: string) {
-  return encodeURIComponent(tag.trim()).replace(/%2F/gi, "-").replace(/%5C/gi, "-");
+  const slug = tag
+    .trim()
+    .normalize("NFKC")
+    .replace(/\+/g, "-plus")
+    .replace(/&/g, "-and-")
+    .replace(/[/?#%[\]@!$'()*,:;=\\]+/g, "-")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  return slug || "tag";
 }
 
 export function tagPath(tag: string) {

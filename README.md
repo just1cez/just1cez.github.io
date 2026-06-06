@@ -4,9 +4,9 @@
 
 ## 功能
 
-- 首页个人入口：`Justice / HITSZ CS`、三组个人状态、精选文章、最近更新、技术方向标签、Projects / GitHub / RSS / About
+- 首页个人入口：`Justice / HITSZ CS · Lab Notes`、三组个人状态、精选文章、最近更新、技术方向标签、GitHub / RSS / About
 - Tech / Life 两个内容分区，支持标签页、文章归档、站内搜索、RSS、sitemap、robots.txt
-- Projects 页面承载项目档案、硬件折腾、进行中和想开始做的小实验
+- Series 页面按主题聚合文章，About 页面记录学习方向和兴趣主题
 - 文章页支持目录、阅读进度条、标题锚点、代码块文件名、语言标记、复制按钮、数学公式、上一篇 / 下一篇、相关阅读
 - 文章 frontmatter 支持 `stage` 标记内容阶段：`study`、`paper`、`done`、`evergreen`、`pitfall`、`snippet`
 - MDX 写作组件：论文信息卡、算法题结构卡、提示块
@@ -78,7 +78,7 @@ draft: true
 
 - 先把大一课程、算法入门和编程基础学扎实。
 - 持续记录 AI 入门探索，之后逐步开始 Machine Learning、AI Infra、Python 和 Rust。
-- 把硬件折腾、小项目、Bot 和本地服务实验沉淀到 Projects 页面。
+- 把硬件折腾、小项目、Bot 和本地服务实验沉淀到 Tech / Life 文章与系列索引里。
 - 文章保持阶段感：速查模板可以直接回头用，论文初读和折腾记录则保留当时的理解边界。
 
 ## MDX 组件

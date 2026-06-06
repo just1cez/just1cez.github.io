@@ -26,10 +26,15 @@ const item = prefersReduced
   : { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } } };
 
 export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
+  const [mounted, setMounted] = useState(false);
   const [posts, setPosts] = useState<IndexedPost[]>([]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | "tech" | "life">("All");
   const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     fetch(indexUrl)
@@ -55,7 +60,7 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
   }, [posts, query, category]);
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
+    <motion.div variants={container} initial={mounted ? "hidden" : false} animate={mounted ? "show" : undefined} className="space-y-8">
       <motion.div variants={item} className="space-y-2">
         <span className="block font-mono text-xs uppercase tracking-widest text-accentWarm">Retriever / 检索</span>
         <h1 className="font-serif text-2xl font-bold text-fg sm:text-3.5xl">全站文章检索</h1>
@@ -64,41 +69,48 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
 
       <motion.div variants={item} className="space-y-4">
         <div className="relative">
-          <SearchIcon className="absolute left-3.5 top-3.5 h-4 w-4 text-fgMuted" />
+          <label htmlFor="site-search" className="sr-only">搜索文章</label>
+          <SearchIcon aria-hidden="true" className="absolute left-3.5 top-3.5 h-4 w-4 text-fgMuted" />
           <input
+            id="site-search"
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            aria-label="搜索文章"
             placeholder="输入检索词，例如 算法、AI、装机 ..."
             className="w-full rounded-md border border-border bg-bgSoft/20 py-3 pl-11 pr-4 font-serif text-sm text-fg outline-none transition-colors placeholder:text-fgMuted/65 focus:border-accent focus:ring-1 focus:ring-accent"
           />
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex w-fit items-center gap-1.5 rounded border border-border/80 bg-bgSoft/20 p-1">
+          <div className="flex w-fit items-center gap-1.5 rounded border border-border/80 bg-bgSoft/20 p-1" role="group" aria-label="分类筛选">
             {(["All", "tech", "life"] as const).map((c) => (
               <button
                 key={c}
+                type="button"
+                aria-pressed={category === c}
                 onClick={() => setCategory(c)}
-                className={`rounded px-3 py-1.5 transition-all ${category === c ? "border border-border bg-bgSoft font-medium text-accent shadow-sm" : "text-fgMuted hover:text-fg"}`}
+                className={`min-h-9 rounded px-3 py-1.5 transition-all ${category === c ? "border border-border bg-bgSoft font-medium text-accent shadow-sm" : "text-fgMuted hover:text-fg"}`}
               >
                 {c === "All" ? "全部" : c === "tech" ? "Tech 技术" : "Life 生活"}
               </button>
             ))}
           </div>
           {query && (
-            <button onClick={() => setQuery("")} className="font-mono text-[12px] text-accent underline">清空 [x]</button>
+            <button type="button" aria-label="清空搜索词" onClick={() => setQuery("")} className="min-h-9 font-mono text-[12px] text-accent underline">清空 [x]</button>
           )}
         </div>
 
         {focusTags.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs">
-            <Tag className="mr-1 h-3.5 w-3.5 shrink-0 text-fgMuted" />
+          <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs" role="group" aria-label="常用标签筛选">
+            <Tag aria-hidden="true" className="mr-1 h-3.5 w-3.5 shrink-0 text-fgMuted" />
             {focusTags.map((tag) => (
               <button
                 key={tag}
+                type="button"
+                aria-pressed={query === tag}
                 onClick={() => setQuery(tag)}
-                className={`rounded border px-2.5 py-0.5 text-[12px] transition-all ${query === tag ? "border-accent/40 bg-accent/15 font-semibold text-accent" : "border-border bg-bg text-fgMuted hover:border-accent hover:text-accent"}`}
+                className={`min-h-9 rounded border px-3 py-1 text-[12px] transition-all ${query === tag ? "border-accent/40 bg-accent/15 font-semibold text-accent" : "border-border bg-bg text-fgMuted hover:border-accent hover:text-accent"}`}
               >
                 {tag}
               </button>

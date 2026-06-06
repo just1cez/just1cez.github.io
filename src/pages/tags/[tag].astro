@@ -1,6 +1,6 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
-import { CATEGORY_META, postPath, tagPath } from "../../site.config";
+import { CATEGORY_META, postPath, tagPath, tagSlug } from "../../site.config";
 import { getAllPosts } from "../../lib/posts";
 
 export async function getStaticPaths() {
@@ -23,7 +23,7 @@ export async function getStaticPaths() {
   }
 
   return Array.from(tagMap.entries()).map(([tag, data]) => ({
-    params: { tag },
+    params: { tag: tagSlug(tag) },
     props: {
       tag: data.tag,
       posts: data.posts.sort((a, b) => b.date.valueOf() - a.date.valueOf()),
