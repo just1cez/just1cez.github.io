@@ -9,17 +9,13 @@ series: "图像复原论文阅读"
 stage: "paper"
 ---
 
-import { Callout, PaperCard } from "../../components/mdx";
+> [!info] 论文信息
+> 标题：Laplacian Gradient Consistency Prior for Flash Guided Non-Flash Image Denoising
+> 任务：闪光引导非闪光图像去噪
+> 链接：/Laplacian%20Gradient%20Consistency%20Prior%20for%20Flash%20Gui.pdf
 
-<PaperCard
-  title="Laplacian Gradient Consistency Prior for Flash Guided Non-Flash Image Denoising"
-  task="闪光引导非闪光图像去噪"
-  link="/Laplacian%20Gradient%20Consistency%20Prior%20for%20Flash%20Gui.pdf"
-/>
-
-<Callout type="note" title="一句话抓住">
-LGCNet 的关键不是直接对齐像素，而是在梯度域建模跨模态一致性，并把这个先验嵌进 ADMM 展开网络。
-</Callout>
+> [!note] 一句话抓住
+> LGCNet 的关键不是直接对齐像素，而是在梯度域建模跨模态一致性，并把这个先验嵌进 ADMM 展开网络。
 
 ## 问题
 

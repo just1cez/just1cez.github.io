@@ -9,17 +9,13 @@ series: "图像复原论文阅读"
 stage: "paper"
 ---
 
-import { Callout, PaperCard } from "../../components/mdx";
+> [!info] 论文信息
+> 标题：Deep Graph Optimization for Depth Super-Resolution
+> 类型：论文阅读
+> 任务：深度图超分辨率
 
-<PaperCard
-  title="Deep Graph Optimization for Depth Super-Resolution"
-  venue="论文阅读"
-  task="深度图超分辨率"
-/>
-
-<Callout type="note" title="一句话抓住">
-DGOSR 把大规模图优化拆成 Kronecker 形式，再把 ADMM 求解展开成网络，用更少参数保留图优化的可解释结构。
-</Callout>
+> [!note] 一句话抓住
+> DGOSR 把大规模图优化拆成 Kronecker 形式，再把 ADMM 求解展开成网络，用更少参数保留图优化的可解释结构。
 
 ## 问题背景
 

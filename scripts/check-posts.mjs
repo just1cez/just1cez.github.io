@@ -6,7 +6,7 @@ import process from "node:process";
 const root = process.cwd();
 const contentRoot = path.join(root, "src", "content");
 const publicRoot = path.join(root, "public");
-const postExts = new Set([".md", ".mdx"]);
+const postExts = new Set([".md"]);
 const requiredFields = ["title", "date", "tags", "category", "description", "stage"];
 const allowedCategories = new Set(["tech", "life"]);
 const allowedStages = new Set(["study", "paper", "done", "evergreen", "pitfall", "snippet"]);
@@ -99,10 +99,8 @@ function extractTargets(source) {
   const targets = [];
   const body = stripCodeBlocks(source);
   const markdownLink = /!?\[[^\]]*]\(([^)\s]+)(?:\s+["'][^"']*["'])?\)/g;
-  const mdxPathProp = /\b(?:href|src|link)=["']([^"']+)["']/g;
 
   for (const match of body.matchAll(markdownLink)) targets.push(match[1]);
-  for (const match of body.matchAll(mdxPathProp)) targets.push(match[1]);
 
   return targets;
 }

@@ -4,9 +4,9 @@ import path from "node:path";
 import process from "node:process";
 
 const templates = {
-  tech: "tech-post.mdx",
-  algorithm: "algorithm-post.mdx",
-  paper: "paper-reading.mdx",
+  tech: "tech-post.md",
+  algorithm: "algorithm-post.md",
+  paper: "paper-reading.md",
   life: "life-post.md",
 };
 

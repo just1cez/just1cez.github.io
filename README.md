@@ -9,7 +9,7 @@
 - Series 页面按主题聚合文章，About 页面记录学习方向和兴趣主题
 - 文章页支持目录、阅读进度条、标题锚点、代码块文件名、语言标记、复制按钮、数学公式、上一篇 / 下一篇、相关阅读
 - 文章 frontmatter 支持 `stage` 标记内容阶段：`study`、`paper`、`done`、`evergreen`、`pitfall`、`snippet`
-- MDX 写作组件：论文信息卡、算法题结构卡、提示块
+- Obsidian 友好的 Markdown 写作，支持 callout、数学公式和代码块文件名
 - 明暗主题切换、移动端导航、Open Graph 与结构化数据
 - GitHub Actions 自动构建并部署到 GitHub Pages
 
@@ -43,9 +43,9 @@ npm run new:post -- life my-pc-build
 
 脚本会从 `templates/` 复制模板到对应目录：
 
-- `tech` -> `src/content/tech/*.mdx`
-- `algorithm` -> `src/content/tech/*.mdx`
-- `paper` -> `src/content/tech/*.mdx`
+- `tech` -> `src/content/tech/*.md`
+- `algorithm` -> `src/content/tech/*.md`
+- `paper` -> `src/content/tech/*.md`
 - `life` -> `src/content/life/*.md`
 
 常用 frontmatter：
@@ -81,27 +81,19 @@ draft: true
 - 把硬件折腾、小项目、Bot 和本地服务实验沉淀到 Tech / Life 文章与系列索引里。
 - 文章保持阶段感：速查模板可以直接回头用，论文初读和折腾记录则保留当时的理解边界。
 
-## MDX 组件
+## Markdown 写作
 
-技术和论文文章推荐使用 `.mdx`，可以在正文中引入结构化组件：
+技术和论文文章默认使用 `.md`，方便直接放进 Obsidian 编辑。结构化提示推荐使用 Obsidian callout：
 
-```mdx
-import { AlgorithmCard, Callout, PaperCard } from "../../components/mdx";
+```md
+> [!tip] 结论
+> 三到五句话写清楚这篇文章最值得记住的东西。
 
-<Callout type="tip" title="结论">
-三到五句话写清楚这篇文章最值得记住的东西。
-</Callout>
-
-<AlgorithmCard title="题目 / 方法名" difficulty="中等" complexity="O(n log n)">
-写题意、核心思路、复杂度和坑点。
-</AlgorithmCard>
-
-<PaperCard
-  title="论文标题"
-  venue="CVPR 2026"
-  task="图像复原"
-  link="https://example.com"
-/>
+> [!summary] 题目 / 方法名
+> 难度：中等
+> 复杂度：O(n log n)
+>
+> 写题意、核心思路、复杂度和坑点。
 ```
 
 代码块可以写文件名，文章页会显示在代码块顶部：
