@@ -9,15 +9,14 @@ series: "算法竞赛基础"
 stage: "evergreen"
 ---
 
-import { AlgorithmCard, Callout } from "../../components/mdx";
+> [!summary] 竞赛代码速查
+> 难度：基础模板
+> 复杂度：按片段使用
+>
+> 这篇文章不是单题题解，而是把高频竞赛代码片段按场景收束起来：字符处理、环形下标、坐标变换、去重、快速幂和约瑟夫环。
 
-<AlgorithmCard title="竞赛代码速查" difficulty="基础模板" complexity="按片段使用">
-这篇文章不是单题题解，而是把高频竞赛代码片段按场景收束起来：字符处理、环形下标、坐标变换、去重、快速幂和约瑟夫环。
-</AlgorithmCard>
-
-<Callout type="tip" title="使用方式">
-遇到模拟、字符串或基础数学题时，先从这里找模板，再根据题目约束调整边界和数据类型。
-</Callout>
+> [!tip] 使用方式
+> 遇到模拟、字符串或基础数学题时，先从这里找模板，再根据题目约束调整边界和数据类型。
 
 ## 竞赛编码习惯
 

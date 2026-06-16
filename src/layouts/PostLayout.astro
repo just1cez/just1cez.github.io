@@ -202,6 +202,34 @@ const articleSchema = canonicalUrl && {
     @apply my-4 overflow-x-auto;
   }
 
+  .prose .obsidian-callout {
+    margin: 1rem 0;
+    border-left: 3px solid var(--color-accent);
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, var(--color-bg-soft) 72%, transparent);
+    padding: 0.85rem 1rem;
+    color: var(--color-fg-muted);
+  }
+
+  .prose .obsidian-callout p {
+    margin: 0.35rem 0;
+  }
+
+  .prose .obsidian-callout-title {
+    color: var(--color-fg);
+    font-weight: 700;
+  }
+
+  .prose .obsidian-callout-tip,
+  .prose .obsidian-callout-summary {
+    border-left-color: var(--color-accent-warm);
+  }
+
+  .prose .obsidian-callout-info,
+  .prose .obsidian-callout-note {
+    border-left-color: var(--color-accent);
+  }
+
   .prose h2,
   .prose h3 {
     scroll-margin-top: 5rem;

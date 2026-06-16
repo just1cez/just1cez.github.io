@@ -11,15 +11,6 @@ stage: "paper"
 draft: true
 ---
 
-import { Callout, PaperCard } from "../../components/mdx";
-
-<PaperCard
-  title="论文标题"
-  venue="会议 / 期刊"
-  task="任务方向"
-  link="https://example.com"
-/>
-
 ## 论文信息
 
 | 项目 | 内容 |
@@ -49,9 +40,8 @@ import { Callout, PaperCard } from "../../components/mdx";
 
 ## 我的理解
 
-<Callout type="note" title="我的判断">
-这里写这篇文章真正值得记住的地方。
-</Callout>
+> [!note] 我的判断
+> 这里写这篇文章真正值得记住的地方。
 
 这篇文章真正有价值的地方，以及可能的问题。
 

@@ -11,11 +11,11 @@ stage: "study"
 draft: true
 ---
 
-import { AlgorithmCard, Callout } from "../../components/mdx";
-
-<AlgorithmCard title="题目名称" difficulty="难度" complexity="O(?)">
-题意、核心思路、复杂度和坑点固定沉淀在同一套结构里。
-</AlgorithmCard>
+> [!summary] 题目名称
+> 难度：
+> 复杂度：O(?)
+>
+> 题意、核心思路、复杂度和坑点固定沉淀在同一套结构里。
 
 ## 题意
 
@@ -23,9 +23,8 @@ import { AlgorithmCard, Callout } from "../../components/mdx";
 
 ## 思路
 
-<Callout type="note" title="关键观察">
-用一句话写最关键的转化、单调性、状态定义或贪心理由。
-</Callout>
+> [!note] 关键观察
+> 用一句话写最关键的转化、单调性、状态定义或贪心理由。
 
 核心状态、转移、数据结构或证明。
 

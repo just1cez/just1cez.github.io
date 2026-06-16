@@ -1,5 +1,4 @@
 import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import remarkMath from "remark-math";
@@ -21,6 +20,54 @@ function codeBlockFilename() {
   };
 }
 
+function rehypeObsidianCallouts() {
+  const calloutMarker = /^\[!([A-Za-z][\w-]*)]\s*([^\n]*)/;
+
+  function visit(node) {
+    if (!node || typeof node !== "object") return;
+
+    if (node.type === "element" && node.tagName === "blockquote") {
+      const firstChild = node.children?.find((child) => child.type === "element" && child.tagName === "p");
+      const firstText = firstChild?.children?.find((child) => child.type === "text");
+      const match = firstText?.value?.match(calloutMarker);
+
+      if (match) {
+        const type = match[1].toLowerCase();
+        const title = match[2] || type;
+        const rest = firstText.value.slice(match[0].length).replace(/^\n/, "");
+
+        node.tagName = "aside";
+        node.properties = {
+          ...(node.properties ?? {}),
+          className: ["obsidian-callout", `obsidian-callout-${type}`],
+        };
+
+        firstText.value = title;
+        firstChild.properties = {
+          ...(firstChild.properties ?? {}),
+          className: ["obsidian-callout-title"],
+        };
+
+        if (rest.trim()) {
+          const titleIndex = node.children.indexOf(firstChild);
+          node.children.splice(titleIndex + 1, 0, {
+            type: "element",
+            tagName: "p",
+            properties: {},
+            children: [{ type: "text", value: rest }],
+          });
+        }
+      }
+    }
+
+    if (Array.isArray(node.children)) {
+      for (const child of node.children) visit(child);
+    }
+  }
+
+  return (tree) => visit(tree);
+}
+
 export default defineConfig({
   site,
   base,
@@ -31,7 +78,7 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
+    rehypePlugins: [rehypeObsidianCallouts, rehypeKatex],
     shikiConfig: {
       themes: {
         light: "github-light",
@@ -41,7 +88,6 @@ export default defineConfig({
     },
   },
   integrations: [
-    mdx(),
     sitemap(),
     react(),
   ],

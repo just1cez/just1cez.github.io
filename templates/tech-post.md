@@ -11,15 +11,10 @@ stage: "study"
 draft: true
 ---
 
-import { AlgorithmCard, Callout } from "../../components/mdx";
-
 ## TL;DR
 
-<Callout type="tip" title="结论">
-用三到五句话写清楚结论。
-</Callout>
-
-用三到五句话写清楚结论。
+> [!tip] 结论
+> 用三到五句话写清楚结论。
 
 ## 背景
 
@@ -27,9 +22,11 @@ import { AlgorithmCard, Callout } from "../../components/mdx";
 
 ## 思路
 
-<AlgorithmCard title="题目 / 方法名" difficulty="难度" complexity="O(n log n)">
-写题意、核心状态和转移方式。
-</AlgorithmCard>
+> [!summary] 题目 / 方法名
+> 难度：
+> 复杂度：O(n log n)
+>
+> 写题意、核心状态和转移方式。
 
 核心想法、关键推导或设计取舍。
 
