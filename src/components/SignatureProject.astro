@@ -1,0 +1,142 @@
+---
+import { withBase } from "../site.config";
+
+const repoUrl = "https://github.com/just1cez/personal-command-deck";
+const releaseUrl = "https://github.com/just1cez/personal-command-deck/releases";
+const highlights = [
+  "聚焦 / 推进 / 复盘三段式日常工作流",
+  "本地优先数据、JSON 备份与导入导出",
+  "Electron + React + TypeScript 桌面体验",
+];
+const stats = [
+  { label: "Platform", value: "Windows Desktop" },
+  { label: "Stack", value: "Electron / React" },
+  { label: "Mode", value: "Local-first" },
+];
+---
+
+<section id="signature-project" class="frost-fade-up min-w-0 space-y-5 scroll-mt-24">
+  <div class="section-heading">
+    <div class="min-w-0">
+      <p class="section-kicker">Project Showcase</p>
+      <h2>项目展示：Personal Command Deck</h2>
+    </div>
+    <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="section-link hidden sm:inline-flex">
+      GitHub
+      <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 17 17 7" />
+        <path d="M7 7h10v10" />
+      </svg>
+    </a>
+  </div>
+
+  <article class="signature-project group w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-border/80 bg-bgSoft/45 shadow-[0_18px_60px_rgba(45,35,80,0.07)] backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 dark:bg-bgSoft/20">
+    <div class="grid min-w-0 gap-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
+      <div class="min-w-0 flex flex-col justify-between gap-6 p-4 sm:gap-8 sm:p-7">
+        <div class="space-y-5">
+          <div class="inline-flex max-w-full flex-wrap items-center gap-2 rounded border border-accent/25 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-accent">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-accentWarm shadow-[0_0_10px_var(--color-accent-warm)]"></span>
+            <span class="min-w-0 break-words">Local-first command center</span>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-balance break-words font-serif text-xl font-bold leading-tight tracking-tight text-fg sm:text-3xl">
+              把每天的重点、项目和复盘放进一个安静的个人指挥台。
+            </h3>
+            <p class="max-w-2xl break-words text-sm leading-7 text-fgMuted sm:text-[15px]">
+              它不是团队管理后台，也不是厚重的效率系统。打开以后先看清今天最重要的一步，开始专注，临时想法先暂存，最后用三分钟复盘归档当天。
+            </p>
+          </div>
+
+          <ul class="grid gap-2 text-sm text-fgMuted sm:grid-cols-3">
+            {highlights.map((item) => (
+              <li class="min-w-0 break-words rounded border border-border/70 bg-bg/55 px-3 py-2 leading-relaxed transition-colors group-hover:border-accent/30 dark:bg-bg/20">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="flex min-w-0 flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div class="grid min-w-0 grid-cols-1 gap-3 text-left min-[380px]:grid-cols-3">
+            {stats.map((stat) => (
+              <div class="min-w-0">
+                <div class="font-mono text-[10px] uppercase tracking-wider text-fgMuted">{stat.label}</div>
+                <div class="mt-0.5 break-words font-serif text-[13px] font-bold leading-tight text-fg">{stat.value}</div>
+              </div>
+            ))}
+          </div>
+
+          <div class="flex w-full flex-wrap gap-2 sm:w-auto">
+            <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 font-serif text-sm font-bold text-bg shadow-sm transition-all hover:-translate-y-0.5 hover:bg-fg">
+              查看仓库
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7" />
+                <path d="M7 7h10v10" />
+              </svg>
+            </a>
+            <a href={releaseUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-bg/60 px-4 py-2 font-serif text-sm font-bold text-fg transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent">
+              Releases
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-preview relative min-h-[300px] min-w-0 border-t border-border/60 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--color-bg)_72%,white),color-mix(in_srgb,var(--color-bg-soft)_84%,transparent))] p-4 sm:min-h-[360px] sm:p-7 lg:border-l lg:border-t-0">
+        <div class="absolute inset-0 opacity-55" aria-hidden="true"></div>
+        <div class="relative mx-auto flex h-full w-full max-w-[430px] flex-col justify-center gap-5">
+          <div class="project-window max-w-full overflow-hidden rounded-lg border border-border/80 bg-bg/80 p-3 shadow-[0_20px_70px_rgba(45,35,80,0.12)] backdrop-blur dark:bg-bg/75 sm:p-4">
+            <div class="mb-4 flex items-center justify-between border-b border-border/60 pb-3">
+              <div class="flex items-center gap-1.5" aria-hidden="true">
+                <span class="h-2.5 w-2.5 rounded-full bg-[#ff7a8a]"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-[#f6c55b]"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-[#78d6b8]"></span>
+              </div>
+              <span class="font-mono text-[10px] uppercase tracking-wider text-fgMuted">Command Deck</span>
+            </div>
+
+            <div class="grid gap-3">
+              <div class="rounded-md border border-accent/25 bg-accent/10 p-3">
+                <div class="flex items-center justify-between font-mono text-[11px] text-accent">
+                  <span>今日专注</span>
+                  <span>72%</span>
+                </div>
+                <div class="mt-3 h-2 rounded-full bg-bgSoft">
+                  <div class="h-full w-[72%] rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-accent-warm))]"></div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
+                <div class="min-w-0 rounded-md border border-border/70 bg-bgSoft/55 p-2 sm:p-3">
+                  <div class="h-1.5 w-10 max-w-full rounded bg-accent/35 sm:w-12"></div>
+                  <div class="mt-3 h-10 rounded bg-bg/70"></div>
+                </div>
+                <div class="min-w-0 rounded-md border border-border/70 bg-bgSoft/55 p-2 sm:p-3">
+                  <div class="h-1.5 w-9 max-w-full rounded bg-accentWarm/45 sm:w-10"></div>
+                  <div class="mt-3 h-10 rounded bg-bg/70"></div>
+                </div>
+                <div class="min-w-0 rounded-md border border-border/70 bg-bgSoft/55 p-2 sm:p-3">
+                  <div class="h-1.5 w-8 max-w-full rounded bg-[#d985a7]/55 sm:w-9"></div>
+                  <div class="mt-3 h-10 rounded bg-bg/70"></div>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <div class="h-2 rounded bg-border/70"></div>
+                <div class="h-2 w-5/6 rounded bg-border/50"></div>
+                <div class="h-2 w-2/3 rounded bg-border/40"></div>
+              </div>
+            </div>
+          </div>
+
+          <img
+            src={withBase("/images/personal-command-deck-hero.png")}
+            alt="Personal Command Deck app icon"
+            class="mx-auto h-28 w-28 object-contain drop-shadow-[0_18px_28px_rgba(122,85,208,0.28)] transition-transform duration-500 group-hover:-translate-y-1 sm:h-40 sm:w-40"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </article>
+</section>

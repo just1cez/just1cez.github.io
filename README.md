@@ -4,7 +4,7 @@
 
 ## 功能
 
-- 首页个人入口：`Justice / HITSZ CS · Lab Notes`、三组个人状态、精选文章、最近更新、技术方向标签、GitHub / RSS / About
+- 首页个人入口：`Justice / HITSZ CS · Personal Blog`、三组个人状态、精选文章、最近更新、技术方向标签、GitHub / RSS / About
 - Tech / Life 两个内容分区，支持标签页、文章归档、站内搜索、RSS、sitemap、robots.txt
 - Series 页面按主题聚合文章，About 页面记录学习方向和兴趣主题
 - 文章页支持目录、阅读进度条、标题锚点、代码块文件名、语言标记、复制按钮、数学公式、上一篇 / 下一篇、相关阅读
