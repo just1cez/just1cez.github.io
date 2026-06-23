@@ -20,7 +20,7 @@ export function ArticleCardR({ post }: { post: PostItem }) {
   return (
     <a
       href={post.href}
-      className="group relative flex items-start justify-between gap-4 overflow-hidden rounded-md border border-border/70 bg-bgSoft/40 p-5 transition-all duration-300 hover:border-accent hover:shadow-sm dark:bg-bgSoft/20"
+      className="group relative flex items-start justify-between gap-4 overflow-hidden rounded-md border border-border/70 bg-bgSoft/40 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/70 hover:shadow-[0_14px_36px_rgba(45,35,80,0.08)] dark:bg-bgSoft/20"
     >
       <div className="min-w-0 flex-1 space-y-2.5">
         <div className="flex flex-wrap items-center gap-2">

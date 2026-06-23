@@ -5,7 +5,7 @@ export const SITE = {
   locale: "zh-CN",
   github: "https://github.com/just1cez",
   avatar: "/images/avatar.jpg",
-  subtitle: "HITSZ CS · Lab Notes",
+  subtitle: "HITSZ CS · Personal Blog",
 } as const;
 
 export const QUOTE = {

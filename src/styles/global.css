@@ -5,9 +5,9 @@
 @layer base {
   :root {
     --color-accent: #7A55D0;
-    --color-accent-warm: #5E9FD4;
-    --color-bg: #F6F4FB;
-    --color-bg-soft: #ECE8F6;
+    --color-accent-warm: #4FA7CC;
+    --color-bg: #F8F7FC;
+    --color-bg-soft: #EFECF8;
     --color-fg: #2B2540;
     --color-fg-muted: #6F6796;
     --color-border: #DCD4EF;
@@ -19,8 +19,8 @@
   .dark {
     --color-accent: #B9A0F2;
     --color-accent-warm: #8FCDEA;
-    --color-bg: #131020;
-    --color-bg-soft: #1B1730;
+    --color-bg: #11101A;
+    --color-bg-soft: #1C1830;
     --color-fg: #E8E3F4;
     --color-fg-muted: #968BB8;
     --color-border: #2D2650;
@@ -31,6 +31,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
@@ -39,17 +40,21 @@
     font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
     line-height: 1.7;
     background-image:
+      linear-gradient(135deg, rgba(255,255,255,0.72), transparent 28%),
+      linear-gradient(315deg, rgba(79,167,204,0.10), transparent 36%),
       linear-gradient(to right, var(--color-shadow) 1px, transparent 1px),
       linear-gradient(to bottom, var(--color-shadow) 1px, transparent 1px);
-    background-size: 7px 7px;
+    background-size: 100% 100%, 100% 100%, 7px 7px, 7px 7px;
+    background-attachment: fixed, fixed, scroll, scroll;
+    overflow-x: hidden;
   }
 
-  /* Moonlight: deep-purple radial glow layered behind the grid in dark mode */
+  /* Moonlight grid: crystalline, but still quiet enough for long reading. */
   .dark body {
-    background-color: #0d0a21;
+    background-color: #0d0b18;
     background-image:
-      radial-gradient(circle at 18% -10%, rgba(122, 85, 208, 0.16), transparent 45%),
-      radial-gradient(circle at 88% 8%, rgba(94, 159, 212, 0.12), transparent 42%),
+      linear-gradient(135deg, rgba(185, 160, 242, 0.12), transparent 34%),
+      linear-gradient(315deg, rgba(143, 205, 234, 0.10), transparent 40%),
       linear-gradient(to right, var(--color-shadow) 1px, transparent 1px),
       linear-gradient(to bottom, var(--color-shadow) 1px, transparent 1px);
     background-size: 100% 100%, 100% 100%, 7px 7px, 7px 7px;
@@ -123,12 +128,111 @@
     background-color: color-mix(in srgb, var(--color-bg-soft) 55%, transparent);
     border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
     backdrop-filter: blur(10px);
+    box-shadow: 0 18px 56px rgba(45, 35, 80, 0.06);
   }
 
   .dark .glass {
     background-color: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
+    box-shadow: 0 18px 56px rgba(5, 4, 12, 0.28);
+  }
+
+  .hero-panel {
+    background-image:
+      linear-gradient(135deg, color-mix(in srgb, var(--color-bg-soft) 78%, transparent), color-mix(in srgb, var(--color-bg) 72%, transparent)),
+      linear-gradient(90deg, transparent 0 48%, color-mix(in srgb, var(--color-accent-warm) 14%, transparent) 48% 52%, transparent 52%);
+    background-size: 100% 100%, 18px 18px;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .section-heading h2,
+  .section-heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-fg);
+    letter-spacing: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .section-heading-title > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .section-kicker {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+    border-radius: 0.375rem;
+    background: color-mix(in srgb, var(--color-bg-soft) 60%, transparent);
+    padding: 0.4rem 0.7rem;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.72rem;
+    color: var(--color-fg-muted);
+  }
+
+  .section-link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 640px) {
+    .section-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .section-heading h2,
+    .section-heading-title {
+      max-width: 100%;
+      line-height: 1.35;
+    }
+  }
+
+  .signature-preview::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(120deg, transparent 0 42%, color-mix(in srgb, var(--color-accent-warm) 16%, transparent) 42% 44%, transparent 44%),
+      linear-gradient(0deg, color-mix(in srgb, var(--color-border) 28%, transparent) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 34px;
+  }
+
+  .project-window {
+    position: relative;
+  }
+
+  .project-window::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.22), transparent 32%);
   }
 }
 

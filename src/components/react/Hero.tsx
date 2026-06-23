@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { SITE } from "../../site.config";
+import { ArrowDown, BookOpen, ExternalLink, Sparkles } from "lucide-react";
+import { SITE, withBase } from "../../site.config";
 
 const LINES = [
-  "正在打基础，也在探索 AI 和工程。",
-  "算法、课程笔记、论文初读与硬件折腾。",
-  "这是我此刻的理解，它可能是错的。",
+  "算法、AI 入门和工程练习，都先认真写下来。",
+  "Personal Command Deck 是我正在打磨的本地桌面项目。",
+  "这里保留学习现场，也保留一点冰晶味的个人审美。",
 ];
 
 export default function Hero() {
@@ -46,29 +47,66 @@ export default function Hero() {
       initial={mounted ? { opacity: 0, y: 16 } : false}
       animate={mounted ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="glass relative overflow-hidden rounded-2xl p-6 sm:p-8"
+      className="hero-panel glass relative w-full min-w-0 max-w-full overflow-hidden rounded-lg p-5 sm:p-8"
     >
-      <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-accent/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-accentWarm/10 blur-3xl" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-accent-warm),var(--color-accent),transparent)]" />
 
-      <div className="relative space-y-3">
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-accent">
-          <svg className="h-3 w-3 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5L7 19M19 17L5 7" /></svg>
-          {SITE.author} · {SITE.subtitle}
-        </span>
+      <div className="relative grid min-w-0 gap-7 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-end">
+        <div className="min-w-0 space-y-5">
+          <span className="inline-flex max-w-full flex-wrap items-center gap-1.5 rounded border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-accent sm:tracking-widest">
+            <Sparkles className="h-3.5 w-3.5 shrink-0" />
+            <span className="min-w-0 break-words">{SITE.author} · {SITE.subtitle}</span>
+          </span>
 
-        <div>
-          <h1 className="font-serif text-3xl font-bold tracking-tight text-fg sm:text-3.5xl">
-            欢迎来到我的博客
-          </h1>
-          <p className="mt-1 font-mono text-sm uppercase tracking-wide text-fgMuted">
-            Welcome to my blog
-          </p>
+          <div className="space-y-3">
+            <h1 className="max-w-2xl font-serif text-3xl font-bold leading-tight tracking-tight text-fg sm:text-4xl">
+              Justice's Blog
+            </h1>
+            <p className="max-w-2xl break-words text-sm leading-7 text-fgMuted sm:text-[15px]">
+              一个带一点知识花园气质的个人博客：记录算法入门、AI 探索、课程笔记、硬件折腾，以及我自己做的小项目。
+            </p>
+          </div>
+
+          <div className="flex min-h-7 max-w-full flex-wrap items-center font-mono text-sm leading-7 text-accent">
+            <span className="min-w-0 break-words">{text}</span>
+            <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-accent" />
+          </div>
+
+          <div className="flex max-w-full flex-wrap gap-2 pt-1">
+            <a
+              href="#signature-project"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 font-serif text-sm font-bold text-bg transition-all hover:-translate-y-0.5 hover:bg-fg"
+            >
+              看项目展示
+              <ArrowDown className="h-4 w-4" />
+            </a>
+            <a
+              href={withBase("/tech")}
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-bg/60 px-4 py-2 font-serif text-sm font-bold text-fg transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent"
+            >
+              <BookOpen className="h-4 w-4" />
+              读技术笔记
+            </a>
+          </div>
         </div>
 
-        <div className="flex h-7 items-center font-mono text-sm text-accent">
-          <span>{text}</span>
-          <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-accent" />
+        <div className="hidden min-w-0 border-l border-border/60 pl-6 lg:block">
+          <div className="space-y-4">
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-wider text-fgMuted">Now building</p>
+              <a href="https://github.com/just1cez/personal-command-deck" className="mt-1 inline-flex items-center gap-2 font-serif text-base font-bold text-fg transition-colors hover:text-accent">
+                Personal Command Deck
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </div>
+            <div className="grid grid-cols-3 gap-2 text-center">
+              {["聚焦", "推进", "复盘"].map((item) => (
+                <span key={item} className="rounded border border-border bg-bgSoft/65 px-2 py-1.5 font-serif text-xs font-bold text-fg">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </motion.section>
