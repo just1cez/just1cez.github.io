@@ -1,18 +1,8 @@
 import React from "react";
 import { ChevronRight, Calendar, Bookmark, Heart } from "lucide-react";
+import type { PostCardItem } from "../../lib/posts";
 
-export interface PostItem {
-  title: string;
-  href: string;
-  date: string;
-  category: "tech" | "life";
-  categoryLabel: string;
-  stageLabel: string;
-  series?: string;
-  featured?: boolean;
-  tags: string[];
-  description?: string;
-}
+export type PostItem = PostCardItem;
 
 export function ArticleCardR({ post }: { post: PostItem }) {
   const isTech = post.category === "tech";

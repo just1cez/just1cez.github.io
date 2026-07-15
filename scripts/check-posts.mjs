@@ -12,6 +12,7 @@ const allowedCategories = new Set(["tech", "life"]);
 const allowedStages = new Set(["study", "paper", "done", "evergreen", "pitfall", "snippet"]);
 const externalTarget = /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i;
 const ignoredSchemes = /^(?:mailto:|tel:|javascript:)/i;
+const dataUri = /^data:/i;
 
 const errors = [];
 const warnings = [];
@@ -105,6 +106,22 @@ function extractTargets(source) {
   return targets;
 }
 
+function extractImageTargets(source) {
+  const targets = [];
+  const body = stripCodeBlocks(source);
+  const markdownImage = /!\[[^\]]*]\(([^)\s]+)(?:\s+["'][^"']*["'])?\)/g;
+  const mdxImageProp = /\bsrc=["']([^"']+)["']/g;
+
+  for (const match of body.matchAll(markdownImage)) targets.push(match[1]);
+  for (const match of body.matchAll(mdxImageProp)) targets.push(match[1]);
+
+  return targets;
+}
+
+function extractWikiLinks(source) {
+  return Array.from(stripCodeBlocks(source).matchAll(/!?\[\[([^\]\n]+)\]\]/g));
+}
+
 function targetPath(file, target) {
   const cleanTarget = target.split(/[?#]/)[0];
   if (!cleanTarget || externalTarget.test(cleanTarget) || ignoredSchemes.test(cleanTarget)) return null;
@@ -178,6 +195,26 @@ function checkLocalTargets(file, body) {
   }
 }
 
+function checkObsidianLinks(file, body) {
+  for (const match of extractWikiLinks(body)) {
+    report(warnings, file, `Obsidian wikilink will not render in Astro: ${match[0]}`);
+  }
+}
+
+function checkAttachmentPaths(file, body) {
+  const slug = path.basename(file, path.extname(file));
+  const expectedPrefix = `/images/posts/${slug}/`;
+
+  for (const target of extractImageTargets(body)) {
+    const cleanTarget = target.split(/[?#]/)[0];
+    if (!cleanTarget || externalTarget.test(cleanTarget) || ignoredSchemes.test(cleanTarget) || dataUri.test(cleanTarget)) continue;
+
+    if (!cleanTarget.startsWith(expectedPrefix)) {
+      report(warnings, file, `image path should live under ${expectedPrefix}: ${target}`);
+    }
+  }
+}
+
 const files = (await walk(contentRoot)).sort();
 
 for (const file of files) {
@@ -186,6 +223,8 @@ for (const file of files) {
 
   checkFrontmatter(file, data);
   checkLocalTargets(file, body);
+  checkObsidianLinks(file, body);
+  checkAttachmentPaths(file, body);
 }
 
 if (warnings.length) {

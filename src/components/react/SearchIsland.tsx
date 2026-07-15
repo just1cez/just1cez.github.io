@@ -1,47 +1,83 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
+import type { Variants } from "motion/react";
 import { Search as SearchIcon, FileWarning, Tag } from "lucide-react";
+import type { SearchIndexEntry } from "../../lib/posts";
 
-interface IndexedPost {
-  title: string;
-  url: string;
-  date: string;
-  category: string;
-  description?: string;
-  body?: string;
-  series?: string;
-  stage?: string;
-  stageLabel?: string;
-  tags?: string[];
-  draft?: boolean;
-}
+type SearchCategory = "All" | "tech" | "life";
 
 const prefersReduced =
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: prefersReduced ? 0 : 0.06 } } };
-const item = prefersReduced
+const container: Variants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: prefersReduced ? 0 : 0.06 } } };
+const item: Variants = prefersReduced
   ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
-  : { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } } };
+  : { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } } };
+
+function readQueryFromLocation() {
+  return new URLSearchParams(window.location.search).get("q") ?? "";
+}
+
+function readCategoryFromLocation(): SearchCategory {
+  const value = new URLSearchParams(window.location.search).get("category");
+  return value === "tech" || value === "life" ? value : "All";
+}
 
 export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
   const [mounted, setMounted] = useState(false);
-  const [posts, setPosts] = useState<IndexedPost[]>([]);
+  const [posts, setPosts] = useState<SearchIndexEntry[]>([]);
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<"All" | "tech" | "life">("All");
+  const [category, setCategory] = useState<SearchCategory>("All");
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    setQuery(readQueryFromLocation());
+    setCategory(readCategoryFromLocation());
     setMounted(true);
   }, []);
 
   useEffect(() => {
+    let ignore = false;
+    setLoaded(false);
+    setError(false);
+
     fetch(indexUrl)
-      .then((r) => r.json())
-      .then((data) => { setPosts(data); setLoaded(true); })
-      .catch(() => setLoaded(true));
+      .then((response) => {
+        if (!response.ok) throw new Error(`Search index failed: ${response.status}`);
+        return response.json() as Promise<SearchIndexEntry[]>;
+      })
+      .then((data) => {
+        if (ignore) return;
+        setPosts(data);
+        setLoaded(true);
+      })
+      .catch(() => {
+        if (ignore) return;
+        setError(true);
+        setLoaded(true);
+      });
+
+    return () => {
+      ignore = true;
+    };
   }, [indexUrl]);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const url = new URL(window.location.href);
+    const cleanQuery = query.trim();
+
+    if (cleanQuery) url.searchParams.set("q", cleanQuery);
+    else url.searchParams.delete("q");
+
+    if (category === "All") url.searchParams.delete("category");
+    else url.searchParams.set("category", category);
+
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [category, mounted, query]);
 
   const focusTags = useMemo(() => {
     const counts = new Map<string, number>();
@@ -120,12 +156,18 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
       </motion.div>
 
       <motion.section variants={item} className="space-y-4">
-        <div className="flex items-center justify-between border-b border-border/40 pb-2 font-mono text-xs text-fgMuted">
+        <div className="flex items-center justify-between border-b border-border/40 pb-2 font-mono text-xs text-fgMuted" aria-live="polite">
           <span className="uppercase tracking-wider">Match / 命中</span>
-          <span>{loaded ? `找到 ${results.length} 篇` : "加载中..."}</span>
+          <span>{error ? "索引加载失败" : loaded ? `找到 ${results.length} 篇` : "加载中..."}</span>
         </div>
 
-        {results.length > 0 ? (
+        {error ? (
+          <div className="space-y-3 rounded-lg border border-dotted border-border p-12 text-center">
+            <FileWarning className="mx-auto h-8 w-8 text-fgMuted/80" />
+            <p className="font-serif text-sm font-bold text-fg">搜索索引加载失败</p>
+            <p className="mx-auto max-w-md font-serif text-xs leading-relaxed text-fgMuted">刷新页面后再试一次，或者先通过 Tech / Life / Tags 浏览文章。</p>
+          </div>
+        ) : results.length > 0 ? (
           <div className="space-y-2">
             {results.map((p) => (
               <a key={p.url} href={p.url} className="group flex items-start justify-between gap-4 rounded-md border border-border/70 bg-bgSoft/40 p-4 transition-all hover:border-accent dark:bg-bgSoft/20">

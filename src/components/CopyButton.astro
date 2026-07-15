@@ -5,7 +5,7 @@
 
   function addCopyButtons() {
     document.querySelectorAll('pre').forEach((pre) => {
-      if (pre.parentElement.classList.contains('code-container')) return
+      if (pre.parentElement?.classList.contains('code-container')) return
       const code = pre.querySelector('code')
       if (!code) return
 
@@ -45,7 +45,6 @@
   })
 
   addCopyButtons()
-  document.addEventListener('astro:after-swap', addCopyButtons)
 </script>
 <style is:global>
   .code-container {

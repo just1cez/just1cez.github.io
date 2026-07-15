@@ -27,6 +27,7 @@ const category = kind === "life" ? "life" : "tech";
 const ext = path.extname(templates[kind]);
 const targetDir = path.join(process.cwd(), "src", "content", category);
 const target = path.join(targetDir, `${slug}${ext}`);
+const imageDir = path.join(process.cwd(), "public", "images", "posts", slug);
 const template = path.join(process.cwd(), "templates", templates[kind]);
 
 if (existsSync(target)) {
@@ -35,6 +36,7 @@ if (existsSync(target)) {
 }
 
 await mkdir(targetDir, { recursive: true });
+await mkdir(imageDir, { recursive: true });
 const today = new Date().toISOString().slice(0, 10);
 const content = (await readFile(template, "utf8"))
   .replaceAll("YYYY-MM-DD", today)
@@ -43,3 +45,4 @@ const content = (await readFile(template, "utf8"))
 await writeFile(target, content);
 
 console.log(`Created ${path.relative(process.cwd(), target)}`);
+console.log(`Created ${path.relative(process.cwd(), imageDir)}/`);

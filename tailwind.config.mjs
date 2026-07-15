@@ -22,9 +22,9 @@ export default {
         "frost-border": "var(--color-border)",
       },
       fontFamily: {
-        serif: ['"Noto Serif SC"', '"Source Han Serif SC"', "STSong", "serif"],
-        sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
+        serif: ["ui-serif", '"Songti SC"', '"Noto Serif CJK SC"', '"Source Han Serif SC"', "STSong", "serif"],
+        sans: ["ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       fontSize: {
         "3.5xl": ["2rem", { lineHeight: "2.4rem" }],
@@ -38,15 +38,15 @@ export default {
           css: {
             maxWidth: "none",
             h1: {
-              fontFamily: '"Noto Serif SC", "Source Han Serif SC", STSong, serif',
+              fontFamily: 'ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif',
               fontWeight: "700",
             },
             h2: {
-              fontFamily: '"Noto Serif SC", "Source Han Serif SC", STSong, serif',
+              fontFamily: 'ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif',
               fontWeight: "700",
             },
             h3: {
-              fontFamily: '"Noto Serif SC", "Source Han Serif SC", STSong, serif',
+              fontFamily: 'ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif',
               fontWeight: "700",
             },
             a: {

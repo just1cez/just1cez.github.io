@@ -3,17 +3,26 @@ import PageLayout from "../../layouts/PageLayout.astro";
 import FrostLine from "../../components/FrostLine.astro";
 import Pagination from "../../components/Pagination.astro";
 import ArticleList from "../../components/react/ArticleList.tsx";
+import type { GetStaticPaths } from "astro";
 import { CATEGORY_META, categoryPath } from "../../site.config";
-import { getPostsByCategory } from "../../lib/posts";
-import { toPostItem } from "../../lib/toPostItem";
+import { getPostsByCategory, toPostCardItem } from "../../lib/posts";
+import type { PostEntry } from "../../lib/posts";
 
-export async function getStaticPaths({ paginate }) {
+type PaginatedPosts = {
+  page: {
+    data: PostEntry[];
+    currentPage: number;
+    lastPage: number;
+  };
+};
+
+export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getPostsByCategory("life");
   return paginate(posts, { pageSize: 10 });
-}
+}) satisfies GetStaticPaths;
 
-const { page } = Astro.props;
-const items = page.data.map(toPostItem);
+const { page } = Astro.props as PaginatedPosts;
+const items = page.data.map(toPostCardItem);
 ---
 
 <PageLayout title="Life - Justice's Blog" description={CATEGORY_META.life.description} type="life">

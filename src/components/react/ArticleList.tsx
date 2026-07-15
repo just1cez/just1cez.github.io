@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import type { Variants } from "motion/react";
 import { ArticleCardR, type PostItem } from "./ArticleCardR";
 
 const prefersReduced =
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: prefersReduced ? 0 : 0.08 } },
 };
 
-const item = prefersReduced
+const item: Variants = prefersReduced
   ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
   : {
       hidden: { opacity: 0, y: 14 },
-      show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+      show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" as const } },
     };
 
 interface Props {

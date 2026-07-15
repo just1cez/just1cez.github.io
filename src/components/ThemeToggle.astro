@@ -276,8 +276,6 @@
 
 <script is:inline>
 (function(){
-  var afterSwapKey='__justiceThemeToggleAfterSwapBound';
-
   function isDark(){
     return document.documentElement.classList.contains('dark');
   }
@@ -313,10 +311,5 @@
   }
 
   bindThemeToggles();
-
-  if(!window[afterSwapKey]){
-    window[afterSwapKey]=true;
-    document.addEventListener('astro:after-swap', bindThemeToggles);
-  }
 })();
 </script>

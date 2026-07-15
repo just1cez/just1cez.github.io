@@ -5,12 +5,11 @@ import SignatureProject from "../components/SignatureProject.astro";
 import Hero from "../components/react/Hero.tsx";
 import ArticleList from "../components/react/ArticleList.tsx";
 import { SITE, withBase, tagPath } from "../site.config";
-import { getAllPosts, getFeaturedPosts, getFocusTags } from "../lib/posts";
-import { toPostItem } from "../lib/toPostItem";
+import { getAllPosts, getFeaturedPosts, getFocusTags, toPostCardItem } from "../lib/posts";
 
 const allPosts = await getAllPosts();
-const latestPosts = allPosts.slice(0, 8).map(toPostItem);
-const featuredPosts = getFeaturedPosts(allPosts, 5).map(toPostItem);
+const latestPosts = allPosts.slice(0, 8).map(toPostCardItem);
+const featuredPosts = getFeaturedPosts(allPosts, 5).map(toPostCardItem);
 const focusTags = getFocusTags(allPosts, ["Algorithm", "C++", "AI探索", "学习记录", "PC硬件"], 5);
 ---
 

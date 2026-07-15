@@ -1,30 +1,10 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 import FrostLine from "../components/FrostLine.astro";
-import { postPath } from "../site.config";
-import { getAllPosts } from "../lib/posts";
+import { getAllPosts, getSeriesGroups } from "../lib/posts";
 
 const posts = await getAllPosts();
-
-const seriesMap = new Map<string, typeof posts>();
-for (const post of posts) {
-  const key = post.data.series;
-  if (!key) continue;
-  if (!seriesMap.has(key)) seriesMap.set(key, []);
-  seriesMap.get(key)!.push(post);
-}
-for (const list of seriesMap.values()) {
-  list.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-}
-
-const groupedSeries = Array.from(seriesMap.entries())
-  .filter(([, list]) => list.length >= 2)
-  .sort((a, b) => b[1].length - a[1].length);
-
-const singletonPosts = Array.from(seriesMap.entries())
-  .filter(([, list]) => list.length === 1)
-  .map(([name, list]) => ({ name, post: list[0] }))
-  .sort((a, b) => b.post.data.date.getTime() - a.post.data.date.getTime());
+const { groupedSeries, singletonSeries } = getSeriesGroups(posts);
 ---
 
 <PageLayout title="Series - Justice's Blog" description="按系列浏览文章。">
@@ -43,22 +23,22 @@ const singletonPosts = Array.from(seriesMap.entries())
       </h2>
       {groupedSeries.length > 0 ? (
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {groupedSeries.map(([name, list]) => (
+          {groupedSeries.map((group) => (
             <div class="space-y-4 rounded-lg border border-border bg-bgSoft/30 p-5 transition-colors duration-300 hover:border-accent/40">
               <div>
                 <h3 class="flex items-center justify-between font-serif text-base font-bold text-fg">
-                  <span>{name}</span>
-                  <span class="rounded border border-accent/20 bg-accent/15 px-1.5 py-0.5 font-mono text-[11px] uppercase text-accent">{list.length} 篇</span>
+                  <span>{group.name}</span>
+                  <span class="rounded border border-accent/20 bg-accent/15 px-1.5 py-0.5 font-mono text-[11px] uppercase text-accent">{group.count} 篇</span>
                 </h3>
               </div>
               <div class="space-y-2.5 border-t border-border/30 pt-3">
-                {list.map((post) => (
-                  <a href={postPath(post.data.category, post.id)} class="group flex items-center justify-between gap-1.5 rounded p-1.5 text-xs transition-all hover:bg-bgSoft/40">
+                {group.posts.map((post) => (
+                  <a href={post.href} class="group flex items-center justify-between gap-1.5 rounded p-1.5 text-xs transition-all hover:bg-bgSoft/40">
                     <span class="flex items-center gap-2 text-fg transition-colors group-hover:text-accent">
                       <svg class="h-3.5 w-3.5 shrink-0 text-accentWarm opacity-65" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z" /></svg>
-                      <span class="max-w-[200px] truncate font-serif font-medium sm:max-w-xs">{post.data.title}</span>
+                      <span class="max-w-[200px] truncate font-serif font-medium sm:max-w-xs">{post.title}</span>
                     </span>
-                    <span class="shrink-0 font-mono text-[11px] text-fgMuted">{post.data.date.toLocaleDateString("zh-CN").slice(5)}</span>
+                    <span class="shrink-0 font-mono text-[11px] text-fgMuted">{post.date.toLocaleDateString("zh-CN").slice(5)}</span>
                   </a>
                 ))}
               </div>
@@ -70,23 +50,23 @@ const singletonPosts = Array.from(seriesMap.entries())
       )}
     </section>
 
-    {singletonPosts.length > 0 && (
+    {singletonSeries.length > 0 && (
       <section class="space-y-4 frost-fade-up">
         <h2 class="flex items-center gap-2 border-b border-border/40 pb-2">
           <svg class="h-4 w-4 text-accentWarm" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
           <span class="font-serif text-[15px] font-bold text-fg">单篇，可能长成系列 / Nascent</span>
         </h2>
         <div class="space-y-3">
-          {singletonPosts.map(({ name, post }) => (
-            <a href={postPath(post.data.category, post.id)} class="group flex flex-col justify-between gap-2 rounded-md border border-border bg-bgSoft/25 p-4 transition-all duration-300 hover:border-accent sm:flex-row sm:items-center">
+          {singletonSeries.map(({ name, post }) => (
+            <a href={post.href} class="group flex flex-col justify-between gap-2 rounded-md border border-border bg-bgSoft/25 p-4 transition-all duration-300 hover:border-accent sm:flex-row sm:items-center">
               <div class="space-y-1">
                 <h3 class="flex items-center gap-2 font-serif text-sm font-bold text-fg transition-colors group-hover:text-accent">
                   <span class="text-accent">[{name}]</span>
-                  <span>{post.data.title}</span>
+                  <span>{post.title}</span>
                 </h3>
-                {post.data.description && <p class="line-clamp-1 max-w-2xl font-serif text-xs text-fgMuted">{post.data.description}</p>}
+                {post.description && <p class="line-clamp-1 max-w-2xl font-serif text-xs text-fgMuted">{post.description}</p>}
               </div>
-              <span class="shrink-0 self-end font-mono text-[11px] text-fgMuted sm:self-center">起点: {post.data.date.toLocaleDateString("zh-CN")}</span>
+              <span class="shrink-0 self-end font-mono text-[11px] text-fgMuted sm:self-center">起点: {post.date.toLocaleDateString("zh-CN")}</span>
             </a>
           ))}
         </div>
