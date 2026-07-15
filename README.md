@@ -4,9 +4,9 @@
 
 ## 功能
 
-- 首页个人入口：`Justice / HITSZ CS · Personal Blog`、三组个人状态、精选文章、最近更新、技术方向标签、GitHub / RSS / About
+- 首页个人入口：`Justice / HITSZ CS · Lab Notes`、三组个人状态、精选文章、最近更新、技术方向标签、GitHub / RSS / About
 - Tech / Life 两个内容分区，支持标签页、文章归档、站内搜索、RSS、sitemap、robots.txt
-- Series 页面按主题聚合文章，About 页面记录学习方向和兴趣主题
+- Series 页面按主题聚合文章，About 页面提供轻量自介、站点说明和阅读入口
 - 文章页支持目录、阅读进度条、标题锚点、代码块文件名、语言标记、复制按钮、数学公式、上一篇 / 下一篇、相关阅读
 - 文章 frontmatter 支持 `stage` 标记内容阶段：`study`、`paper`、`done`、`evergreen`、`pitfall`、`snippet`
 - Obsidian 友好的 Markdown 写作，支持 callout、数学公式和代码块文件名
@@ -30,6 +30,12 @@ npm run build
 
 生产构建会自动隐藏 `draft: true` 的文章；发布前把 frontmatter 改成 `draft: false` 即可。
 
+发布前建议先跑完整检查：
+
+```bash
+npm run check
+```
+
 ## 写新文章
 
 使用脚本创建文章，slug 只用小写字母、数字和连字符：
@@ -41,12 +47,13 @@ npm run new:post -- paper my-paper-reading
 npm run new:post -- life my-pc-build
 ```
 
-脚本会从 `templates/` 复制模板到对应目录：
+脚本会从 `templates/` 复制模板到对应目录，并创建同名图片目录：
 
 - `tech` -> `src/content/tech/*.md`
 - `algorithm` -> `src/content/tech/*.md`
 - `paper` -> `src/content/tech/*.md`
 - `life` -> `src/content/life/*.md`
+- 图片目录 -> `public/images/posts/<slug>/`
 
 常用 frontmatter：
 
@@ -70,7 +77,26 @@ draft: true
 - `featured: true`：优先进入首页精选文章
 - `series`：用于文章页、搜索、相关文章的主题关联
 - `stage`：文章阶段，取值为 `study`（学习记录）、`paper`（论文初读）、`done`（完成记录）、`evergreen`（常青速查）、`pitfall`（踩坑记录）、`snippet`（片段模板）
-- `cover`：用于 Open Graph 图片；文件放在 `public/` 下时用 `/images/name.jpg` 这类路径
+- `cover`：用于 Open Graph 图片；推荐放在 `public/images/posts/<slug>/` 下，并用 `/images/posts/<slug>/cover.jpg` 这类路径
+
+## Obsidian 写作
+
+推荐直接把博客仓库根目录作为 Obsidian Vault：
+
+```text
+/Users/justice/Documents/1/just1cez.github.io
+```
+
+不要把 Vault 只建在 `src/content` 里；这样 Obsidian 配置、附件路径和 Astro 项目结构更容易分叉。当前 `.obsidian/` 已在 `.gitignore` 中，Obsidian 本地配置不会进入发布仓库。
+
+写作规则：
+
+- 文章放在 `src/content/tech/` 或 `src/content/life/`
+- 图片放在 `public/images/posts/<slug>/`
+- 正文引用图片用 `/images/posts/<slug>/name.jpg`
+- 不使用 Obsidian 的 `[[wikilink]]` 作为发布链接；改用标准 Markdown 链接
+
+`npm run check` 会检查 frontmatter、本地链接，并对 Obsidian wikilink 和不规范图片路径给出 warning。
 
 ## 路线图
 
@@ -119,6 +145,7 @@ int main() {}
 ## 发布检查
 
 ```bash
+npm run check
 npm run build
 git status -sb
 git push origin main:main

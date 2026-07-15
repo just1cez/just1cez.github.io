@@ -1,14 +1,15 @@
 import rss from "@astrojs/rss";
-import { POST_STAGE_META, SITE, postPath } from "../site.config";
+import type { APIContext } from "astro";
+import { POST_STAGE_META, SITE, postPath, withBase } from "../site.config";
 import { getAllPosts } from "../lib/posts";
 
-export async function GET(context) {
+export async function GET(context: APIContext) {
   const posts = await getAllPosts();
 
   return rss({
     title: SITE.title,
     description: SITE.description,
-    site: context.site,
+    site: new URL(withBase("/"), context.site),
     items: posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.date,

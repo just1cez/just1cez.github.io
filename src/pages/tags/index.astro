@@ -1,43 +1,48 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
-import { CATEGORY_META, tagPath } from "../../site.config";
-import { getAllPosts, getAllTags } from "../../lib/posts";
+import FrostLine from "../../components/FrostLine.astro";
+import { CATEGORY_META, categoryPath, tagPath } from "../../site.config";
+import { getAllPosts, getAllTags, getCategoryCounts } from "../../lib/posts";
 
 const posts = await getAllPosts();
 const tags = getAllTags(posts);
 const maxCount = Math.max(...tags.map((item) => item.count), 1);
-const categoryCounts = posts.reduce((counts, post) => {
-  counts[post.data.category] = (counts[post.data.category] ?? 0) + 1;
-  return counts;
-}, {} as Record<"tech" | "life", number>);
+const categoryCounts = getCategoryCounts(posts);
 ---
 
 <PageLayout title="Tags - Justice's Blog" description="按标签浏览文章。">
-  <header class="mb-8 border-b border-border pb-5">
-    <h1 class="text-2xl font-bold">Tags</h1>
-    <p class="mt-2 text-sm text-fgMuted">用标签快速找到相关主题。</p>
-  </header>
+  <div class="space-y-8">
+    <header class="space-y-2 frost-fade-up">
+      <span class="block font-mono text-xs uppercase tracking-widest text-accentWarm">Tag Atlas / 标签索引</span>
+      <h1 class="font-serif text-2xl font-bold text-fg sm:text-3.5xl">Tags</h1>
+      <p class="font-serif text-xs italic text-fgMuted">用标签快速找到相关主题，也能看出最近的学习重心。</p>
+      <FrostLine />
+    </header>
 
-  <section class="mb-8 grid gap-3 sm:grid-cols-2">
-    {Object.entries(CATEGORY_META).map(([key, meta]) => (
-      <div class="rounded-md border border-border bg-bgSoft p-4">
-        <p class="text-xs uppercase tracking-[0.16em] text-fgMuted">{meta.label}</p>
-        <p class="mt-1 text-2xl font-semibold">{categoryCounts[key as "tech" | "life"] ?? 0}</p>
-        <p class="mt-1 text-sm text-fgMuted">{meta.description}</p>
+    <section class="grid gap-3 sm:grid-cols-2">
+      {Object.entries(CATEGORY_META).map(([key, meta]) => (
+        <a href={categoryPath(key as "tech" | "life")} class="group rounded-md border border-border bg-bgSoft/35 p-4 transition-all hover:border-accent dark:bg-bgSoft/20">
+          <p class="font-mono text-xs uppercase tracking-[0.16em] text-fgMuted transition-colors group-hover:text-accent">{meta.label}</p>
+          <p class="mt-1 font-serif text-2xl font-semibold text-fg">{categoryCounts[key as "tech" | "life"] ?? 0}</p>
+          <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-fgMuted">{meta.description}</p>
+        </a>
+      ))}
+    </section>
+
+    <section class="space-y-3">
+      <h2 class="border-b border-border/40 pb-2 font-serif text-[15px] font-bold text-fg">全部标签</h2>
+      <div class="flex flex-wrap gap-2">
+        {tags.map(({ tag, count }) => (
+          <a
+            href={tagPath(tag)}
+            class="inline-flex min-h-10 items-center gap-1 rounded border border-border bg-bgSoft/30 px-3 py-2 transition-colors hover:border-accent hover:text-accent"
+            style={`font-size:${0.78 + (count / maxCount) * 0.28}rem`}
+          >
+            <span>#{tag}</span>
+            <span class="font-mono text-xs text-fgMuted">{count}</span>
+          </a>
+        ))}
       </div>
-    ))}
-  </section>
-
-  <div class="flex flex-wrap gap-2">
-    {tags.map(({ tag, count }) => (
-      <a
-        href={tagPath(tag)}
-        class="inline-flex items-center gap-1 rounded border border-border px-3 py-1.5 hover:border-accent hover:text-accent transition-colors"
-        style={`font-size:${0.78 + (count / maxCount) * 0.28}rem`}
-      >
-        <span>#{tag}</span>
-        <span class="text-xs text-fgMuted">{count}</span>
-      </a>
-    ))}
+    </section>
   </div>
 </PageLayout>

@@ -1,9 +1,31 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 import SearchIsland from "../components/react/SearchIsland.tsx";
-import { withBase } from "../site.config";
+import { CATEGORY_META, withBase } from "../site.config";
+import { getAllPosts, toPostSummary } from "../lib/posts";
+
+const fallbackPosts = (await getAllPosts()).slice(0, 12).map(toPostSummary);
 ---
 
 <PageLayout title="Search - Justice's Blog" description="搜索博客文章。">
   <SearchIsland client:load indexUrl={withBase("/search.json")} />
+  <noscript>
+    <section class="mt-8 space-y-4 rounded-lg border border-border bg-bgSoft/30 p-5">
+      <div class="space-y-1">
+        <h2 class="font-serif text-base font-bold text-fg">JavaScript 关闭时的文章入口</h2>
+        <p class="text-xs leading-relaxed text-fgMuted">站内实时搜索需要 JavaScript；下面列出最近文章，也可以从 Tech、Life 和 Tags 页面继续浏览。</p>
+      </div>
+      <ul class="space-y-3">
+        {fallbackPosts.map((post) => (
+          <li>
+            <a href={post.href} class="font-serif text-sm font-semibold text-fg hover:text-accent">{post.title}</a>
+            <div class="mt-1 flex flex-wrap items-center gap-2 font-mono text-[11px] text-fgMuted">
+              <span>{post.date.toLocaleDateString("zh-CN")}</span>
+              <span>{CATEGORY_META[post.category].label}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </noscript>
 </PageLayout>

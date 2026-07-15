@@ -1,6 +1,7 @@
+import type { APIContext } from "astro";
 import { withBase } from "../site.config";
 
-export function GET({ site }) {
+export function GET({ site }: APIContext) {
   const sitemap = new URL(withBase("/sitemap-index.xml"), site);
 
   return new Response(`User-agent: *\nAllow: /\n\nSitemap: ${sitemap}\n`, {

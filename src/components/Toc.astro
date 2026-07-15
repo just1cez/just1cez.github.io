@@ -29,7 +29,6 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     if(!links.length)return;
     var ids=[];
     links.forEach(function(l){var h=l.getAttribute('href');if(h)ids.push(h.substring(1))});
-    var activeLink=null;
     function update(){
       var scrollY=window.scrollY+100;
       var current=null;
@@ -50,6 +49,5 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     update();
   }
   initToc();
-  document.addEventListener('astro:after-swap',initToc);
 })();
 </script>

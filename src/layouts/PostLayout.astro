@@ -8,6 +8,7 @@ import BackToTop from "../components/BackToTop.astro";
 import CopyButton from "../components/CopyButton.astro";
 import ReadingProgress from "../components/ReadingProgress.astro";
 import { CATEGORY_META, POST_STAGE_META, SITE, categoryPath, tagPath } from "../site.config";
+import "katex/dist/katex.min.css";
 
 export interface Props {
   title: string;
@@ -20,6 +21,7 @@ export interface Props {
   canonicalUrl?: string;
   series?: string;
   stage: keyof typeof POST_STAGE_META;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
 const { title, date, updated, tags, category, description, image, canonicalUrl, series, stage } = Astro.props;
@@ -60,7 +62,7 @@ const articleSchema = canonicalUrl && {
 };
 ---
 
-<BaseLayout title={`${title} - ${SITE.title}`} description={description} type={category} image={image} schema={articleSchema || undefined} katex={true}>
+<BaseLayout title={`${title} - ${SITE.title}`} description={description} type={category} image={image} schema={articleSchema || undefined}>
   <ReadingProgress />
   <Header />
   <div class="mx-auto max-w-5xl px-4 py-8 flex gap-8">
@@ -107,15 +109,7 @@ const articleSchema = canonicalUrl && {
       if(navigator.clipboard&&window.isSecureContext){
         return navigator.clipboard.writeText(value);
       }
-      var textarea=document.createElement('textarea');
-      textarea.value=value;
-      textarea.setAttribute('readonly','');
-      textarea.style.position='fixed';
-      textarea.style.left='-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-      try{document.execCommand('copy');}finally{document.body.removeChild(textarea);}
-      return Promise.resolve();
+      return Promise.reject(new Error('Clipboard API unavailable'));
     }
 
     function enhanceHeadings(){
@@ -133,14 +127,13 @@ const articleSchema = canonicalUrl && {
           copyText(url.toString()).then(function(){
             anchor.classList.add('copied');
             setTimeout(function(){anchor.classList.remove('copied');},1200);
-          });
+          }).catch(function(){});
           history.replaceState(null,'',url);
         });
         heading.appendChild(anchor);
       });
     }
     enhanceHeadings();
-    document.addEventListener('astro:after-swap',enhanceHeadings);
   })();
   </script>
 </BaseLayout>
