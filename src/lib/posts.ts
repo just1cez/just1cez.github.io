@@ -2,6 +2,7 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { CATEGORY_META, POST_STAGE_META, postPath, tagSlug } from "../site.config";
 import type { BlogCategory, PostStage } from "../site.config";
+import { rankRelatedPosts, shouldIncludeDraft } from "./post-logic";
 
 export type PostEntry = CollectionEntry<"tech"> | CollectionEntry<"life">;
 export type BlogPost = PostEntry;
@@ -60,20 +61,31 @@ export type SingletonSeries = {
   name: string;
   post: PostSummary;
 };
+export type AdjacentPost = {
+  title: string;
+  slug: string;
+  category: BlogCategory;
+};
+export type PostPageProps = {
+  post: PostEntry;
+  prev: AdjacentPost | null;
+  next: AdjacentPost | null;
+  related: PostSummary[];
+};
 
 const includeDrafts = import.meta.env.DEV;
 
 export async function getAllPosts(): Promise<PostEntry[]> {
   const [techPosts, lifePosts] = await Promise.all([
-    getCollection("tech", ({ data }) => includeDrafts || !data.draft),
-    getCollection("life", ({ data }) => includeDrafts || !data.draft),
+    getCollection("tech", ({ data }) => shouldIncludeDraft(data, includeDrafts)),
+    getCollection("life", ({ data }) => shouldIncludeDraft(data, includeDrafts)),
   ]);
 
   return [...techPosts, ...lifePosts].sort(sortByDateDesc);
 }
 
 export async function getPostsByCategory(category: BlogCategory): Promise<PostEntry[]> {
-  const posts = await getCollection(category, ({ data }) => includeDrafts || !data.draft);
+  const posts = await getCollection(category, ({ data }) => shouldIncludeDraft(data, includeDrafts));
   return posts.sort(sortByDateDesc);
 }
 
@@ -156,25 +168,25 @@ export function getFeaturedPosts(posts: BlogPost[], limit = 5) {
 }
 
 export function getRelatedPosts(current: BlogPost, posts: BlogPost[], limit = 3) {
-  return posts
-    .filter((post) => post.id !== current.id || post.data.category !== current.data.category)
-    .map((post) => {
-      const sharedTags = post.data.tags.filter((tag) => current.data.tags.includes(tag)).length;
-      const sameCategory = post.data.category === current.data.category ? 1 : 0;
-      const sameSeries = current.data.series && post.data.series === current.data.series ? 2 : 0;
+  return rankRelatedPosts(current, posts, limit).map((post) => toPostSummary(post));
+}
 
-      return {
-        post,
-        score: sharedTags * 3 + sameSeries + sameCategory,
-      };
-    })
-    .filter(({ score }) => score > 0)
-    .sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      return b.post.data.date.valueOf() - a.post.data.date.valueOf();
-    })
-    .slice(0, limit)
-    .map(({ post }) => toPostSummary(post));
+export async function getPostStaticPaths(category: BlogCategory) {
+  const [posts, allPosts] = await Promise.all([getPostsByCategory(category), getAllPosts()]);
+
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      prev: index < posts.length - 1
+        ? { title: posts[index + 1].data.title, slug: posts[index + 1].id, category }
+        : null,
+      next: index > 0
+        ? { title: posts[index - 1].data.title, slug: posts[index - 1].id, category }
+        : null,
+      related: getRelatedPosts(post, allPosts),
+    } satisfies PostPageProps,
+  }));
 }
 
 export function getFocusTags(posts: BlogPost[], preferred: string[], limit = 10) {

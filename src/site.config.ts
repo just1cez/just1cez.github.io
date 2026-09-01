@@ -64,32 +64,17 @@ export const POST_STAGE_META = {
 
 export type PostStage = keyof typeof POST_STAGE_META;
 
+import { tagSlug, withBasePath, withoutBasePath } from "./lib/url";
+export { normalizePath, tagSlug } from "./lib/url";
+
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
-const EXTERNAL_URL = /^(?:[a-z][a-z\d+.-]*:|\/\/)/i;
 
 export function withBase(path = "/") {
-  if (EXTERNAL_URL.test(path) || path.startsWith("#")) return path;
-
-  const base = BASE_URL === "/" ? "" : BASE_URL.replace(/\/$/, "");
-  if (!path || path === "/") return `${base}/` || "/";
-
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  return `${base}${cleanPath}`;
-}
-
-export function normalizePath(path: string) {
-  if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1);
-  return path;
+  return withBasePath(path, BASE_URL);
 }
 
 export function withoutBase(path: string) {
-  const base = BASE_URL === "/" ? "" : normalizePath(BASE_URL);
-  const cleanPath = normalizePath(path);
-
-  if (!base) return cleanPath;
-  if (cleanPath === base) return "/";
-  if (cleanPath.startsWith(`${base}/`)) return cleanPath.slice(base.length) || "/";
-  return cleanPath;
+  return withoutBasePath(path, BASE_URL);
 }
 
 export function categoryPath(category: BlogCategory) {
@@ -98,20 +83,6 @@ export function categoryPath(category: BlogCategory) {
 
 export function postPath(category: BlogCategory | string, slug: string) {
   return withBase(`/${category}/${slug}`);
-}
-
-export function tagSlug(tag: string) {
-  const slug = tag
-    .trim()
-    .normalize("NFKC")
-    .replace(/\+/g, "-plus")
-    .replace(/&/g, "-and-")
-    .replace(/[/?#%[\]@!$'()*,:;=\\]+/g, "-")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-
-  return slug || "tag";
 }
 
 export function tagPath(tag: string) {

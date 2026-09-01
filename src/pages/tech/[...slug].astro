@@ -1,44 +1,13 @@
 ---
-import PostLayout from "../../layouts/PostLayout.astro";
-import PrevNext from "../../components/PrevNext.astro";
-import RelatedPosts from "../../components/RelatedPosts.astro";
-import { render } from "astro:content";
-import { getAllPosts, getPostsByCategory, getRelatedPosts } from "../../lib/posts";
-import { postPath } from "../../site.config";
+import PostPage from "../../components/PostPage.astro";
+import { getPostStaticPaths } from "../../lib/posts";
+import type { PostPageProps } from "../../lib/posts";
 
 export async function getStaticPaths() {
-  const [posts, allPosts] = await Promise.all([getPostsByCategory("tech"), getAllPosts()]);
-
-  return posts.map((post, i) => ({
-    params: { slug: post.id },
-    props: {
-      post,
-      prev: i < posts.length - 1 ? { title: posts[i + 1].data.title, slug: posts[i + 1].id, category: "tech" } : null,
-      next: i > 0 ? { title: posts[i - 1].data.title, slug: posts[i - 1].id, category: "tech" } : null,
-      related: getRelatedPosts(post, allPosts),
-    },
-  }));
+  return getPostStaticPaths("tech");
 }
 
-const { post, prev, next, related } = Astro.props;
-const { Content, headings } = await render(post);
-const canonicalUrl = new URL(postPath(post.data.category, post.id), Astro.site).toString();
+const props = Astro.props as PostPageProps;
 ---
 
-<PostLayout
-  title={post.data.title}
-  date={post.data.date}
-  updated={post.data.updated}
-  tags={post.data.tags}
-  category={post.data.category}
-  description={post.data.description}
-  image={post.data.cover}
-  canonicalUrl={canonicalUrl}
-  series={post.data.series}
-  stage={post.data.stage}
-  headings={headings}
->
-  <Content />
-  <RelatedPosts posts={related} />
-  <PrevNext prev={prev} next={next} />
-</PostLayout>
+<PostPage {...props} />

@@ -2,7 +2,7 @@
 export interface Props {
   title: string;
   description?: string;
-  type?: "tech" | "life" | "home";
+  ogType?: "website" | "article";
   image?: string;
   schema?: Record<string, unknown>;
 }
@@ -10,7 +10,7 @@ export interface Props {
 import { SITE, withBase } from "../site.config";
 import "../styles/global.css";
 
-const { title, description = SITE.description, type = "home", image = SITE.avatar, schema } = Astro.props;
+const { title, description = SITE.description, ogType = "website", image = SITE.avatar, schema } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(withBase(image), Astro.site).toString();
 const defaultSchema = {
@@ -38,7 +38,7 @@ const jsonLd = JSON.stringify(schema ?? defaultSchema);
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href={withBase("/rss.xml")} />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <title>{title}</title>
-    <meta property="og:type" content={type === "home" ? "website" : "article"} />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL.toString()} />

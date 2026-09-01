@@ -1,0 +1,30 @@
+---
+import PostLayout from "../layouts/PostLayout.astro";
+import PrevNext from "./PrevNext.astro";
+import RelatedPosts from "./RelatedPosts.astro";
+import { render } from "astro:content";
+import { postPath } from "../site.config";
+import type { PostPageProps } from "../lib/posts";
+
+const { post, prev, next, related } = Astro.props as PostPageProps;
+const { Content, headings } = await render(post);
+const canonicalUrl = new URL(postPath(post.data.category, post.id), Astro.site).toString();
+---
+
+<PostLayout
+  title={post.data.title}
+  date={post.data.date}
+  updated={post.data.updated}
+  tags={post.data.tags}
+  category={post.data.category}
+  description={post.data.description}
+  image={post.data.cover}
+  canonicalUrl={canonicalUrl}
+  series={post.data.series}
+  stage={post.data.stage}
+  headings={headings}
+>
+  <Content />
+  <RelatedPosts posts={related} />
+  <PrevNext prev={prev} next={next} />
+</PostLayout>

@@ -15,6 +15,8 @@
 
 ## 本地开发
 
+项目使用 Node.js 24；如果使用 nvm，可先运行 `nvm use` 读取仓库中的 `.nvmrc`。
+
 ```bash
 npm install
 npm run dev
@@ -34,7 +36,10 @@ npm run build
 
 ```bash
 npm run check
+npm test
 ```
+
+`npm test` 会运行 URL、草稿过滤和相关文章排序单元测试，随后执行生产构建，并检查首页、分类页、文章页、搜索、RSS 与 404 静态产物。
 
 ## 写新文章
 
@@ -84,7 +89,7 @@ draft: true
 推荐直接把博客仓库根目录作为 Obsidian Vault：
 
 ```text
-/Users/justice/Documents/1/just1cez.github.io
+/Users/justice/workspace/just1cez.github.io
 ```
 
 不要把 Vault 只建在 `src/content` 里；这样 Obsidian 配置、附件路径和 Astro 项目结构更容易分叉。当前 `.obsidian/` 已在 `.gitignore` 中，Obsidian 本地配置不会进入发布仓库。
@@ -146,7 +151,7 @@ int main() {}
 
 ```bash
 npm run check
-npm run build
+npm test
 git status -sb
 git push origin main:main
 ```

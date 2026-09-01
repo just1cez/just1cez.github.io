@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
+import { unified } from "@astrojs/markdown-remark";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
@@ -73,12 +74,15 @@ export default defineConfig({
   base,
   output: "static",
   trailingSlash: "never",
+  compressHTML: true,
   devToolbar: {
     enabled: false,
   },
   markdown: {
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeObsidianCallouts, rehypeKatex],
+    processor: unified({
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [rehypeObsidianCallouts, rehypeKatex],
+    }),
     shikiConfig: {
       themes: {
         light: "github-light",

@@ -1,0 +1,15 @@
+---
+import ArticleCard from "./ArticleCard.astro";
+import type { PostCardItem } from "../lib/posts";
+
+export interface Props {
+  posts: PostCardItem[];
+  layout?: "stack" | "grid";
+}
+
+const { posts, layout = "stack" } = Astro.props;
+---
+
+<div class={layout === "grid" ? "grid grid-cols-1 gap-6 md:grid-cols-2" : "space-y-2"}>
+  {posts.map((post) => <ArticleCard post={post} />)}
+</div>

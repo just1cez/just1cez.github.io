@@ -87,13 +87,15 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
 
   const results = useMemo(() => {
     const q = query.toLowerCase().trim();
+    if (!q) return [];
+
     return posts.filter((p) => {
       if (category !== "All" && p.category !== category) return false;
-      if (!q) return true;
       return [p.title, p.description, p.body, ...(p.tags || [])]
         .filter(Boolean).join(" ").toLowerCase().includes(q);
     });
   }, [posts, query, category]);
+  const hasQuery = query.trim().length > 0;
 
   return (
     <motion.div variants={container} initial={mounted ? "hidden" : false} animate={mounted ? "show" : undefined} className="space-y-8">
@@ -158,7 +160,7 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
       <motion.section variants={item} className="space-y-4">
         <div className="flex items-center justify-between border-b border-border/40 pb-2 font-mono text-xs text-fgMuted" aria-live="polite">
           <span className="uppercase tracking-wider">Match / 命中</span>
-          <span>{error ? "索引加载失败" : loaded ? `找到 ${results.length} 篇` : "加载中..."}</span>
+          <span>{error ? "索引加载失败" : loaded ? hasQuery ? `找到 ${results.length} 篇` : "等待检索" : "加载中..."}</span>
         </div>
 
         {error ? (
@@ -166,6 +168,12 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
             <FileWarning className="mx-auto h-8 w-8 text-fgMuted/80" />
             <p className="font-serif text-sm font-bold text-fg">搜索索引加载失败</p>
             <p className="mx-auto max-w-md font-serif text-xs leading-relaxed text-fgMuted">刷新页面后再试一次，或者先通过 Tech / Life / Tags 浏览文章。</p>
+          </div>
+        ) : loaded && !hasQuery ? (
+          <div className="space-y-3 rounded-lg border border-dotted border-border p-12 text-center">
+            <SearchIcon className="mx-auto h-8 w-8 text-fgMuted/80" />
+            <p className="font-serif text-sm font-bold text-fg">输入关键词开始检索</p>
+            <p className="mx-auto max-w-md font-serif text-xs leading-relaxed text-fgMuted">也可以点击上方常用标签，快速查看相关内容。</p>
           </div>
         ) : results.length > 0 ? (
           <div className="space-y-2">
