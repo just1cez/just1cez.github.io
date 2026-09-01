@@ -1,11 +1,7 @@
 ---
-import PageLayout from "../../layouts/PageLayout.astro";
-import FrostLine from "../../components/FrostLine.astro";
-import Pagination from "../../components/Pagination.astro";
-import ArticleList from "../../components/react/ArticleList.tsx";
+import CategoryArchive from "../../components/CategoryArchive.astro";
 import type { GetStaticPaths } from "astro";
-import { CATEGORY_META, categoryPath } from "../../site.config";
-import { getPostsByCategory, toPostCardItem } from "../../lib/posts";
+import { getPostsByCategory } from "../../lib/posts";
 import type { PostEntry } from "../../lib/posts";
 
 type PaginatedPosts = {
@@ -22,21 +18,6 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props as PaginatedPosts;
-const items = page.data.map(toPostCardItem);
 ---
 
-<PageLayout title="Life - Justice's Blog" description={CATEGORY_META.life.description} type="life">
-  <div class="space-y-8">
-    <header class="space-y-2">
-      <span class="block font-mono text-xs uppercase tracking-widest text-accent">Rest &amp; Reflection / 平衡日常</span>
-      <h1 class="flex items-center gap-2 font-serif text-2xl font-bold text-fg sm:text-3.5xl">
-        <svg class="h-6 w-6 text-accentWarm" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.24 5.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" /></svg>
-        <span>{CATEGORY_META.life.title}</span>
-      </h1>
-      <p class="font-serif text-xs italic text-fgMuted">{CATEGORY_META.life.description}</p>
-      <FrostLine />
-    </header>
-    <ArticleList client:visible posts={items} layout="grid" />
-    <Pagination currentPage={page.currentPage} lastPage={page.lastPage} baseUrl={categoryPath("life")} />
-  </div>
-</PageLayout>
+<CategoryArchive category="life" page={page} />

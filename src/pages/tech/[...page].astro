@@ -1,11 +1,7 @@
 ---
-import PageLayout from "../../layouts/PageLayout.astro";
-import FrostLine from "../../components/FrostLine.astro";
-import Pagination from "../../components/Pagination.astro";
-import ArticleList from "../../components/react/ArticleList.tsx";
+import CategoryArchive from "../../components/CategoryArchive.astro";
 import type { GetStaticPaths } from "astro";
-import { CATEGORY_META, categoryPath } from "../../site.config";
-import { getPostsByCategory, toPostCardItem } from "../../lib/posts";
+import { getPostsByCategory } from "../../lib/posts";
 import type { PostEntry } from "../../lib/posts";
 
 type PaginatedPosts = {
@@ -22,21 +18,6 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props as PaginatedPosts;
-const items = page.data.map(toPostCardItem);
 ---
 
-<PageLayout title="Tech - Justice's Blog" description={CATEGORY_META.tech.description} type="tech">
-  <div class="space-y-8">
-    <header class="space-y-2">
-      <span class="block font-mono text-xs uppercase tracking-widest text-accentWarm">Core Technologies / 系统精研</span>
-      <h1 class="flex items-center gap-2 font-serif text-2xl font-bold text-fg sm:text-3.5xl">
-        <svg class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
-        <span>{CATEGORY_META.tech.title}</span>
-      </h1>
-      <p class="font-serif text-xs italic text-fgMuted">{CATEGORY_META.tech.description}</p>
-      <FrostLine />
-    </header>
-    <ArticleList client:visible posts={items} layout="stack" />
-    <Pagination currentPage={page.currentPage} lastPage={page.lastPage} baseUrl={categoryPath("tech")} />
-  </div>
-</PageLayout>
+<CategoryArchive category="tech" page={page} />

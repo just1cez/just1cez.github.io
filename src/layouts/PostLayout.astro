@@ -62,7 +62,7 @@ const articleSchema = canonicalUrl && {
 };
 ---
 
-<BaseLayout title={`${title} - ${SITE.title}`} description={description} type={category} image={image} schema={articleSchema || undefined}>
+<BaseLayout title={`${title} - ${SITE.title}`} description={description} ogType="article" image={image} schema={articleSchema || undefined}>
   <ReadingProgress />
   <Header />
   <div class="mx-auto max-w-5xl px-4 py-8 flex gap-8">

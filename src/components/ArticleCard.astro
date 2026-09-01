@@ -1,0 +1,61 @@
+---
+import type { PostCardItem } from "../lib/posts";
+
+export interface Props {
+  post: PostCardItem;
+}
+
+const { post } = Astro.props;
+const isTech = post.category === "tech";
+---
+
+<a
+  href={post.href}
+  class="group relative flex items-start justify-between gap-4 overflow-hidden rounded-md border border-border/70 bg-bgSoft/40 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/70 hover:shadow-[0_14px_36px_rgba(45,35,80,0.08)] dark:bg-bgSoft/20"
+>
+  <div class="min-w-0 flex-1 space-y-2.5">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="rounded border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-[11px] text-accent">
+        {post.stageLabel}
+      </span>
+      {post.series && (
+        <span class="rounded-sm border border-border bg-bgSoft px-2 py-0.5 font-mono text-[11px] text-fgMuted">
+          {post.series}
+        </span>
+      )}
+      {post.featured && (
+        <span class="rounded bg-accent/15 px-1.5 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-accent">
+          Selected ✧
+        </span>
+      )}
+    </div>
+
+    <h3 class="line-clamp-2 font-serif text-base font-bold leading-snug tracking-tight text-fg transition-colors duration-200 group-hover:text-accent">
+      {post.title}
+    </h3>
+
+    {post.description && <p class="line-clamp-2 text-[13px] leading-relaxed text-fgMuted">{post.description}</p>}
+
+    <div class="flex flex-wrap items-center gap-3 pt-1 font-mono text-[12px] text-fgMuted">
+      <span class="flex items-center gap-1">
+        <svg aria-hidden="true" class="h-3.5 w-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Z" /></svg>
+        {post.date}
+      </span>
+      <span class="select-none opacity-40">•</span>
+      <span class="flex items-center gap-1">
+        {isTech ? (
+          <svg aria-hidden="true" class="h-3 w-3 text-accentWarm opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12v18l-6-4-6 4V3Z" /></svg>
+        ) : (
+          <svg aria-hidden="true" class="h-3 w-3 text-accent opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" /></svg>
+        )}
+        <span class="font-semibold">{post.categoryLabel}</span>
+      </span>
+      {post.tags.length > 0 && <span class="select-none opacity-40">•</span>}
+      <span class="flex flex-wrap gap-1">
+        {post.tags.map((tag) => <span class="opacity-80">#{tag}</span>)}
+      </span>
+    </div>
+  </div>
+
+  <svg aria-hidden="true" class="h-5 w-5 flex-none self-center text-border transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" /></svg>
+</a>

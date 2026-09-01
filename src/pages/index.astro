@@ -3,7 +3,7 @@ import PageLayout from "../layouts/PageLayout.astro";
 import FrostLine from "../components/FrostLine.astro";
 import SignatureProject from "../components/SignatureProject.astro";
 import Hero from "../components/react/Hero.tsx";
-import ArticleList from "../components/react/ArticleList.tsx";
+import ArticleList from "../components/ArticleList.astro";
 import { SITE, withBase, tagPath } from "../site.config";
 import { getAllPosts, getFeaturedPosts, getFocusTags, toPostCardItem } from "../lib/posts";
 
@@ -13,7 +13,7 @@ const featuredPosts = getFeaturedPosts(allPosts, 5).map(toPostCardItem);
 const focusTags = getFocusTags(allPosts, ["Algorithm", "C++", "AI探索", "学习记录", "PC硬件"], 5);
 ---
 
-<PageLayout title={SITE.title} description={SITE.description} type="home">
+<PageLayout title={SITE.title} description={SITE.description}>
   <div class="min-w-0 space-y-10 sm:space-y-12">
     <section class="space-y-4">
       <Hero client:load />
@@ -38,7 +38,7 @@ const focusTags = getFocusTags(allPosts, ["Algorithm", "C++", "AI探索", "学�
             <span>精选文章 / Featured</span>
           </span>
         </h2>
-        <ArticleList client:visible posts={featuredPosts} layout="grid" />
+        <ArticleList posts={featuredPosts} layout="grid" />
       </section>
     )}
 
@@ -50,7 +50,7 @@ const focusTags = getFocusTags(allPosts, ["Algorithm", "C++", "AI探索", "学�
         </span>
         <a href={withBase("/series")} class="font-mono text-[12px] text-accent hover:underline">按系列浏览 →</a>
       </h2>
-      <ArticleList client:visible posts={latestPosts} layout="stack" />
+      <ArticleList posts={latestPosts} layout="stack" />
     </section>
   </div>
 </PageLayout>

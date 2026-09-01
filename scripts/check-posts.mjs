@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { registerTagSlug } from "../src/lib/url.ts";
 
 const root = process.cwd();
 const contentRoot = path.join(root, "src", "content");
@@ -16,6 +17,7 @@ const dataUri = /^data:/i;
 
 const errors = [];
 const warnings = [];
+const tagOwners = new Map();
 
 function report(list, file, message) {
   list.push(`${path.relative(root, file)}: ${message}`);
@@ -186,6 +188,19 @@ function checkFrontmatter(file, data) {
   }
 }
 
+function checkTagSlugCollisions(file, data) {
+  if (!Array.isArray(data.tags)) return;
+
+  for (const tag of data.tags) {
+    if (typeof tag !== "string" || !tag.trim()) continue;
+    const collision = registerTagSlug(tagOwners, tag, file);
+
+    if (collision) {
+      report(errors, file, `tag "${tag}" collides with "${collision.owner.tag}" at /tags/${collision.slug} (first seen in ${path.relative(root, collision.owner.source)})`);
+    }
+  }
+}
+
 function checkLocalTargets(file, body) {
   for (const target of extractTargets(body)) {
     const resolved = targetPath(file, target);
@@ -222,6 +237,7 @@ for (const file of files) {
   const { data, body } = parseFrontmatter(file, source);
 
   checkFrontmatter(file, data);
+  checkTagSlugCollisions(file, data);
   checkLocalTargets(file, body);
   checkObsidianLinks(file, body);
   checkAttachmentPaths(file, body);
