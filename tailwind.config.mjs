@@ -4,62 +4,50 @@ export default {
   theme: {
     extend: {
       colors: {
-        accent: "var(--color-accent)",
-        accentWarm: "var(--color-accent-warm)",
-        accent2: "var(--color-accent-warm)",
         bg: "var(--color-bg)",
-        bgSoft: "var(--color-bg-soft)",
+        surface: "var(--color-surface)",
         fg: "var(--color-fg)",
-        fgMuted: "var(--color-fg-muted)",
+        muted: "var(--color-muted)",
         border: "var(--color-border)",
-        // frost-* aliases so ported B components map onto the same tokens
-        "frost-bg": "var(--color-bg)",
-        "frost-surface": "var(--color-bg-soft)",
-        "frost-text": "var(--color-fg)",
-        "frost-muted": "var(--color-fg-muted)",
-        "frost-accent": "var(--color-accent)",
-        "frost-accent2": "var(--color-accent-warm)",
-        "frost-border": "var(--color-border)",
+        link: "var(--color-link)",
+        linkHover: "var(--color-link-hover)",
+        focus: "var(--color-focus)",
       },
       fontFamily: {
-        serif: ["ui-serif", '"Songti SC"', '"Noto Serif CJK SC"', '"Source Han Serif SC"', "STSong", "serif"],
-        sans: ["ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
+        serif: ["var(--font-serif)"],
+        sans: ["var(--font-sans)"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       fontSize: {
         "3.5xl": ["2rem", { lineHeight: "2.4rem" }],
-      },
-      animation: {
-        "spin-slow": "spin 30s linear infinite",
-        "bounce-slow": "bounce 3s ease-in-out infinite",
       },
       typography: {
         DEFAULT: {
           css: {
             maxWidth: "none",
             h1: {
-              fontFamily: 'ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif',
+              fontFamily: "var(--font-serif)",
               fontWeight: "700",
             },
             h2: {
-              fontFamily: 'ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif',
+              fontFamily: "var(--font-serif)",
               fontWeight: "700",
             },
             h3: {
-              fontFamily: 'ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif',
+              fontFamily: "var(--font-serif)",
               fontWeight: "700",
             },
             a: {
-              color: "var(--color-accent)",
+              color: "var(--color-link)",
               textDecoration: "underline",
               textDecorationThickness: "0.1em",
-              textDecorationColor: "var(--color-accent)",
+              textDecorationColor: "color-mix(in srgb, var(--color-link) 45%, transparent)",
               textUnderlineOffset: "2px",
               transition: "color 0.3s, background-color 0.3s, text-decoration-color 0.3s",
               "&:hover": {
-                color: "var(--color-bg)",
-                backgroundColor: "var(--color-accent)",
-                textDecorationColor: "var(--color-accent)",
+                color: "var(--color-link-hover)",
+                backgroundColor: "transparent",
+                textDecorationColor: "var(--color-link-hover)",
               },
             },
             strong: { color: "var(--color-fg)" },
@@ -74,7 +62,7 @@ export default {
               fontSize: "0.875em",
             },
             "a code": {
-              color: "var(--color-accent)",
+              color: "var(--color-link)",
               background: "transparent",
             },
             "pre code": {
@@ -85,9 +73,9 @@ export default {
               fontSize: "inherit",
             },
             blockquote: {
-              borderLeftColor: "var(--color-accent)",
-              color: "var(--color-fg-muted)",
-              fontStyle: "italic",
+              borderLeftColor: "var(--color-link)",
+              color: "var(--color-muted)",
+              fontStyle: "normal",
             },
             hr: { borderColor: "var(--color-border)" },
             th: { color: "var(--color-fg)" },
@@ -98,16 +86,16 @@ export default {
         invert: {
           css: {
             a: {
-              color: "var(--color-accent)",
+              color: "var(--color-link)",
               "&:hover": {
-                color: "var(--color-bg)",
-                backgroundColor: "var(--color-accent)",
+                color: "var(--color-link-hover)",
+                backgroundColor: "transparent",
               },
             },
             strong: { color: "var(--color-fg)" },
             code: { color: "var(--color-inline-code-text)" },
-            "a code": { color: "var(--color-accent)" },
-            blockquote: { color: "var(--color-fg-muted)" },
+            "a code": { color: "var(--color-link)" },
+            blockquote: { color: "var(--color-muted)" },
             th: { color: "var(--color-fg)" },
           },
         },

@@ -14,23 +14,23 @@ function pageHref(page: number) {
 ---
 
 {lastPage > 1 && (
-  <nav class="flex items-center justify-center gap-4 mt-8 text-sm">
+  <nav class="mt-8 flex items-center justify-center gap-5 border-t border-border pt-6 text-sm" aria-label="分页">
     {currentPage > 1 ? (
       <a href={pageHref(currentPage - 1)}
-         class="px-3 py-1.5 rounded border border-border hover:border-accent hover:text-accent transition-colors">
+         class="text-link">
         &larr; 上一页
       </a>
     ) : (
-      <span class="px-3 py-1.5 rounded border border-border text-fgMuted opacity-40 cursor-not-allowed">&larr; 上一页</span>
+      <span class="text-muted opacity-40">&larr; 上一页</span>
     )}
-    <span class="text-fgMuted">{currentPage} / {lastPage}</span>
+    <span class="text-muted">{currentPage} / {lastPage}</span>
     {currentPage < lastPage ? (
       <a href={pageHref(currentPage + 1)}
-         class="px-3 py-1.5 rounded border border-border hover:border-accent hover:text-accent transition-colors">
+         class="text-link">
         下一页 &rarr;
       </a>
     ) : (
-      <span class="px-3 py-1.5 rounded border border-border text-fgMuted opacity-40 cursor-not-allowed">下一页 &rarr;</span>
+      <span class="text-muted opacity-40">下一页 &rarr;</span>
     )}
   </nav>
 )}

@@ -19,6 +19,7 @@ const defaultSchema = {
   name: SITE.title,
   description: SITE.description,
   url: new URL(withBase("/"), Astro.site).toString(),
+  image: ogImage,
   author: {
     "@type": "Person",
     name: SITE.author,
@@ -64,7 +65,6 @@ const jsonLd = JSON.stringify(schema ?? defaultSchema);
         applyTheme();
       })();
     </script>
-    <script is:inline src={withBase("/frost-trail.js")} defer></script>
   </head>
   <body class="min-h-screen bg-bg text-fg antialiased transition-colors duration-200">
     <slot />

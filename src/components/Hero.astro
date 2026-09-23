@@ -1,0 +1,15 @@
+---
+import { SITE, withBase } from "../site.config";
+---
+
+<section class="flex items-center gap-4 border-b border-border pb-8 sm:pb-10" aria-labelledby="home-title">
+  <img src={withBase(SITE.avatar)} alt="Justice 的头像" class="h-14 w-14 shrink-0 rounded-full object-cover" />
+  <div class="min-w-0">
+    <h1 id="home-title" class="font-serif text-2xl font-semibold tracking-[-0.025em] text-fg">Justice</h1>
+    <p class="mt-0.5 text-sm text-muted">{SITE.subtitle}</p>
+    <div class="mt-2 flex gap-4 text-sm">
+      <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="text-link">GitHub</a>
+      <a href={withBase("/rss.xml")} class="text-link">RSS</a>
+    </div>
+  </div>
+</section>

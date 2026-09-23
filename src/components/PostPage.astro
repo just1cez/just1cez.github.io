@@ -3,12 +3,14 @@ import PostLayout from "../layouts/PostLayout.astro";
 import PrevNext from "./PrevNext.astro";
 import RelatedPosts from "./RelatedPosts.astro";
 import { render } from "astro:content";
+import { estimateReadingMinutes } from "../lib/posts";
 import { postPath } from "../site.config";
 import type { PostPageProps } from "../lib/posts";
 
 const { post, prev, next, related } = Astro.props as PostPageProps;
 const { Content, headings } = await render(post);
 const canonicalUrl = new URL(postPath(post.data.category, post.id), Astro.site).toString();
+const readingMinutes = estimateReadingMinutes(post.body ?? "");
 ---
 
 <PostLayout
@@ -22,6 +24,7 @@ const canonicalUrl = new URL(postPath(post.data.category, post.id), Astro.site).
   canonicalUrl={canonicalUrl}
   series={post.data.series}
   stage={post.data.stage}
+  readingMinutes={readingMinutes}
   headings={headings}
 >
   <Content />

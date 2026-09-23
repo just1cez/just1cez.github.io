@@ -1,84 +1,19 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import FrostLine from "../components/FrostLine.astro";
-import { CATEGORY_META, SITE, categoryPath, postPath, withBase } from "../site.config";
-
-const contentSections = [
-  {
-    label: CATEGORY_META.tech.label,
-    title: CATEGORY_META.tech.title,
-    href: categoryPath("tech"),
-    description: "算法入门、C++、AI 探索、课程笔记和工程练习。偏学习现场，也会保留阶段性的理解边界。",
-  },
-  {
-    label: CATEGORY_META.life.label,
-    title: CATEGORY_META.life.title,
-    href: categoryPath("life"),
-    description: "硬件折腾、装机记录和学习之外的轻量观察。它们不一定系统，但会尽量写清楚具体过程。",
-  },
-] as const;
-
-const readingLinks = [
-  ["从这里开始", postPath("tech", "start-here"), "这个博客会写什么，以及现阶段为什么这样记录。"],
-  ["技术笔记", categoryPath("tech"), "算法、C++、AI 探索、课程笔记和工程练习。"],
-  ["生活杂谈", categoryPath("life"), "硬件折腾、日常观察和学习之外的轻量记录。"],
-] as const;
+import { SITE, withBase } from "../site.config";
 ---
 
-<PageLayout
-  title="About - Justice's Blog"
-  description="关于 Justice's Blog 的内容方向、记录方式和阅读入口。"
->
-  <header class="mb-10 pb-7">
-    <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
-      <img src={withBase(SITE.avatar)} alt="Justice" class="h-20 w-20 rounded-full object-cover ring-2 ring-border" />
-      <div class="max-w-2xl">
-        <p class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent">About</p>
-        <h1 class="mt-2 font-serif text-2xl font-bold sm:text-3.5xl">Justice</h1>
-        <p class="mt-1 text-sm text-fgMuted">{SITE.subtitle}</p>
-      </div>
+<PageLayout title={`关于 — ${SITE.author}`} description="关于 Justice。">
+  <header class="flex items-center gap-5 border-b border-border pb-8">
+    <img src={withBase(SITE.avatar)} alt="Justice 的头像" class="h-24 w-24 shrink-0 rounded-full object-cover" />
+    <div>
+      <h1 class="page-title">Justice</h1>
+      <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="mt-2 inline-block text-sm text-link">GitHub</a>
     </div>
-
-    <p class="mt-6 max-w-3xl leading-7 text-fgMuted">
-      大一 CS 学生。这个博客主要用来保存学习记录、技术笔记和一些硬件折腾，也保留理解还在变化时的真实过程。
-      这里不会把每篇文章都写成定论，更像一份慢慢更新的学习档案。
-    </p>
-
-    <FrostLine class="mt-7" />
   </header>
 
-  <div class="space-y-9">
-    <section class="space-y-4">
-      <div class="border-b border-border pb-2">
-        <h2 class="text-xl font-semibold">这个博客记录什么</h2>
-      </div>
-      <p class="max-w-3xl leading-7 text-fgMuted">
-        文章会尽量标清阶段：有些是能回头查的速查模板，有些只是论文初读或折腾现场。
-        如果你看到某篇还不够成熟，那大概率也是它被留下来的原因。
-      </p>
-      <div class="grid gap-3 sm:grid-cols-2">
-        {contentSections.map(({ label, title, href, description }) => (
-          <a href={href} class="rounded-md border border-border bg-bg p-4 transition-colors hover:border-accent hover:text-accent">
-            <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-accentWarm">{label}</span>
-            <h3 class="mt-2 font-serif text-base font-semibold text-fg">{title}</h3>
-            <p class="mt-2 text-sm leading-6 text-fgMuted">{description}</p>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section>
-      <div class="mb-4 flex flex-col gap-1 border-b border-border pb-2 sm:flex-row sm:items-baseline sm:justify-between">
-        <h2 class="text-xl font-semibold">继续阅读</h2>
-      </div>
-      <div class="grid gap-3 sm:grid-cols-3">
-        {readingLinks.map(([label, href, note]) => (
-          <a href={href} class="rounded-md border border-border bg-bg p-4 transition-colors hover:border-accent hover:text-accent">
-            <span class="font-medium">{label}</span>
-            <span class="mt-1 block text-sm leading-6 text-fgMuted">{note}</span>
-          </a>
-        ))}
-      </div>
-    </section>
-  </div>
+  <section class="max-w-2xl space-y-5 py-8 text-sm leading-7 text-muted" aria-label="自述">
+    <p>HITSZ计科在读，爱折腾电脑硬件。</p>
+    <p>为什么开这个博客，我也说不出什么特别的理由。没有固定主题，想到什么能写就写什么。</p>
+  </section>
 </PageLayout>
