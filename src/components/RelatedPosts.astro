@@ -1,36 +1,22 @@
 ---
-import { CATEGORY_META, postPath, tagPath } from "../site.config";
+import { CATEGORY_META, postPath } from "../site.config";
 import type { PostSummary } from "../lib/posts";
-
-export interface Props {
-  posts: PostSummary[];
-}
-
+export interface Props { posts: PostSummary[]; }
 const { posts } = Astro.props;
 ---
 
 {posts.length > 0 && (
-  <section class="not-prose mt-8 border-t border-border pt-6">
-    <h2 class="text-sm font-semibold uppercase tracking-[0.16em] text-fgMuted">相关阅读</h2>
-    <div class="mt-4 grid gap-3 sm:grid-cols-3">
+  <section class="not-prose mt-10 border-t border-border pt-6">
+    <h2 class="font-serif text-lg font-semibold text-fg">相关阅读</h2>
+    <ul class="mt-3 divide-y divide-border">
       {posts.map((post) => (
-        <article class="rounded-md border border-border bg-bg p-4">
-          <div class="mb-2 flex items-center gap-2 text-xs text-fgMuted">
-            <span class="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{CATEGORY_META[post.category].label}</span>
-            {post.draft && <span class="rounded bg-amber-500/10 px-1.5 py-0.5 text-amber-600 dark:text-amber-300">Draft</span>}
-            {post.series && <span>{post.series}</span>}
+        <li class="py-3">
+          <div class="flex items-baseline justify-between gap-4">
+            <a href={postPath(post.category, post.slug)} class="text-sm text-fg hover:text-link">{post.title}</a>
+            <span class="shrink-0 text-xs text-muted">{CATEGORY_META[post.category].label}</span>
           </div>
-          <a href={postPath(post.category, post.slug)} class="block text-sm font-medium hover:text-accent transition-colors">
-            {post.title}
-          </a>
-          {post.description && <p class="mt-2 text-xs leading-5 text-fgMuted line-clamp-3">{post.description}</p>}
-          <div class="mt-3 flex flex-wrap gap-1.5">
-            {post.tags.slice(0, 3).map((tag) => (
-              <a href={tagPath(tag)} class="text-xs text-fgMuted hover:text-accent transition-colors">#{tag}</a>
-            ))}
-          </div>
-        </article>
+        </li>
       ))}
-    </div>
+    </ul>
   </section>
 )}

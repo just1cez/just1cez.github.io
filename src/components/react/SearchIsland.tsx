@@ -1,19 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { motion } from "motion/react";
-import type { Variants } from "motion/react";
-import { Search as SearchIcon, FileWarning, Tag } from "lucide-react";
 import type { SearchIndexEntry } from "../../lib/posts";
 
 type SearchCategory = "All" | "tech" | "life";
-
-const prefersReduced =
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-const container: Variants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: prefersReduced ? 0 : 0.06 } } };
-const item: Variants = prefersReduced
-  ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
-  : { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } } };
 
 function readQueryFromLocation() {
   return new URLSearchParams(window.location.search).get("q") ?? "";
@@ -42,163 +30,111 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
     let ignore = false;
     setLoaded(false);
     setError(false);
-
     fetch(indexUrl)
       .then((response) => {
         if (!response.ok) throw new Error(`Search index failed: ${response.status}`);
         return response.json() as Promise<SearchIndexEntry[]>;
       })
       .then((data) => {
-        if (ignore) return;
-        setPosts(data);
-        setLoaded(true);
+        if (!ignore) {
+          setPosts(data);
+          setLoaded(true);
+        }
       })
       .catch(() => {
-        if (ignore) return;
-        setError(true);
-        setLoaded(true);
+        if (!ignore) {
+          setError(true);
+          setLoaded(true);
+        }
       });
-
-    return () => {
-      ignore = true;
-    };
+    return () => { ignore = true; };
   }, [indexUrl]);
 
   useEffect(() => {
     if (!mounted) return;
-
     const url = new URL(window.location.href);
     const cleanQuery = query.trim();
-
     if (cleanQuery) url.searchParams.set("q", cleanQuery);
     else url.searchParams.delete("q");
-
     if (category === "All") url.searchParams.delete("category");
     else url.searchParams.set("category", category);
-
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   }, [category, mounted, query]);
 
-  const focusTags = useMemo(() => {
-    const counts = new Map<string, number>();
-    posts.forEach((p) => (p.tags || []).forEach((t) => counts.set(t, (counts.get(t) || 0) + 1)));
-    return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([t]) => t);
-  }, [posts]);
-
   const results = useMemo(() => {
-    const q = query.toLowerCase().trim();
-    if (!q) return [];
-
-    return posts.filter((p) => {
-      if (category !== "All" && p.category !== category) return false;
-      return [p.title, p.description, p.body, ...(p.tags || [])]
-        .filter(Boolean).join(" ").toLowerCase().includes(q);
+    const value = query.toLowerCase().trim();
+    if (!value) return [];
+    return posts.filter((post) => {
+      if (category !== "All" && post.category !== category) return false;
+      return [post.title, post.description, post.body, ...post.tags].join(" ").toLowerCase().includes(value);
     });
   }, [posts, query, category]);
+
   const hasQuery = query.trim().length > 0;
 
   return (
-    <motion.div variants={container} initial={mounted ? "hidden" : false} animate={mounted ? "show" : undefined} className="space-y-8">
-      <motion.div variants={item} className="space-y-2">
-        <span className="block font-mono text-xs uppercase tracking-widest text-accentWarm">Retriever / 检索</span>
-        <h1 className="font-serif text-2xl font-bold text-fg sm:text-3.5xl">全站文章检索</h1>
-        <p className="font-serif text-xs italic text-fgMuted">输入关键词，匹配标题、标签与正文内容，结果实时刷新。</p>
-      </motion.div>
+    <div>
+      <header className="page-heading">
+        <h1 className="page-title">搜索</h1>
+      </header>
 
-      <motion.div variants={item} className="space-y-4">
-        <div className="relative">
-          <label htmlFor="site-search" className="sr-only">搜索文章</label>
-          <SearchIcon aria-hidden="true" className="absolute left-3.5 top-3.5 h-4 w-4 text-fgMuted" />
-          <input
-            id="site-search"
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="搜索文章"
-            placeholder="输入检索词，例如 算法、AI、装机 ..."
-            className="w-full rounded-md border border-border bg-bgSoft/20 py-3 pl-11 pr-4 font-serif text-sm text-fg outline-none transition-colors placeholder:text-fgMuted/65 focus:border-accent focus:ring-1 focus:ring-accent"
-          />
+      <div className="space-y-4 py-6">
+        <label htmlFor="site-search" className="sr-only">搜索文章</label>
+        <input
+          id="site-search"
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="搜索文章……"
+          className="w-full border border-border bg-bg px-4 py-3 text-base text-fg outline-none placeholder:text-muted focus:border-focus"
+        />
+
+        <div className="flex flex-wrap items-center gap-2 text-sm" role="group" aria-label="分类筛选">
+          {(["All", "tech", "life"] as const).map((value) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={category === value}
+              onClick={() => setCategory(value)}
+              className={`border-b px-1 py-1 ${category === value ? "border-link text-fg" : "border-transparent text-muted hover:text-fg"}`}
+            >
+              {value === "All" ? "全部" : value === "tech" ? "技术" : "生活"}
+            </button>
+          ))}
+          {query && <button type="button" onClick={() => setQuery("")} className="ml-auto text-link">清空</button>}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex w-fit items-center gap-1.5 rounded border border-border/80 bg-bgSoft/20 p-1" role="group" aria-label="分类筛选">
-            {(["All", "tech", "life"] as const).map((c) => (
-              <button
-                key={c}
-                type="button"
-                aria-pressed={category === c}
-                onClick={() => setCategory(c)}
-                className={`min-h-9 rounded px-3 py-1.5 transition-all ${category === c ? "border border-border bg-bgSoft font-medium text-accent shadow-sm" : "text-fgMuted hover:text-fg"}`}
-              >
-                {c === "All" ? "全部" : c === "tech" ? "Tech 技术" : "Life 生活"}
-              </button>
-            ))}
-          </div>
-          {query && (
-            <button type="button" aria-label="清空搜索词" onClick={() => setQuery("")} className="min-h-9 font-mono text-[12px] text-accent underline">清空 [x]</button>
-          )}
-        </div>
+      </div>
 
-        {focusTags.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs" role="group" aria-label="常用标签筛选">
-            <Tag aria-hidden="true" className="mr-1 h-3.5 w-3.5 shrink-0 text-fgMuted" />
-            {focusTags.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                aria-pressed={query === tag}
-                onClick={() => setQuery(tag)}
-                className={`min-h-9 rounded border px-3 py-1 text-[12px] transition-all ${query === tag ? "border-accent/40 bg-accent/15 font-semibold text-accent" : "border-border bg-bg text-fgMuted hover:border-accent hover:text-accent"}`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        )}
-      </motion.div>
-
-      <motion.section variants={item} className="space-y-4">
-        <div className="flex items-center justify-between border-b border-border/40 pb-2 font-mono text-xs text-fgMuted" aria-live="polite">
-          <span className="uppercase tracking-wider">Match / 命中</span>
-          <span>{error ? "索引加载失败" : loaded ? hasQuery ? `找到 ${results.length} 篇` : "等待检索" : "加载中..."}</span>
+      <section aria-live="polite">
+        <div className="flex items-center justify-between border-b border-border pb-3 text-xs text-muted">
+          <span>结果</span>
+          <span>{error ? "索引加载失败" : loaded ? hasQuery ? `${results.length} 篇` : "等待搜索" : "加载中…"}</span>
         </div>
 
         {error ? (
-          <div className="space-y-3 rounded-lg border border-dotted border-border p-12 text-center">
-            <FileWarning className="mx-auto h-8 w-8 text-fgMuted/80" />
-            <p className="font-serif text-sm font-bold text-fg">搜索索引加载失败</p>
-            <p className="mx-auto max-w-md font-serif text-xs leading-relaxed text-fgMuted">刷新页面后再试一次，或者先通过 Tech / Life / Tags 浏览文章。</p>
-          </div>
+          <p className="py-10 text-sm text-muted">搜索索引加载失败，请刷新页面重试。</p>
         ) : loaded && !hasQuery ? (
-          <div className="space-y-3 rounded-lg border border-dotted border-border p-12 text-center">
-            <SearchIcon className="mx-auto h-8 w-8 text-fgMuted/80" />
-            <p className="font-serif text-sm font-bold text-fg">输入关键词开始检索</p>
-            <p className="mx-auto max-w-md font-serif text-xs leading-relaxed text-fgMuted">也可以点击上方常用标签，快速查看相关内容。</p>
-          </div>
+          <p className="py-10 text-sm text-muted">输入关键词开始搜索。</p>
         ) : results.length > 0 ? (
-          <div className="space-y-2">
-            {results.map((p) => (
-              <a key={p.url} href={p.url} className="group flex items-start justify-between gap-4 rounded-md border border-border/70 bg-bgSoft/40 p-4 transition-all hover:border-accent dark:bg-bgSoft/20">
-                <div className="min-w-0 flex-1 space-y-1.5">
-                  <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-fgMuted">
-                    <span>{new Date(p.date).toLocaleDateString("zh-CN")}</span>
-                    {p.stageLabel && <span className="rounded border border-border bg-bgSoft px-1.5 py-0.5">{p.stageLabel}</span>}
-                    <span className="rounded bg-accent/10 px-1.5 py-0.5 text-accent">{p.category}</span>
-                  </div>
-                  <h3 className="line-clamp-2 font-serif text-sm font-bold text-fg transition-colors group-hover:text-accent">{p.title}</h3>
-                  {p.description && <p className="line-clamp-2 text-xs leading-relaxed text-fgMuted">{p.description}</p>}
+          <div className="divide-y divide-border">
+            {results.map((post) => (
+              <article key={post.url} className="py-5 sm:grid sm:grid-cols-[112px_minmax(0,1fr)] sm:gap-6">
+                <div className="mb-2 text-xs text-muted sm:mb-0 sm:pt-1">
+                  <time>{new Date(post.date).toLocaleDateString("zh-CN")}</time>
+                  <span className="ml-2 sm:ml-0 sm:mt-1 sm:block">{post.category === "tech" ? "Tech" : "Life"}</span>
                 </div>
-              </a>
+                <div>
+                  <h2 className="font-serif text-xl font-semibold text-fg"><a href={post.url} className="hover:text-link">{post.title}</a></h2>
+                  {post.description && <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted">{post.description}</p>}
+                </div>
+              </article>
             ))}
           </div>
         ) : loaded ? (
-          <div className="space-y-3 rounded-lg border border-dotted border-border p-12 text-center">
-            <FileWarning className="mx-auto h-8 w-8 animate-bounce-slow text-fgMuted/80" />
-            <p className="font-serif text-sm font-bold text-fg">没有匹配的文章</p>
-            <p className="mx-auto max-w-md font-serif text-xs leading-relaxed text-fgMuted">换个关键词试试，或许这个领域我还没来得及写。</p>
-          </div>
+          <p className="py-10 text-sm text-muted">没有找到相关文章。</p>
         ) : null}
-      </motion.section>
-    </motion.div>
+      </section>
+    </div>
   );
 }

@@ -4,66 +4,58 @@
 
 @layer base {
   :root {
-    --color-accent: #7A55D0;
-    --color-accent-warm: #4FA7CC;
-    --color-bg: #F8F7FC;
-    --color-bg-soft: #EFECF8;
-    --color-fg: #2B2540;
-    --color-fg-muted: #6F6796;
-    --color-border: #DCD4EF;
-    --color-shadow: rgba(45,35,80,0.05);
-    --color-inline-code-bg: #ECE6F8;
-    --color-inline-code-text: #6B4BB8;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-serif: ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, Georgia, serif;
+    --color-bg: #f7f5ef;
+    --color-surface: #eeece5;
+    --color-fg: #20201d;
+    --color-muted: #706e67;
+    --color-border: #d8d4ca;
+    --color-link: #a44f38;
+    --color-link-hover: #783725;
+    --color-focus: #a44f38;
+    --color-inline-code-bg: #e9e5dc;
+    --color-inline-code-text: #783725;
   }
 
   .dark {
-    --color-accent: #B9A0F2;
-    --color-accent-warm: #8FCDEA;
-    --color-bg: #11101A;
-    --color-bg-soft: #1C1830;
-    --color-fg: #E8E3F4;
-    --color-fg-muted: #968BB8;
-    --color-border: #2D2650;
-    --color-shadow: rgba(185,160,242,0.05);
-    --color-inline-code-bg: #2A2348;
-    --color-inline-code-text: #C9B6F2;
+    --color-bg: #181816;
+    --color-surface: #22221f;
+    --color-fg: #e8e5dd;
+    --color-muted: #aaa79f;
+    --color-border: #363631;
+    --color-link: #df8a6d;
+    --color-link-hover: #f0ae96;
+    --color-focus: #df8a6d;
+    --color-inline-code-bg: #2c2925;
+    --color-inline-code-text: #efaa91;
   }
 
   html {
-    scroll-behavior: smooth;
     overflow-x: hidden;
+    background: var(--color-bg);
+    scroll-behavior: smooth;
   }
 
   body {
+    min-width: 320px;
+    overflow-x: hidden;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "kern" 1, "liga" 1;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    line-height: 1.7;
-    background-image:
-      linear-gradient(135deg, rgba(255,255,255,0.72), transparent 28%),
-      linear-gradient(315deg, rgba(79,167,204,0.10), transparent 36%),
-      linear-gradient(to right, var(--color-shadow) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--color-shadow) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 7px 7px, 7px 7px;
-    background-attachment: fixed, fixed, scroll, scroll;
-    overflow-x: hidden;
   }
 
-  /* Moonlight grid: crystalline, but still quiet enough for long reading. */
-  .dark body {
-    background-color: #0d0b18;
-    background-image:
-      linear-gradient(135deg, rgba(185, 160, 242, 0.12), transparent 34%),
-      linear-gradient(315deg, rgba(143, 205, 234, 0.10), transparent 40%),
-      linear-gradient(to right, var(--color-shadow) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--color-shadow) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 7px 7px, 7px 7px;
-    background-attachment: fixed, fixed, scroll, scroll;
+  ::selection {
+    background: color-mix(in srgb, var(--color-link) 22%, transparent);
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -71,246 +63,99 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--color-border);
+    border: 2px solid var(--color-bg);
     border-radius: 999px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-accent);
-  }
-
-  ::selection {
-    background-color: color-mix(in srgb, var(--color-accent-warm) 22%, transparent);
-  }
-
-  .dark ::selection {
-    background-color: color-mix(in srgb, var(--color-accent-warm) 28%, transparent);
+    background: var(--color-border);
   }
 
   a {
-    @apply transition-colors;
+    transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+  }
+
+  button,
+  input,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
   }
 
   pre {
-    @apply overflow-x-auto;
+    overflow-x: auto;
   }
 
   code {
-    @apply text-sm;
+    font-size: 0.9em;
   }
 
   img {
-    @apply max-w-full h-auto;
+    height: auto;
+    max-width: 100%;
   }
 
+  .font-serif,
   .font-serif-cn {
-    font-family: ui-serif, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "STSong", serif;
+    font-family: var(--font-serif);
   }
 }
 
 @layer components {
   .line-clamp-2 {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .line-clamp-3 {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
     overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
-  /* Frosted-glass surface: subtle in light, crystalline in dark (Emilia moonlight) */
-  .glass {
-    background-color: color-mix(in srgb, var(--color-bg-soft) 55%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 18px 56px rgba(45, 35, 80, 0.06);
+  .page-heading {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1.25rem;
   }
 
-  .dark .glass {
-    background-color: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 18px 56px rgba(5, 4, 12, 0.28);
-  }
-
-  .hero-panel {
-    background-image:
-      linear-gradient(135deg, color-mix(in srgb, var(--color-bg-soft) 78%, transparent), color-mix(in srgb, var(--color-bg) 72%, transparent)),
-      linear-gradient(90deg, transparent 0 48%, color-mix(in srgb, var(--color-accent-warm) 14%, transparent) 48% 52%, transparent 52%);
-    background-size: 100% 100%, 18px 18px;
-  }
-
-  .section-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .section-heading h2,
-  .section-heading-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
-    font-size: 1.125rem;
-    font-weight: 700;
+  .page-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
     color: var(--color-fg);
-    letter-spacing: 0;
-    min-width: 0;
-    overflow-wrap: anywhere;
   }
 
-  .section-heading-title > span {
-    min-width: 0;
-    overflow-wrap: anywhere;
+  .text-link {
+    color: var(--color-link);
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-link) 45%, transparent);
+    text-underline-offset: 0.2em;
   }
 
-  .section-kicker {
-    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-  }
-
-  .section-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
-    border-radius: 0.375rem;
-    background: color-mix(in srgb, var(--color-bg-soft) 60%, transparent);
-    padding: 0.4rem 0.7rem;
-    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-    font-size: 0.72rem;
-    color: var(--color-fg-muted);
-  }
-
-  .section-link:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    transform: translateY(-1px);
-  }
-
-  @media (max-width: 640px) {
-    .section-heading {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 0.65rem;
-    }
-
-    .section-heading h2,
-    .section-heading-title {
-      max-width: 100%;
-      line-height: 1.35;
-    }
-  }
-
-  .signature-preview::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(120deg, transparent 0 42%, color-mix(in srgb, var(--color-accent-warm) 16%, transparent) 42% 44%, transparent 44%),
-      linear-gradient(0deg, color-mix(in srgb, var(--color-border) 28%, transparent) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 34px;
-  }
-
-  .project-window {
-    position: relative;
-  }
-
-  .project-window::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(135deg, rgba(255,255,255,0.22), transparent 32%);
-  }
-}
-
-/* Self-drawing frost line: amethyst -> ice-blue gradient sweeping in */
-.frost-line {
-  position: relative;
-  height: 2px;
-  width: 100%;
-  border-radius: 2px;
-  overflow: hidden;
-  background-color: color-mix(in srgb, var(--color-border) 30%, transparent);
-}
-
-.frost-line::after {
-  content: "";
-  position: absolute;
-  inset: 0 100% 0 0;
-  background: linear-gradient(
-    to right,
-    var(--color-accent),
-    var(--color-accent-warm),
-    transparent
-  );
-  animation: frost-draw 0.6s ease-out forwards;
-}
-
-@keyframes frost-draw {
-  to { inset: 0 0 0 0; }
-}
-
-/* Generic fade/slide-up entrance for static (non-island) sections */
-.frost-fade-up {
-  opacity: 0;
-  animation: frost-fade-up 0.5s ease-out forwards;
-}
-
-@keyframes frost-fade-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .frost-line::after,
-  .frost-fade-up { animation: none; }
-  .frost-fade-up { opacity: 1; transform: none; }
-}
-
-.frost-speck {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 9999px;
-  background: var(--speck-color, var(--color-accent));
-  box-shadow: 0 0 6px var(--speck-color, var(--color-accent));
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  will-change: transform, opacity;
-  animation: frost-rise 1.4s ease-out forwards;
-}
-
-@keyframes frost-rise {
-  0% {
-    opacity: 0.85;
-    transform: translate(-50%, -50%) rotate(var(--rot)) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(
-        calc(-50% + var(--dx)),
-        calc(-50% + var(--dy))
-      )
-      rotate(var(--rot)) scale(0.2);
+  .text-link:hover {
+    color: var(--color-link-hover);
+    text-decoration-color: currentColor;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .frost-speck { display: none; }
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,21 +1,16 @@
 ---
-export interface Props {
-  headings: { depth: number; slug: string; text: string }[];
-}
-
+export interface Props { headings: { depth: number; slug: string; text: string }[]; }
 const { headings } = Astro.props;
-const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const filtered = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
 ---
 
 {filtered.length > 0 && (
-  <nav id="toc" class="rounded border border-border bg-bgSoft p-3 text-xs">
-    <h4 class="mb-2 font-semibold text-fgMuted uppercase tracking-wider text-[11px]">目录</h4>
-    <ul class="space-y-1">
-      {filtered.map((h) => (
-        <li class={h.depth === 3 ? "pl-3" : ""}>
-          <a href={`#${h.slug}`} data-toc-link class="block py-0.5 text-fgMuted hover:text-accent transition-colors truncate">
-            {h.text}
-          </a>
+  <nav id="toc" class="border-l border-border pl-4 text-xs" aria-label="文章目录">
+    <h2 class="mb-2 font-semibold text-fg">目录</h2>
+    <ul class="space-y-1.5">
+      {filtered.map((heading) => (
+        <li class={heading.depth === 3 ? "pl-3" : ""}>
+          <a href={`#${heading.slug}`} data-toc-link class="block truncate text-muted hover:text-link">{heading.text}</a>
         </li>
       ))}
     </ul>
@@ -24,30 +19,13 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 
 <script is:inline>
 (function(){
-  function initToc(){
-    var links=document.querySelectorAll('[data-toc-link]');
-    if(!links.length)return;
-    var ids=[];
-    links.forEach(function(l){var h=l.getAttribute('href');if(h)ids.push(h.substring(1))});
-    function update(){
-      var scrollY=window.scrollY+100;
-      var current=null;
-      for(var i=ids.length-1;i>=0;i--){
-        var el=document.getElementById(ids[i]);
-        if(el&&el.offsetTop<=scrollY){current=ids[i];break}
-      }
-      links.forEach(function(l){
-        var h=l.getAttribute('href');
-        if(h&&h==='#'+current){
-          l.style.color='var(--color-accent)';l.style.fontWeight='600';
-        }else{
-          l.style.color='';l.style.fontWeight='';
-        }
-      });
-    }
-    window.addEventListener('scroll',update,{passive:true});
-    update();
+  var links=document.querySelectorAll('[data-toc-link]');if(!links.length)return;
+  var ids=Array.from(links).map(function(link){return link.getAttribute('href').slice(1);});
+  function update(){
+    var current=null,position=window.scrollY+100;
+    for(var i=ids.length-1;i>=0;i--){var element=document.getElementById(ids[i]);if(element&&element.offsetTop<=position){current=ids[i];break;}}
+    links.forEach(function(link){var active=link.getAttribute('href')==='#'+current;link.style.color=active?'var(--color-link)':'';link.style.fontWeight=active?'600':'';});
   }
-  initToc();
+  window.addEventListener('scroll',update,{passive:true});update();
 })();
 </script>

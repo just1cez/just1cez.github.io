@@ -3,6 +3,10 @@ import type { CollectionEntry } from "astro:content";
 import { CATEGORY_META, POST_STAGE_META, postPath, tagSlug } from "../site.config";
 import type { BlogCategory, PostStage } from "../site.config";
 import { rankRelatedPosts, shouldIncludeDraft } from "./post-logic";
+import { estimateReadingMinutes, groupByUtcYear, stripMarkdown } from "./post-metadata";
+import type { ArchiveYearGroup } from "./post-metadata";
+
+export { estimateReadingMinutes, stripMarkdown } from "./post-metadata";
 
 export type PostEntry = CollectionEntry<"tech"> | CollectionEntry<"life">;
 export type BlogPost = PostEntry;
@@ -30,7 +34,9 @@ export type PostCardItem = {
   featured?: boolean;
   tags: string[];
   description?: string;
+  readingMinutes: number;
 };
+export type PostArchiveYearGroup = ArchiveYearGroup<PostCardItem>;
 export type SearchIndexEntry = {
   title: string;
   description: string;
@@ -136,7 +142,15 @@ export function toPostCardItem(post: BlogPost): PostCardItem {
     featured: post.data.featured,
     tags: post.data.tags ?? [],
     description: post.data.description,
+    readingMinutes: estimateReadingMinutes(post.body ?? ""),
   };
+}
+
+export function getPostArchiveYearGroups(posts: BlogPost[]): PostArchiveYearGroup[] {
+  return groupByUtcYear(posts, (post) => post.data.date).map((group) => ({
+    year: group.year,
+    posts: group.posts.map(toPostCardItem),
+  }));
 }
 
 export async function toSearchIndexEntry(post: BlogPost): Promise<SearchIndexEntry> {
@@ -263,21 +277,6 @@ export function getSeriesGroups(posts: BlogPost[]) {
       .map((group) => ({ name: group.name, post: group.posts[0] }))
       .sort((a, b) => b.post.date.valueOf() - a.post.date.valueOf()),
   };
-}
-
-export function stripMarkdown(markdown: string) {
-  return markdown
-    .replace(/^---[\s\S]*?---/, "")
-    .replace(/^import\s+.+?;$/gm, " ")
-    .replace(/<\/?[A-Z][\w.]*(?:\s[^>]*)?>/g, " ")
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, " ")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/[{}()[\],;]+/g, " ")
-    .replace(/[#>*_\-~|$]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 export function getExcerpt(markdown: string, maxLength = 220) {

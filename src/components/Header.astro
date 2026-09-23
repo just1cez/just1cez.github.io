@@ -1,205 +1,115 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
-import { SITE, categoryPath, normalizePath, withBase, withoutBase } from "../site.config";
+import { SITE, normalizePath, withBase, withoutBase } from "../site.config";
 
 const currentPath = normalizePath(withoutBase(Astro.url.pathname));
-const isTech = currentPath.startsWith("/tech");
-const isLife = currentPath.startsWith("/life");
-const isAbout = currentPath === "/about";
-const isSearch = currentPath === "/search";
-const isSeries = currentPath === "/series";
-
 const navItems = [
-  { href: categoryPath("tech"), label: "Tech", active: isTech, icon: "book" },
-  { href: categoryPath("life"), label: "Life", active: isLife, icon: "compass" },
-  { href: withBase("/series"), label: "系列", active: isSeries, icon: "layers" },
-  { href: withBase("/search"), label: "搜索", active: isSearch, icon: "search" },
-  { href: withBase("/about"), label: "关于", active: isAbout, icon: "info" },
+  {
+    href: withBase("/articles"),
+    label: "文章",
+    active: ["/articles", "/tech", "/life", "/series", "/tags"].some((path) => currentPath.startsWith(path)),
+  },
+  { href: withBase("/#work"), label: "项目", active: false },
+  { href: withBase("/about"), label: "关于", active: currentPath === "/about" },
+  { href: withBase("/search"), label: "搜索", active: currentPath === "/search" },
 ];
-
-const icons = {
-  book: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z",
-  compass: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.24 5.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z",
-  clock: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5v5l3 3",
-  layers: "M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
-  search: "M11 2a9 9 0 1 0 5.6 16.06l4.67 4.67 1.41-1.41-4.67-4.67A9 9 0 0 0 11 2zm0 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14z",
-  info: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5h.01M11 11h1v5h1",
-};
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-border bg-bg/75 backdrop-blur-md transition-colors duration-300">
-  <div class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-    <a href={withBase("/")} title="返回首页" class="group flex items-center gap-3 select-none">
-      <span class="relative flex h-9 w-8 shrink-0 items-center justify-center" aria-hidden="true">
-        <svg class="h-8 w-8 overflow-visible" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g class="transition-transform duration-300 group-hover:-translate-y-0.5">
-            <path d="M7.2 24.6C10.8 27 20.5 27.2 24.9 24" stroke="color-mix(in srgb, var(--color-accent) 62%, white)" stroke-width="1.45" stroke-linecap="round" opacity="0.42" />
-
-            <g transform="rotate(-16 16 16)">
-              <path d="M15.9 3.5C19.5 6.4 20.4 10.8 16.7 14.3C13.3 12.5 12.5 7.3 15.9 3.5Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
-              <path d="M28.4 15.7C25.5 19.3 21.1 20.2 17.6 16.6C19.4 13.1 24.6 12.3 28.4 15.7Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
-              <path d="M16.1 28.5C12.5 25.6 11.6 21.2 15.3 17.7C18.7 19.5 19.5 24.7 16.1 28.5Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
-              <path d="M3.6 16.3C6.5 12.7 10.9 11.8 14.4 15.4C12.6 18.9 7.4 19.7 3.6 16.3Z" fill="color-mix(in srgb, var(--color-bg-soft) 9%, white)" stroke="color-mix(in srgb, var(--color-fg) 34%, white)" stroke-width="1.2" stroke-linejoin="round" />
-
-              <path d="M16 6.9C17.5 10.2 17.7 12.6 16.7 14.3" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
-              <path d="M25.1 16C21.8 17.5 19.4 17.7 17.6 16.6" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
-              <path d="M16 25.1C14.5 21.8 14.3 19.4 15.3 17.7" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
-              <path d="M6.9 16C10.2 14.5 12.6 14.3 14.4 15.4" stroke="color-mix(in srgb, var(--color-accent) 36%, white)" stroke-width="0.8" stroke-linecap="round" opacity="0.54" />
-
-              <path d="M16 12.1L19.6 16L16 19.9L12.4 16Z" fill="color-mix(in srgb, var(--color-bg) 58%, white)" stroke="color-mix(in srgb, var(--color-accent) 60%, white)" stroke-width="1.05" stroke-linejoin="round" />
-              <path d="M16 13.8L17.7 16L16 18.2L14.3 16Z" fill="color-mix(in srgb, var(--color-accent-warm) 46%, white)" stroke="color-mix(in srgb, var(--color-accent) 72%, white)" stroke-width="0.65" stroke-linejoin="round" />
-            </g>
-          </g>
-        </svg>
-      </span>
-      <span class="flex flex-col">
-        <span class="font-serif text-sm font-bold tracking-tight text-fg transition-colors group-hover:text-accent">{SITE.title}</span>
-        <span class="font-mono text-[11px] uppercase tracking-wider text-fgMuted">{SITE.subtitle}</span>
-      </span>
+<header class="w-full border-b border-border bg-bg">
+  <div class="mx-auto flex h-16 max-w-5xl items-center justify-between px-5 sm:px-8">
+    <a href={withBase("/")} class="font-serif text-lg font-semibold tracking-[-0.02em] text-fg hover:text-link" aria-label={`${SITE.author} 首页`}>
+      Justice
     </a>
-    <div class="hidden md:flex items-center gap-1">
-      <nav class="flex items-center gap-1" aria-label="主导航">
+
+    <div class="hidden items-center gap-7 md:flex">
+      <nav class="flex items-center gap-6" aria-label="主导航">
         {navItems.map((item) => (
           <a
             href={item.href}
+            aria-current={item.active ? "page" : undefined}
             class:list={[
-              "flex items-center gap-1.5 rounded border-b-2 px-3 py-1.5 text-xs font-serif transition-all duration-200",
-              item.active
-                ? "text-accent border-accent bg-bgSoft/40"
-                : "text-fgMuted border-transparent hover:text-fg hover:bg-bgSoft/30",
+              "border-b py-1 text-sm",
+              item.active ? "border-link text-fg" : "border-transparent text-muted hover:border-border hover:text-fg",
             ]}
           >
-            <svg class="h-3.5 w-3.5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={icons[item.icon as keyof typeof icons]} /></svg>
-            <span>{item.label}</span>
+            {item.label}
           </a>
         ))}
       </nav>
-      <span class="mx-1 h-4 w-px bg-border/60"></span>
       <ThemeToggle />
     </div>
 
-    <button id="menu-btn" type="button" aria-label="打开菜单" aria-controls="mobile-menu" aria-expanded="false" class="flex h-10 w-10 items-center justify-center rounded-md text-fgMuted transition-colors hover:bg-bgSoft hover:text-fg md:hidden">
-      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
+    <button id="menu-btn" type="button" aria-label="打开菜单" aria-controls="mobile-menu" aria-expanded="false" class="flex h-10 items-center border-b border-border px-1 text-sm text-muted hover:border-link hover:text-fg md:hidden">
+      菜单
     </button>
   </div>
 </header>
 
-<div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-bg/95 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="移动导航菜单" aria-hidden="true" tabindex="-1">
-    <div class="flex justify-end p-4">
-      <button id="menu-close" type="button" aria-label="关闭菜单" class="flex h-10 w-10 items-center justify-center rounded-md text-fgMuted transition-colors hover:text-fg">
-        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-    <nav class="flex flex-col items-center gap-8 mt-16 text-lg font-serif" aria-label="移动导航">
-      {navItems.map((item) => (
-        <a href={item.href} class:list={["mobile-link hover:text-accent transition-colors", item.active && "text-accent font-medium"]}>{item.label}</a>
-      ))}
-      <ThemeToggle />
-    </nav>
+<div id="mobile-menu" class="fixed inset-0 z-50 hidden bg-bg px-6 py-5 md:hidden" role="dialog" aria-modal="true" aria-label="移动导航菜单" aria-hidden="true" tabindex="-1">
+  <div class="mx-auto flex max-w-lg items-center justify-between border-b border-border pb-5">
+    <span class="font-serif text-xl font-semibold text-fg">Justice</span>
+    <button id="menu-close" type="button" aria-label="关闭菜单" class="h-10 border-b border-border px-1 text-sm text-muted hover:border-link hover:text-fg">关闭</button>
   </div>
+  <nav class="mx-auto mt-10 flex max-w-lg flex-col" aria-label="移动导航">
+    {navItems.map((item) => (
+      <a href={item.href} class="mobile-link border-b border-border py-5 font-serif text-2xl text-fg hover:text-link">
+        {item.label}
+      </a>
+    ))}
+    <div class="mt-8"><ThemeToggle /></div>
+  </nav>
+</div>
 
 <script is:inline>
 (function(){
   var previousFocus=null;
-  var backgroundElements=[];
-
-  function setBackgroundInert(mobileMenu,inert){
-    if(inert){
-      backgroundElements=Array.from(document.body.children).filter(function(element){
-        return element!==mobileMenu&&element.tagName!=='SCRIPT';
-      });
-      backgroundElements.forEach(function(element){element.setAttribute('inert','');});
-      return;
-    }
-
-    backgroundElements.forEach(function(element){element.removeAttribute('inert');});
-    backgroundElements=[];
+  var inertElements=[];
+  function focusable(container){
+    return Array.from(container.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])'));
   }
-
-  function getFocusableElements(container){
-    return Array.from(container.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(element){
-      return !element.hasAttribute('hidden')&&element.getAttribute('aria-hidden')!=='true';
-    });
-  }
-
-  function setMenuOpen(open){
-    var menuBtn=document.getElementById('menu-btn');
-    var menuClose=document.getElementById('menu-close');
-    var mobileMenu=document.getElementById('mobile-menu');
-    if(!menuBtn||!menuClose||!mobileMenu)return;
-
-    mobileMenu.classList.toggle('hidden',!open);
-    mobileMenu.setAttribute('aria-hidden',open?'false':'true');
-    menuBtn.setAttribute('aria-expanded',open?'true':'false');
+  function setOpen(open){
+    var button=document.getElementById('menu-btn');
+    var close=document.getElementById('menu-close');
+    var menu=document.getElementById('mobile-menu');
+    if(!button||!close||!menu)return;
+    menu.classList.toggle('hidden',!open);
+    menu.setAttribute('aria-hidden',open?'false':'true');
+    button.setAttribute('aria-expanded',open?'true':'false');
     document.body.style.overflow=open?'hidden':'';
-    setBackgroundInert(mobileMenu,open);
-
     if(open){
       previousFocus=document.activeElement;
-      requestAnimationFrame(function(){menuClose.focus();});
-    }else if(previousFocus&&typeof previousFocus.focus==='function'){
-      try{previousFocus.focus();}catch(_){}
+      inertElements=Array.from(menu.parentElement.children).filter(function(node){return node!==menu&&node.tagName!=='SCRIPT';});
+      inertElements.forEach(function(node){node.setAttribute('inert','');});
+      requestAnimationFrame(function(){close.focus();});
+    }else{
+      inertElements.forEach(function(node){node.removeAttribute('inert');});
+      inertElements=[];
+      if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();
       previousFocus=null;
     }
   }
-
   function bind(){
-    var menuBtn=document.getElementById('menu-btn');
-    var menuClose=document.getElementById('menu-close');
-    var mobileMenu=document.getElementById('mobile-menu');
-    if(!menuBtn||!menuClose||!mobileMenu)return;
-
-    function openMenu(){setMenuOpen(true)}
-    function closeMenu(){setMenuOpen(false)}
-
-    if(!menuBtn.dataset.bound){
-      menuBtn.dataset.bound='1';
-      menuBtn.addEventListener('click',openMenu);
-    }
-    if(!menuClose.dataset.bound){
-      menuClose.dataset.bound='1';
-      menuClose.addEventListener('click',closeMenu);
-    }
-    if(!mobileMenu.dataset.bound){
-      mobileMenu.dataset.bound='1';
-      mobileMenu.addEventListener('click',function(event){
-        if(event.target===mobileMenu)closeMenu();
-      });
-      mobileMenu.addEventListener('keydown',function(event){
+    var button=document.getElementById('menu-btn');
+    var close=document.getElementById('menu-close');
+    var menu=document.getElementById('mobile-menu');
+    if(!button||!close||!menu)return;
+    if(!button.dataset.bound){button.dataset.bound='1';button.addEventListener('click',function(){setOpen(true);});}
+    if(!close.dataset.bound){close.dataset.bound='1';close.addEventListener('click',function(){setOpen(false);});}
+    if(!menu.dataset.bound){
+      menu.dataset.bound='1';
+      menu.addEventListener('keydown',function(event){
+        if(event.key==='Escape'){setOpen(false);return;}
         if(event.key!=='Tab')return;
-        var focusable=getFocusableElements(mobileMenu);
-        if(!focusable.length){
-          event.preventDefault();
-          mobileMenu.focus();
-          return;
-        }
-        var first=focusable[0];
-        var last=focusable[focusable.length-1];
-        if(event.shiftKey&&document.activeElement===first){
-          event.preventDefault();
-          last.focus();
-        }else if(!event.shiftKey&&document.activeElement===last){
-          event.preventDefault();
-          first.focus();
-        }
+        var items=focusable(menu); if(!items.length)return;
+        var first=items[0],last=items[items.length-1];
+        if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
       });
     }
     document.querySelectorAll('.mobile-link').forEach(function(link){
-      if(link.dataset.bound)return;
-      link.dataset.bound='1';
-      link.addEventListener('click',closeMenu);
+      if(!link.dataset.bound){link.dataset.bound='1';link.addEventListener('click',function(){setOpen(false);});}
     });
-    setMenuOpen(false);
   }
   bind();
-  document.addEventListener('keydown',function(event){
-    if(event.key!=='Escape')return;
-    var mobileMenu=document.getElementById('mobile-menu');
-    if(mobileMenu&&!mobileMenu.classList.contains('hidden'))setMenuOpen(false);
-  });
 })();
 </script>

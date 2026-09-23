@@ -1,24 +1,12 @@
 export const SITE = {
-  title: "Justice's Blog",
+  title: "Justice",
   author: "Justice",
-  description: "算法入门、AI 探索、大一课程与硬件折腾记录。",
+  description: "哈工深计算机学生的项目和学习笔记。",
   locale: "zh-CN",
   github: "https://github.com/just1cez",
   avatar: "/images/avatar.jpg",
-  subtitle: "HITSZ CS · Personal Blog",
+  subtitle: "HITSZ CS · Shenzhen",
 } as const;
-
-export const QUOTE = {
-  en: "We can only see a short distance ahead, but we can see plenty there that needs to be done.",
-  zh: "我们只能看清眼前的一小段距离，但即便如此，仍有许多工作在等待着我们。",
-  author: "Alan Turing",
-} as const;
-
-export const PROFILE_GROUPS = [
-  { label: "正在学习", items: ["算法入门", "AI 入门探索", "大一课程"] },
-  { label: "平时爱好", items: ["游戏", "PC 硬件", "装机折腾"] },
-  { label: "想开始学", items: ["Machine Learning", "AI Infra", "Python", "Rust"] },
-] as const;
 
 export const CATEGORY_META = {
   tech: {
