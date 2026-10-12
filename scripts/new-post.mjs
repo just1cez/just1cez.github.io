@@ -5,6 +5,7 @@ import process from "node:process";
 
 const templates = {
   tech: "tech-post.md",
+  rust: "rust-post.md",
   algorithm: "algorithm-post.md",
   paper: "paper-reading.md",
   life: "life-post.md",
@@ -18,7 +19,7 @@ if (!templates[kind]) {
 }
 
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
-  console.error("Usage: npm run new:post -- <tech|algorithm|paper|life> my-post-slug");
+  console.error(`Usage: npm run new:post -- <${Object.keys(templates).join("|")}> my-post-slug`);
   console.error("Slug should use lowercase letters, numbers, and hyphens.");
   process.exit(1);
 }

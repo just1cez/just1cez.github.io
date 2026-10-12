@@ -47,6 +47,7 @@ npm test
 
 ```bash
 npm run new:post -- tech my-algorithm-note
+npm run new:post -- rust rust-ownership
 npm run new:post -- algorithm luogu-pxxxx
 npm run new:post -- paper my-paper-reading
 npm run new:post -- life my-pc-build
@@ -55,10 +56,17 @@ npm run new:post -- life my-pc-build
 脚本会从 `templates/` 复制模板到对应目录，并创建同名图片目录：
 
 - `tech` -> `src/content/tech/*.md`
+- `rust` -> `src/content/tech/*.md`，自动设置 `Rust` 标签和 `Rust 学习笔记` 系列
 - `algorithm` -> `src/content/tech/*.md`
 - `paper` -> `src/content/tech/*.md`
 - `life` -> `src/content/life/*.md`
 - 图片目录 -> `public/images/posts/<slug>/`
+
+### Rust 学习笔记
+
+栏目地址为 `/rust`，可从主导航或文章归档进入。页面自动汇总 `series: "Rust 学习笔记"` 的文章，按日期从新到旧排列；尚无已发布笔记时显示栏目介绍。
+
+使用 `npm run new:post -- rust rust-ownership` 创建草稿后，编辑生成的 Markdown，把 `draft` 改为 `false` 即可在生产构建中展示。笔记同时保留在技术分区，并参与搜索、RSS 和系列索引。
 
 常用 frontmatter：
 
