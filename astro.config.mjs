@@ -4,6 +4,9 @@ import react from "@astrojs/react";
 import { unified } from "@astrojs/markdown-remark";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import remarkBreaks from "remark-breaks";
+import { rehypeObsidianCallouts } from "./src/lib/rehype-obsidian-callouts.mjs";
+import { remarkDisplayMath } from "./src/lib/remark-display-math.mjs";
 
 const site = process.env.SITE_URL || "https://just1cez.github.io";
 const base = process.env.BASE_PATH || "/";
@@ -21,52 +24,13 @@ function codeBlockFilename() {
   };
 }
 
-function rehypeObsidianCallouts() {
-  const calloutMarker = /^\[!([A-Za-z][\w-]*)]\s*([^\n]*)/;
-
-  function visit(node) {
-    if (!node || typeof node !== "object") return;
-
-    if (node.type === "element" && node.tagName === "blockquote") {
-      const firstChild = node.children?.find((child) => child.type === "element" && child.tagName === "p");
-      const firstText = firstChild?.children?.find((child) => child.type === "text");
-      const match = firstText?.value?.match(calloutMarker);
-
-      if (match) {
-        const type = match[1].toLowerCase();
-        const title = match[2] || type;
-        const rest = firstText.value.slice(match[0].length).replace(/^\n/, "");
-
-        node.tagName = "aside";
-        node.properties = {
-          ...(node.properties ?? {}),
-          className: ["obsidian-callout", `obsidian-callout-${type}`],
-        };
-
-        firstText.value = title;
-        firstChild.properties = {
-          ...(firstChild.properties ?? {}),
-          className: ["obsidian-callout-title"],
-        };
-
-        if (rest.trim()) {
-          const titleIndex = node.children.indexOf(firstChild);
-          node.children.splice(titleIndex + 1, 0, {
-            type: "element",
-            tagName: "p",
-            properties: {},
-            children: [{ type: "text", value: rest }],
-          });
-        }
-      }
-    }
-
-    if (Array.isArray(node.children)) {
-      for (const child of node.children) visit(child);
-    }
-  }
-
-  return (tree) => visit(tree);
+// Line numbers only help in longer blocks; short snippets get `is-short` and the CSS hides the gutter.
+function shortCodeBlock(maxLines = 5) {
+  return {
+    pre(node) {
+      if (this.lines.length <= maxLines) this.addClassToHast(node, "is-short");
+    },
+  };
 }
 
 export default defineConfig({
@@ -80,19 +44,21 @@ export default defineConfig({
   },
   markdown: {
     processor: unified({
-      remarkPlugins: [remarkMath],
+      // Match Obsidian's defaults: one-line `$$...$$` is display math, and a single newline is a line break.
+      remarkPlugins: [remarkMath, remarkDisplayMath, remarkBreaks],
       rehypePlugins: [rehypeObsidianCallouts, rehypeKatex],
     }),
     shikiConfig: {
       themes: {
-        light: "github-light",
-        dark: "dracula",
+        light: "github-light-high-contrast",
+        dark: "gruvbox-dark-medium",
       },
-      transformers: [codeBlockFilename()],
+      transformers: [codeBlockFilename(), shortCodeBlock()],
     },
   },
   integrations: [
-    sitemap(),
+    // /rust stays unlisted until its first note is published; drop this filter then (see README, Rust 学习笔记).
+    sitemap({ filter: (page) => !/\/rust\/?$/.test(page) }),
     react(),
   ],
 });

@@ -1,6 +1,6 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import { getAllPosts, getSeriesGroups } from "../lib/posts";
+import { formatDate, getAllPosts, getSeriesGroups } from "../lib/posts";
 import { SITE } from "../site.config";
 
 const posts = await getAllPosts();
@@ -8,7 +8,7 @@ const { groupedSeries, singletonSeries } = getSeriesGroups(posts);
 const seriesCount = groupedSeries.length + singletonSeries.length;
 ---
 
-<PageLayout title={`Series — ${SITE.title}`} description="按系列浏览文章。">
+<PageLayout title={`系列 — ${SITE.title}`} description="按系列浏览文章。">
   <header class="page-heading">
     <h1 class="page-title">系列</h1>
     <p class="mt-2 text-sm text-muted">{seriesCount} 个系列</p>
@@ -25,7 +25,7 @@ const seriesCount = groupedSeries.length + singletonSeries.length;
           {group.posts.map((post) => (
             <li class="flex items-baseline justify-between gap-4 text-sm">
               <a href={post.href} class="min-w-0 text-fg hover:text-link">{post.title}</a>
-              <time datetime={post.date.toISOString()} class="shrink-0 text-xs text-muted">{post.date.toLocaleDateString("zh-CN")}</time>
+              <time datetime={post.date.toISOString()} class="shrink-0 text-xs text-muted">{formatDate(post.date)}</time>
             </li>
           ))}
         </ul>

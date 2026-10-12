@@ -9,7 +9,7 @@ const posts = (await getAllPosts())
   .map(toPostCardItem);
 ---
 
-<PageLayout title={`Rust 学习笔记 — ${SITE.title}`} description="从基础语法、所有权与借用到小项目实践，记录 Rust 的学习过程。">
+<PageLayout title={`Rust 学习笔记 — ${SITE.title}`} description="从基础语法、所有权与借用到小项目实践，记录 Rust 的学习过程。" noindex={posts.length === 0}>
   <header class="page-heading">
     <h1 class="page-title">Rust 学习笔记</h1>
     <p class="mt-3 max-w-2xl text-sm leading-7 text-muted">从基础语法、所有权与借用到小项目实践，记录 Rust 的学习过程。</p>

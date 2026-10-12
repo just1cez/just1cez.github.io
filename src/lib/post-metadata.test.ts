@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { estimateReadingMinutes, groupByUtcYear } from "./post-metadata";
+import { estimateReadingMinutes, formatDate, groupByUtcYear } from "./post-metadata";
+
+describe("date formatting", () => {
+  it("zero-pads month and day so list columns line up", () => {
+    expect(formatDate(new Date("2026-09-02T00:00:00Z"))).toBe("2026/09/02");
+  });
+
+  it("formats in UTC so frontmatter dates don't shift with the reader's time zone", () => {
+    expect(formatDate(new Date("2025-12-31T20:00:00-08:00"))).toBe("2026/01/01");
+  });
+});
 
 describe("reading time", () => {
   it("counts Chinese characters at 300 characters per minute", () => {

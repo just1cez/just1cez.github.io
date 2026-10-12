@@ -9,7 +9,6 @@ const navItems = [
     label: "文章",
     active: ["/articles", "/tech", "/life", "/series", "/tags"].some((path) => currentPath.startsWith(path)),
   },
-  { href: withBase("/rust"), label: "Rust 学习笔记", active: currentPath === "/rust" },
   { href: withBase("/#work"), label: "项目", active: false },
   { href: withBase("/about"), label: "关于", active: currentPath === "/about" },
   { href: withBase("/search"), label: "搜索", active: currentPath === "/search" },

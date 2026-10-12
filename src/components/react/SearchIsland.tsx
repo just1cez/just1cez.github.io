@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { formatDate } from "../../lib/post-metadata";
 import type { SearchIndexEntry } from "../../lib/posts";
 
 type SearchCategory = "All" | "tech" | "life";
@@ -121,8 +122,8 @@ export default function SearchIsland({ indexUrl }: { indexUrl: string }) {
             {results.map((post) => (
               <article key={post.url} className="py-5 sm:grid sm:grid-cols-[112px_minmax(0,1fr)] sm:gap-6">
                 <div className="mb-2 text-xs text-muted sm:mb-0 sm:pt-1">
-                  <time>{new Date(post.date).toLocaleDateString("zh-CN")}</time>
-                  <span className="ml-2 sm:ml-0 sm:mt-1 sm:block">{post.category === "tech" ? "Tech" : "Life"}</span>
+                  <time>{formatDate(new Date(post.date))}</time>
+                  <span className="ml-2 sm:ml-0 sm:mt-1 sm:block">{post.category === "tech" ? "技术" : "生活"}</span>
                 </div>
                 <div>
                   <h2 className="font-serif text-xl font-semibold text-fg"><a href={post.url} className="hover:text-link">{post.title}</a></h2>

@@ -1,12 +1,17 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import PageLayout from "../layouts/PageLayout.astro";
 import { SITE, withBase } from "../site.config";
 ---
 
-<BaseLayout title={`404 — ${SITE.title}`} description="页面不存在">
-  <div class="min-h-screen flex flex-col items-center justify-center px-4">
-    <h1 class="text-6xl font-bold text-muted">404</h1>
-    <p class="mt-4 text-lg text-muted">页面不存在</p>
-    <a href={withBase("/")} class="mt-6 text-sm text-link">返回首页</a>
-  </div>
-</BaseLayout>
+<PageLayout title={`404 — ${SITE.title}`} description="页面不存在">
+  <header class="page-heading">
+    <h1 class="page-title">页面不存在</h1>
+    <p class="mt-2 text-sm text-muted">404 · 链接可能有误，或者页面已经移动。</p>
+  </header>
+
+  <nav class="flex flex-wrap gap-x-5 gap-y-2 py-6 text-sm" aria-label="404 导航">
+    <a href={withBase("/")} class="text-link">返回首页</a>
+    <a href={withBase("/articles")} class="text-link">全部文章</a>
+    <a href={withBase("/search")} class="text-link">搜索</a>
+  </nav>
+</PageLayout>

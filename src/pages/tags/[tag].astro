@@ -1,7 +1,7 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
 import { CATEGORY_META, SITE } from "../../site.config";
-import { getAllPosts, getTagGroups } from "../../lib/posts";
+import { formatDate, getAllPosts, getTagGroups } from "../../lib/posts";
 
 export async function getStaticPaths() {
   const allPosts = await getAllPosts();
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 ---
 
-<PageLayout title={`Tag: ${tag} — ${SITE.title}`} description={`浏览标签 ${tag} 下的文章。`}>
+<PageLayout title={`#${tag} — ${SITE.title}`} description={`浏览标签 ${tag} 下的文章。`}>
   <header class="page-heading">
     <h1 class="page-title">#{tag}</h1>
     <p class="mt-2 text-sm text-muted">{posts.length} 篇文章</p>
@@ -22,7 +22,7 @@ const { tag, posts } = Astro.props;
     {posts.map((post) => (
       <article class="py-5 sm:grid sm:grid-cols-[112px_minmax(0,1fr)] sm:gap-6">
         <div class="mb-2 text-xs text-muted sm:mb-0 sm:pt-1">
-          <time datetime={post.date.toISOString()}>{post.date.toLocaleDateString("zh-CN")}</time>
+          <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
           <span class="ml-2 sm:ml-0 sm:mt-1 sm:block">{CATEGORY_META[post.category].label}</span>
         </div>
         <div>

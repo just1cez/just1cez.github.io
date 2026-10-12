@@ -3,10 +3,10 @@ import type { CollectionEntry } from "astro:content";
 import { CATEGORY_META, POST_STAGE_META, postPath, tagSlug } from "../site.config";
 import type { BlogCategory, PostStage } from "../site.config";
 import { rankRelatedPosts, shouldIncludeDraft } from "./post-logic";
-import { estimateReadingMinutes, groupByUtcYear, stripMarkdown } from "./post-metadata";
+import { estimateReadingMinutes, formatDate, groupByUtcYear, stripMarkdown } from "./post-metadata";
 import type { ArchiveYearGroup } from "./post-metadata";
 
-export { estimateReadingMinutes, stripMarkdown } from "./post-metadata";
+export { estimateReadingMinutes, formatDate, stripMarkdown } from "./post-metadata";
 
 export type PostEntry = CollectionEntry<"tech"> | CollectionEntry<"life">;
 export type BlogPost = PostEntry;
@@ -134,7 +134,7 @@ export function toPostCardItem(post: BlogPost): PostCardItem {
   return {
     title: post.data.title,
     href: postPath(post.data.category, post.id),
-    date: post.data.date.toLocaleDateString("zh-CN"),
+    date: formatDate(post.data.date),
     category: post.data.category,
     categoryLabel: CATEGORY_META[post.data.category].label,
     stageLabel: POST_STAGE_META[post.data.stage].label,
@@ -154,7 +154,7 @@ export function getPostArchiveYearGroups(posts: BlogPost[]): PostArchiveYearGrou
 }
 
 export async function toSearchIndexEntry(post: BlogPost): Promise<SearchIndexEntry> {
-  const body = getExcerpt(post.body ?? "", 700);
+  const body = stripMarkdown(post.body ?? "");
 
   return {
     title: post.data.title,
@@ -174,11 +174,6 @@ export async function toSearchIndexEntry(post: BlogPost): Promise<SearchIndexEnt
 
 export async function buildSearchIndex(posts: BlogPost[]) {
   return Promise.all(posts.map(toSearchIndexEntry));
-}
-
-export function getFeaturedPosts(posts: BlogPost[], limit = 5) {
-  const featured = posts.filter((post) => post.data.featured);
-  return (featured.length ? featured : posts).slice(0, limit);
 }
 
 export function getRelatedPosts(current: BlogPost, posts: BlogPost[], limit = 3) {
@@ -201,17 +196,6 @@ export async function getPostStaticPaths(category: BlogCategory) {
       related: getRelatedPosts(post, allPosts),
     } satisfies PostPageProps,
   }));
-}
-
-export function getFocusTags(posts: BlogPost[], preferred: string[], limit = 10) {
-  const tags = getAllTags(posts);
-  const byName = new Map(tags.map((item) => [item.tag, item]));
-  const picked = preferred
-    .map((tag) => byName.get(tag) ?? { tag, count: 0 })
-    .filter((item, index, arr) => arr.findIndex((other) => other.tag === item.tag) === index);
-  const rest = tags.filter((item) => !picked.some((pickedItem) => pickedItem.tag === item.tag));
-
-  return [...picked, ...rest].slice(0, limit);
 }
 
 export function getTagGroups(posts: BlogPost[]): TagGroup[] {
@@ -277,10 +261,4 @@ export function getSeriesGroups(posts: BlogPost[]) {
       .map((group) => ({ name: group.name, post: group.posts[0] }))
       .sort((a, b) => b.post.date.valueOf() - a.post.date.valueOf()),
   };
-}
-
-export function getExcerpt(markdown: string, maxLength = 220) {
-  const text = stripMarkdown(markdown);
-  if (text.length <= maxLength) return text;
-  return `${text.slice(0, maxLength).trim()}...`;
 }

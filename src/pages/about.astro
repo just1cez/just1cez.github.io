@@ -3,17 +3,20 @@ import PageLayout from "../layouts/PageLayout.astro";
 import { SITE, withBase } from "../site.config";
 ---
 
-<PageLayout title={`关于 — ${SITE.author}`} description="关于 Justice。">
+<PageLayout title={`关于 — ${SITE.author}`} description={SITE.intro}>
   <header class="flex items-center gap-5 border-b border-border pb-8">
-    <img src={withBase(SITE.avatar)} alt="Justice 的头像" class="h-24 w-24 shrink-0 rounded-full object-cover" />
+    <img src={withBase(SITE.avatar)} alt="Justice 的头像" class="h-24 w-24 shrink-0 rounded-full object-cover mix-blend-multiply dark:mix-blend-normal dark:brightness-90" />
     <div>
-      <h1 class="page-title">Justice</h1>
-      <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="mt-2 inline-block text-sm text-link">GitHub</a>
+      <h1 class="page-title tracking-[-0.035em]">Justice</h1>
+      <div class="mt-2 flex gap-4 text-sm">
+        <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="text-link">GitHub</a>
+        <a href={withBase("/rss.xml")} class="text-link">RSS</a>
+      </div>
     </div>
   </header>
 
-  <section class="max-w-2xl space-y-5 py-8 text-sm leading-7 text-muted" aria-label="自述">
-    <p>HITSZ计科在读，爱折腾电脑硬件。</p>
+  <div class="max-w-[36rem] space-y-5 py-8 text-base leading-8 text-fg" aria-label="自述">
+    <p>{SITE.intro}</p>
     <p>为什么开这个博客，我也说不出什么特别的理由。没有固定主题，想到什么能写就写什么。</p>
-  </section>
+  </div>
 </PageLayout>

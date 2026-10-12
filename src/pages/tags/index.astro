@@ -8,13 +8,13 @@ const tags = getAllTags(posts);
 const categoryCounts = getCategoryCounts(posts);
 ---
 
-<PageLayout title={`Tags — ${SITE.title}`} description="按标签浏览文章。">
+<PageLayout title={`标签 — ${SITE.title}`} description="按标签浏览文章。">
   <header class="page-heading">
     <h1 class="page-title">标签</h1>
     <p class="mt-2 text-sm text-muted">{tags.length} 个标签</p>
   </header>
 
-  <nav class="flex gap-5 border-b border-border py-5 text-sm" aria-label="文章分类">
+  <nav class="flex gap-5 py-5 text-sm" aria-label="文章分类">
     {Object.entries(CATEGORY_META).map(([key, meta]) => (
       <a href={categoryPath(key as "tech" | "life")} class="text-link">
         {meta.title} <span class="text-muted">{categoryCounts[key as "tech" | "life"] ?? 0}</span>

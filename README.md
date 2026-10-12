@@ -4,7 +4,7 @@
 
 ## 功能
 
-- 首页个人入口：`Justice / HITSZ CS · Lab Notes`、三组个人状态、精选文章、最近更新、技术方向标签、GitHub / RSS / About
+- 首页：头像与一句自我介绍（`src/site.config.ts` 的 `SITE.intro`）、最近 5 篇文章，侧栏是「在学」（同文件的 `NOW_LEARNING`）和项目入口
 - Tech / Life 两个内容分区，支持标签页、文章归档、站内搜索、RSS、sitemap、robots.txt
 - Series 页面按主题聚合文章，About 页面提供轻量自介、站点说明和阅读入口
 - 文章页支持目录、阅读进度条、标题锚点、代码块文件名、语言标记、复制按钮、数学公式、上一篇 / 下一篇、相关阅读
@@ -64,7 +64,7 @@ npm run new:post -- life my-pc-build
 
 ### Rust 学习笔记
 
-栏目地址为 `/rust`，可从主导航或文章归档进入。页面自动汇总 `series: "Rust 学习笔记"` 的文章，按日期从新到旧排列；尚无已发布笔记时显示栏目介绍。
+栏目地址为 `/rust`。第一篇笔记发布前，主导航和文章归档暂不放入口，页面带 `noindex`，`astro.config.mjs` 的 sitemap 也会排除它；发布时记得把入口加回 `Header.astro` / `articles.astro`，并删掉 sitemap 的 `filter`。页面自动汇总 `series: "Rust 学习笔记"` 的文章，按日期从新到旧排列；尚无已发布笔记时显示栏目介绍。
 
 使用 `npm run new:post -- rust rust-ownership` 创建草稿后，编辑生成的 Markdown，把 `draft` 改为 `false` 即可在生产构建中展示。笔记同时保留在技术分区，并参与搜索、RSS 和系列索引。
 
@@ -87,7 +87,7 @@ draft: true
 ```
 
 - `draft: true`：本地可见，线上不可见
-- `featured: true`：优先进入首页精选文章
+- `featured`：保留字段，目前没有页面读取它；首页按日期显示最近 5 篇
 - `series`：用于文章页、搜索、相关文章的主题关联
 - `stage`：文章阶段，取值为 `study`（学习记录）、`paper`（论文初读）、`done`（完成记录）、`evergreen`（常青速查）、`pitfall`（踩坑记录）、`snippet`（片段模板）
 - `cover`：用于 Open Graph 图片；推荐放在 `public/images/posts/<slug>/` 下，并用 `/images/posts/<slug>/cover.jpg` 这类路径
@@ -108,6 +108,7 @@ draft: true
 - 图片放在 `public/images/posts/<slug>/`
 - 正文引用图片用 `/images/posts/<slug>/name.jpg`
 - 不使用 Obsidian 的 `[[wikilink]]` 作为发布链接；改用标准 Markdown 链接
+- 渲染规则与 Obsidian 默认一致：单个换行就是换行（`remark-breaks`），单独成段的 `$$...$$` 显示为块级公式
 
 `npm run check` 会检查 frontmatter、本地链接，并对 Obsidian wikilink 和不规范图片路径给出 warning。
 

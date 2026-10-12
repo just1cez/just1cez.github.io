@@ -11,10 +11,10 @@ const { post, showReadingTime = false } = Astro.props;
   </div>
   <div class="min-w-0">
     <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-      <h3 class="font-serif text-xl font-semibold leading-tight tracking-[-0.015em] text-fg">
+      <h3 class="font-serif text-xl font-semibold leading-tight text-fg">
         <a href={post.href} class="hover:text-link">{post.title}</a>
       </h3>
-      {post.stageLabel && <span class="text-xs text-muted">{post.stageLabel}</span>}
+      {post.stageLabel && <span class="stage-tag text-xs">{post.stageLabel}</span>}
       {showReadingTime && <span class="text-xs text-muted">约 {post.readingMinutes} 分钟</span>}
     </div>
     {post.description && <p class="mt-2 line-clamp-2 max-w-2xl text-sm leading-6 text-muted">{post.description}</p>}

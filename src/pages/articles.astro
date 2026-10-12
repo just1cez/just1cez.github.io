@@ -15,19 +15,18 @@ const yearGroups = getPostArchiveYearGroups(posts);
     <p class="mt-2 text-sm text-muted">{posts.length} 篇文章</p>
   </header>
 
-  <nav class="flex flex-wrap gap-x-5 gap-y-2 border-b border-border py-5 text-sm" aria-label="文章浏览">
+  <nav class="flex flex-wrap gap-x-5 gap-y-2 py-5 text-sm" aria-label="文章浏览">
     <span aria-current="page" class="border-b border-link pb-1 text-fg">全部 {posts.length}</span>
     <a href={categoryPath("tech")} class="pb-1 text-link">技术 {categoryCounts.tech ?? 0}</a>
     <a href={categoryPath("life")} class="pb-1 text-link">生活 {categoryCounts.life ?? 0}</a>
     <a href={withBase("/tags")} class="pb-1 text-link">标签</a>
     <a href={withBase("/series")} class="pb-1 text-link">系列</a>
-    <a href={withBase("/rust")} class="pb-1 text-link">Rust 学习笔记</a>
   </nav>
 
   <div class="space-y-10 py-8">
     {yearGroups.map((group) => (
       <section aria-labelledby={`archive-year-${group.year}`}>
-        <h2 id={`archive-year-${group.year}`} class="border-b border-border pb-3 font-serif text-2xl font-semibold text-fg">
+        <h2 id={`archive-year-${group.year}`} class="font-serif text-2xl font-semibold text-fg">
           {group.year}
         </h2>
         <ArticleList posts={group.posts} showReadingTime />

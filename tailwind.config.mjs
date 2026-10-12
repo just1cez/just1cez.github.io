@@ -25,17 +25,18 @@ export default {
         DEFAULT: {
           css: {
             maxWidth: "none",
+            // 600 matches the only Noto Serif SC weight we load (see BaseLayout.astro).
             h1: {
               fontFamily: "var(--font-serif)",
-              fontWeight: "700",
+              fontWeight: "600",
             },
             h2: {
               fontFamily: "var(--font-serif)",
-              fontWeight: "700",
+              fontWeight: "600",
             },
             h3: {
               fontFamily: "var(--font-serif)",
-              fontWeight: "700",
+              fontWeight: "600",
             },
             a: {
               color: "var(--color-link)",
@@ -73,10 +74,12 @@ export default {
               fontSize: "inherit",
             },
             blockquote: {
-              borderLeftColor: "var(--color-link)",
+              borderLeftColor: "var(--color-border)",
               color: "var(--color-muted)",
               fontStyle: "normal",
             },
+            "blockquote p:first-of-type::before": { content: "none" },
+            "blockquote p:last-of-type::after": { content: "none" },
             hr: { borderColor: "var(--color-border)" },
             th: { color: "var(--color-fg)" },
             "thead th": { borderBottomColor: "var(--color-border)" },

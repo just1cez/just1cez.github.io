@@ -22,7 +22,7 @@ const items = page.data.map(toPostCardItem);
 const count = page.total ?? items.length;
 ---
 
-<PageLayout title={`${CATEGORY_META[category].label} — ${SITE.title}`} description={CATEGORY_META[category].description}>
+<PageLayout title={`${CATEGORY_META[category].title} — ${SITE.title}`} description={CATEGORY_META[category].description}>
   <header class="page-heading">
     <h1 class="page-title">{CATEGORY_META[category].title}</h1>
     <p class="mt-2 text-sm text-muted">{count} 篇文章</p>

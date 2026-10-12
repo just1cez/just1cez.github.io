@@ -7,6 +7,7 @@ import BackToTop from "../components/BackToTop.astro";
 import CopyButton from "../components/CopyButton.astro";
 import ReadingProgress from "../components/ReadingProgress.astro";
 import { CATEGORY_META, POST_STAGE_META, SITE, categoryPath, tagPath, withBase } from "../site.config";
+import { formatDate } from "../lib/posts";
 import "katex/dist/katex.min.css";
 
 export interface Props {
@@ -27,8 +28,8 @@ export interface Props {
 const { title, date, updated, tags, category, description, image, canonicalUrl, series, stage, readingMinutes } = Astro.props;
 const headings = Astro.props.headings ?? [];
 const hasToc = headings.some((heading) => heading.depth >= 2 && heading.depth <= 3);
-const formattedDate = date.toLocaleDateString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" });
-const formattedUpdated = updated?.toLocaleDateString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" });
+const formattedDate = formatDate(date);
+const formattedUpdated = updated && formatDate(updated);
 const schemaImage = new URL(withBase(image ?? SITE.avatar), Astro.site).toString();
 
 const articleSchema = canonicalUrl && {
@@ -54,13 +55,13 @@ const articleSchema = canonicalUrl && {
     <Header />
     <main class="mx-auto w-full max-w-5xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <div class:list={[hasToc ? "grid gap-12 lg:grid-cols-[minmax(0,720px)_180px] lg:items-start" : "mx-auto max-w-[720px]"]}>
-        <article class="post-prose prose prose-base max-w-none dark:prose-invert">
+        <article class="post-prose prose prose-base min-w-0 max-w-none dark:prose-invert">
           <header class="not-prose mb-9 border-b border-border pb-7">
-            <h1 class="font-serif text-3xl font-semibold leading-tight tracking-[-0.035em] text-fg sm:text-4xl">{title}</h1>
+            <h1 class="font-serif text-3xl font-semibold leading-tight text-fg sm:text-4xl">{title}</h1>
             <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted">
               <time datetime={date.toISOString()}>{formattedDate}</time>
               <span aria-hidden="true">·</span>
-              <span>{POST_STAGE_META[stage].label}</span>
+              <span class="stage-tag">{POST_STAGE_META[stage].label}</span>
               <span aria-hidden="true">·</span>
               <span>约 {readingMinutes} 分钟</span>
               {series && (
@@ -91,8 +92,8 @@ const articleSchema = canonicalUrl && {
         </article>
 
         {hasToc && (
-          <aside class="hidden lg:block">
-            <div class="sticky top-8"><Toc headings={headings} /></div>
+          <aside class="sticky top-8 hidden max-h-[calc(100vh-4rem)] overflow-y-auto pb-2 pr-2 lg:block">
+            <Toc headings={headings} />
           </aside>
         )}
       </div>
@@ -127,28 +128,40 @@ const articleSchema = canonicalUrl && {
 </BaseLayout>
 
 <style is:global>
-  .post-prose { font-size:1.0625rem; line-height:1.78; }
+  .post-prose { font-size:1.0625rem; line-height:1.78; overflow-wrap:break-word; }
   .post-prose h2,.post-prose h3 { scroll-margin-top:2rem; }
   .post-prose pre { margin:1.5rem 0; border-radius:4px; font-size:.82rem; line-height:1.55; }
   .post-prose table { display:block; max-width:100%; overflow-x:auto; }
-  .astro-code { background-color:var(--shiki-dark-bg)!important; color:var(--shiki-dark)!important; }
-  .astro-code span { color:var(--shiki-dark)!important; }
-  html:not(.dark) .astro-code { background-color:revert!important; color:revert!important; }
-  html:not(.dark) .astro-code span { color:revert!important; }
+  .astro-code { background-color:var(--color-surface)!important; }
+  html.dark .astro-code,html.dark .astro-code span {
+    color:var(--shiki-dark)!important;
+    font-style:var(--shiki-dark-font-style)!important;font-weight:var(--shiki-dark-font-weight)!important;
+    text-decoration:var(--shiki-dark-text-decoration)!important;
+  }
   pre code { counter-reset:line; display:block; }
-  pre code .line { display:flex; align-items:baseline; }
+  /* inline-flex: a block-level .line plus Shiki's "\n" text nodes would render every line double-spaced */
+  pre code .line { display:inline-flex; align-items:baseline; }
   pre code .line::before {
     counter-increment:line;content:counter(line);display:inline-block;width:2.5em;margin-right:1em;
-    flex-shrink:0;color:rgba(248,248,242,.35);text-align:right;user-select:none;
+    flex-shrink:0;color:rgba(235,219,178,.35);text-align:right;user-select:none;
   }
   html:not(.dark) pre code .line::before { color:rgba(36,41,46,.3); }
+  pre.is-short code .line::before { content:none; }
   .katex-display { margin:1.25rem 0; overflow-x:auto; }
   .post-prose .obsidian-callout {
-    margin:1.5rem 0;border-left:2px solid var(--color-link);
-    padding:.2rem 0 .2rem 1rem;color:var(--color-muted);
+    --callout:var(--callout-note);
+    margin:1.5rem 0;border-left:2px solid var(--callout);border-radius:0 4px 4px 0;
+    background:color-mix(in srgb,var(--callout) 6%,transparent);
+    padding:.75rem 1rem;color:var(--color-callout-text);
   }
+  /* Obsidian callout types grouped into four colors; anything else stays on the default note color. */
+  .post-prose :is(.obsidian-callout-tip,.obsidian-callout-hint,.obsidian-callout-important,.obsidian-callout-success,.obsidian-callout-check,.obsidian-callout-done) { --callout:var(--callout-tip); }
+  .post-prose :is(.obsidian-callout-warning,.obsidian-callout-caution,.obsidian-callout-attention,.obsidian-callout-question,.obsidian-callout-help,.obsidian-callout-faq) { --callout:var(--callout-warning); }
+  .post-prose :is(.obsidian-callout-danger,.obsidian-callout-error,.obsidian-callout-bug,.obsidian-callout-failure,.obsidian-callout-fail,.obsidian-callout-missing) { --callout:var(--callout-danger); }
   .post-prose .obsidian-callout p { margin:.35rem 0; }
-  .post-prose .obsidian-callout-title { color:var(--color-fg);font-weight:600; }
+  .post-prose .obsidian-callout > :first-child { margin-top:0; }
+  .post-prose .obsidian-callout > :last-child { margin-bottom:0; }
+  .post-prose .obsidian-callout-title { color:var(--callout);font-weight:600; }
   .heading-anchor { margin-left:.35rem;color:var(--color-muted);opacity:0;text-decoration:none;font-weight:400; }
   h2:hover .heading-anchor,h3:hover .heading-anchor,.heading-anchor:focus-visible { opacity:1; }
   .heading-anchor:hover,.heading-anchor.copied { color:var(--color-link);opacity:1; }

@@ -5,12 +5,16 @@ export interface Props {
   ogType?: "website" | "article";
   image?: string;
   schema?: Record<string, unknown>;
+  noindex?: boolean;
 }
 
 import { SITE, withBase } from "../site.config";
+// Loaded as a separate, non-blocking stylesheet: its 101 @font-face rules would otherwise bloat the
+// render-blocking site CSS for every reader, even on Mac/iOS where the local serif means no font is fetched.
+import notoSerifCss from "@fontsource/noto-serif-sc/600.css?url";
 import "../styles/global.css";
 
-const { title, description = SITE.description, ogType = "website", image = SITE.avatar, schema } = Astro.props;
+const { title, description = SITE.description, ogType = "website", image = SITE.avatar, schema, noindex = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(withBase(image), Astro.site).toString();
 const defaultSchema = {
@@ -35,6 +39,9 @@ const jsonLd = JSON.stringify(schema ?? defaultSchema);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="stylesheet" href={notoSerifCss} media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href={notoSerifCss} /></noscript>
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href={withBase("/rss.xml")} />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />

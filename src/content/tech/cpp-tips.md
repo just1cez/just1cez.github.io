@@ -68,7 +68,7 @@ string s = ss.str(); // s = "awa1qaq"
 
 ## 环形结构取模
 
-防止负数溢出、获取正确环形索引：
+防止取模结果为负、获取正确环形索引：
 
 ```cpp title="circular-index.cpp"
 pos = (pos % n + n) % n;
@@ -79,7 +79,7 @@ pos = (pos % n + n) % n;
 $(i, j)$ 绕 $(x, y)$ 逆时针旋转 90°：
 
 1. 以 $(x,y)$ 为原点：$(i, j) \to (i-x, \ j-y)$
-2. 逆时针 90°：$(i-x, \ j-y) \to (j-y, \ x-i)$
+2. 逆时针 90°：$(i-x, \ j-y) \to (y-j, \ i-x)$
 3. 变回原坐标系：$(x + y - j, \ y - x + i)$
 
 ```cpp title="rotate-90.cpp"
@@ -111,7 +111,7 @@ sort(a.begin(), a.end());
 a.erase(unique(a.begin(), a.end()), a.end());
 ```
 
-`unique` 将相邻重复元素移至末尾，配合 `erase` 删除。
+`unique` 把每组相邻重复元素只保留一个并依次移到前面，返回新的逻辑末尾；末尾之后的元素值未指定，配合 `erase` 删除。
 
 ## 数字字符串降序排序
 

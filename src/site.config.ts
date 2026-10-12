@@ -5,17 +5,24 @@ export const SITE = {
   locale: "zh-CN",
   github: "https://github.com/just1cez",
   avatar: "/images/avatar.jpg",
-  subtitle: "HITSZ CS · Shenzhen",
+  intro: "HITSZ 计科在读，正在学习 Rust、机器学习和 vibe coding。",
 } as const;
+
+// Shown in the homepage sidebar under 在学. Edit freely; `note` is optional.
+export const NOW_LEARNING: { name: string; note?: string }[] = [
+  { name: "Rust", note: "第 4 章：所有权" },
+  { name: "机器学习" },
+  { name: "vibe coding" },
+];
 
 export const CATEGORY_META = {
   tech: {
-    label: "Tech",
+    label: "技术",
     title: "技术笔记",
     description: "算法入门、C++、AI 探索、课程笔记和工程练习记录。很多文章会保留学习现场，不急着写成定论。",
   },
   life: {
-    label: "Life",
+    label: "生活",
     title: "生活杂谈",
     description: "硬件折腾、日常观察和学习之外的轻量记录。",
   },
